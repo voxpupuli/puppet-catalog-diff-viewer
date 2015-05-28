@@ -115,13 +115,15 @@ function listNodes(label) {
   var table = $('<table>', {
     id: 'nodeslist',
       class: 'table'
-  }).append(tableHead);
+  });
 
   if (label === 'with changes') {
     var tableHead = $('<tr>')
       .append($('<th>', { html: 'Node' }))
       .append($('<th>', { html: 'Diff #' }))
       .append($('<th>', { html: 'Diff %' }));
+    table.append(tableHead);
+
     var most_differences = diff.most_differences;
     for (var i=0; i < most_differences.length; i++) {
       // Weird data structure...
