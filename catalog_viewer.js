@@ -210,7 +210,7 @@ function diffStats(data) {
 
 function contentDiff(data) {
   var diffFiles = Object.keys(data.content_differences);
-  var html = $('<p>', { html: "Content diff generated" });
+  var html = $('<p>');
   for (var i=0; i < diffFiles.length; i++) {
     html.append($('<h4>', { html: diffFiles[i] }));
     html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
@@ -219,7 +219,7 @@ function contentDiff(data) {
 }
 
 function differencesAsDiff(data) {
-  var ul = $('<ul>');
+  var html = $('<p>');
   var diffs = Object.keys(data.differences_as_diff);
   for (var i=0; i < diffs.length; i++) {
     var d = diffs[i];
@@ -229,10 +229,10 @@ function differencesAsDiff(data) {
     if (diff_str.constructor === Array) {
       diff_str = diff_str.join("\n");
     }
-    var diff = $('<pre>', { class: 'sh_diff', html: diff_str });
-    ul.append($('<li>', { html: d }).append(diff));
+    html.append($('<h4>', { html: d }));
+    html.append($('<pre>', { class: 'sh_diff', html: diff_str }));
   }
-  return ul;
+  return html;
 }
 
 function displayNodeFail(node) {
