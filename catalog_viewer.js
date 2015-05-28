@@ -183,15 +183,24 @@ function displayNodeDiff(node) {
   var data = diff[node];
 
   var html = $('<h2>', { html: node });
-  html.append($('<h3>', { html: "Content differences" }));
+
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 1);
+  var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
+              .append(content_panel);
+  html.append(panels);
+
+  $('#node').html(html);
+  sh_highlightDocument();
+}
+
+function contentDiff(data) {
   var diffFiles = Object.keys(data.content_differences);
+  var html = $('<p>', { html: "Content diff generated" });
   for (var i=0; i < diffFiles.length; i++) {
     html.append($('<h4>', { html: diffFiles[i] }));
     html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
   }
-
-  $('#node').html(html);
-  sh_highlightDocument();
+  return html;
 }
 
 function displayNodeFail(node) {
