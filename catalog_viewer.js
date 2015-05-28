@@ -182,7 +182,7 @@ function listNodes(label) {
 function displayNodeDiff(node) {
   var data = diff[node];
 
-  var html = $('<h2>', { html: node });
+  $('#node').html($('<h2>', { html: node }));
 
 console.log(node);
   var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1);
@@ -192,9 +192,8 @@ console.log(node);
               .append(stats_panel)
               .append(content_panel)
               .append(differences_panel)
-  html.append(panels);
 
-  $('#node').html(html);
+  $('#node').append(panels);
   sh_highlightDocument();
 }
 
