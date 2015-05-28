@@ -146,12 +146,13 @@ function listNodes(label) {
 
 function displayNode(node) {
   var data = diff[node];
-  var html = "<h2>"+node+"</h2>";
-  html += "<h3>Content differences</h3>";
+
+  var html = $('<h2>', { html: node });
+  html.append($('<h3>', { html: "Content differences" }));
   var diffFiles = Object.keys(data.content_differences);
   for (var i=0; i < diffFiles.length; i++) {
-    html += "<h4>"+diffFiles[i]+"</h4>";
-    html += "<pre class='sh_diff'>\n"+data.content_differences[diffFiles[i]]+"\n</pre>";
+    html.append($('<h4>', { html: diffFile[i] }));
+    html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
   }
 
   $('#node').html(html);
