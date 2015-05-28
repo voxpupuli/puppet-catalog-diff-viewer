@@ -151,7 +151,7 @@ function displayNode(node) {
   html.append($('<h3>', { html: "Content differences" }));
   var diffFiles = Object.keys(data.content_differences);
   for (var i=0; i < diffFiles.length; i++) {
-    html.append($('<h4>', { html: diffFile[i] }));
+    html.append($('<h4>', { html: diffFiles[i] }));
     html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
   }
 
