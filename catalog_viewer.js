@@ -130,7 +130,7 @@ function listNodes(label) {
                                   .append($('<td>', { html: node }))
                                   .append($('<td>', { html: most_differences[i][node] }))
                                   .append($('<td>', { html: diff[node].catalog_percentage_changed }))
-                                  .on("click", $.proxy(function(node) { displayNode(node) }, null, node) );
+                                  .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
                   table.append(nodeLine);
           }
   } else if (label === 'failed') {
@@ -144,7 +144,7 @@ function listNodes(label) {
   sorttable.makeSortable($('#nodeslist')[0]);
 }
 
-function displayNode(node) {
+function displayNodeDiff(node) {
   var data = diff[node];
 
   var html = $('<h2>', { html: node });
