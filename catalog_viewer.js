@@ -111,6 +111,22 @@ function addPie(diff) {
 }
 
 
+function makePanel(title, content, id, n) {
+  var heading = $('<div>', { class: 'panel-heading' })
+    .append($('<h4>', { class: 'panel-title' })
+      .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, href: '#'+ id, html: title })
+      ));
+
+  var body = $('<div>', { id: id, class: 'panel-collapse collapse in' })
+    .append($('<div>', { class: 'panel-body', html: content }));
+
+  var panel = $('<div>', { class: 'panel panel-default', id: 'panel'+n })
+    .append(heading)
+    .append(body);
+
+  return panel;
+}
+
 function listNodes(label) {
   var table = $('<table>', {
     id: 'nodeslist',
@@ -140,32 +156,12 @@ function listNodes(label) {
       .append($('<th>', { html: 'Node' }));
     table.append(tableHead);
 
-    var failed_files = diff.pull_output.failed_to_compile_files;
-    $('#node').html($('<h2>', { html: "Failed to compile files" }));
-    var node_tr = $('<tr>')
-      .append($('<th>', { html: "File" }))
-      .append($('<th>', { html: "Affected nodes" }));
-    var node_table = $('<table>').append(node_tr);
-    for (var i=0; i < failed_files.length; i++) {
-      var obj = failed_files[i];
-      var f = Object.keys(obj)[0];
-      var nodeLine = ($('<tr>'))
-              .append($('<td>', { html: f }))
-              .append($('<td>', { html: obj[f] }));
-      node_table.append(nodeLine);
-    }
-    $('#node').append(node_table);
-
-    var compile_errs = diff.pull_output.example_compile_errors;
-    $('#node').append($('<h2>', { html: "Compile error examples" }));
-    var ul = $('<ul>');
-    for (var i=0; i < compile_errs.length; i++) {
-      var err = compile_errs[i];
-      var err_k = Object.keys(err)[0];
-      ul.append($('<li>', { html: compile_errs[i][err_k] }))
-        .append($('<pre>', { html: err_k }));
-      $('#node').append(ul);
-    }
+    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 1);
+    var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors', 2);
+    var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
+                .append(failed_panel)
+                .append(errs_panel);
+    $('#node').html(panels);
 
     var failed = Object.keys(diff.pull_output.failed_nodes);
     for (var i=0; i < failed.length; i++) {
@@ -209,3 +205,31 @@ function displayNodeFail(node) {
   sh_highlightDocument();
 }
 
+function failedFiles() {
+  var failed_files = diff.pull_output.failed_to_compile_files;
+  var node_tr = $('<tr>')
+    .append($('<th>', { html: "File" }))
+    .append($('<th>', { html: "Affected nodes" }));
+  var node_table = $('<table>').append(node_tr);
+  for (var i=0; i < failed_files.length; i++) {
+    var obj = failed_files[i];
+    var f = Object.keys(obj)[0];
+    var nodeLine = ($('<tr>'))
+            .append($('<td>', { html: f }))
+            .append($('<td>', { html: obj[f] }));
+    node_table.append(nodeLine);
+  }
+  return node_table;
+}
+
+function compileErrors() {
+  var compile_errs = diff.pull_output.example_compile_errors;
+  var ul = $('<ul>');
+  for (var i=0; i < compile_errs.length; i++) {
+    var err = compile_errs[i];
+    var err_k = Object.keys(err)[0];
+    ul.append($('<li>', { html: compile_errs[i][err_k] }))
+      .append($('<pre>', { html: err_k }));
+  }
+  return ul;
+}
