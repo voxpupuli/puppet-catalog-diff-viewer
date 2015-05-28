@@ -135,8 +135,8 @@ function listNodes(label) {
   if (label === 'with changes') {
     var tableHead = $('<tr>')
       .append($('<th>', { html: 'Node' }))
-      .append($('<th>', { html: 'Diff #' }))
-      .append($('<th>', { html: 'Diff %' }));
+      .append($('<th>', { html: 'Diff #' }))
+      .append($('<th>', { html: 'Diff %' }));
     table.append(tableHead);
 
     var most_differences = diff.most_differences;
