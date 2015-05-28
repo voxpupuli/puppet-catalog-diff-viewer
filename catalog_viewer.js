@@ -184,13 +184,26 @@ function displayNodeDiff(node) {
 
   var html = $('<h2>', { html: node });
 
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 1);
+  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1);
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
+              .append(stats_panel)
               .append(content_panel);
   html.append(panels);
 
   $('#node').html(html);
   sh_highlightDocument();
+}
+
+function diffStats(data) {
+  var ul = $('<ul>');
+  ul.append($('<li>', { html: 'Catalog percentage added: '+data.catalag_percentage_added }));
+  ul.append($('<li>', { html: 'Catalog percentage removed: '+data.catalag_percentage_removed }));
+  ul.append($('<li>', { html: 'Catalog percentage changed: '+data.catalag_percentage_changed }));
+  ul.append($('<li>', { html: 'Added and removed resources: '+data.added_and_removed_resources }));
+  ul.append($('<li>', { html: 'Node percentage: '+data.node_percentage }));
+  ul.append($('<li>', { html: 'Node differences: '+data.node_differences }));
+  return ul;
 }
 
 function contentDiff(data) {
