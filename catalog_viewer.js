@@ -184,11 +184,14 @@ function displayNodeDiff(node) {
 
   var html = $('<h2>', { html: node });
 
+console.log(node);
   var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1);
   var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2);
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
-              .append(content_panel);
+              .append(content_panel)
+              .append(differences_panel)
   html.append(panels);
 
   $('#node').html(html);
@@ -214,6 +217,23 @@ function contentDiff(data) {
     html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
   }
   return html;
+}
+
+function differencesAsDiff(data) {
+  var ul = $('<ul>');
+  var diffs = Object.keys(data.differences_as_diff);
+  for (var i=0; i < diffs.length; i++) {
+    var d = diffs[i];
+    console.log(d);
+
+    var diff_str = data.differences_as_diff[d];
+    if (diff_str.constructor === Array) {
+      diff_str = diff_str.join("\n");
+    }
+    var diff = $('<pre>', { class: 'sh_diff', html: diff_str });
+    ul.append($('<li>', { html: d }).append(diff));
+  }
+  return ul;
 }
 
 function displayNodeFail(node) {
