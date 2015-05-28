@@ -176,7 +176,7 @@ function displayNodeFail(node) {
   var data = diff.pull_output.failed_nodes[node];
 
   var html = $('<h2>', { html: node });
-  html.append($('<h3>', { html: "Fail output" }));
+  html.append($('<h3>', { html: "Fail output" }))
       .append($('<pre>', { html: data }));
 
   $('#node').html(html);
