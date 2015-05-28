@@ -12,7 +12,6 @@ function loadReport(r) {
   $('#chart').html('Loading data...');
   $.getJSON('data/'+r+'.json', function(data) {
     diff = data;
-    $('#chart')[0].innerHTML = '';
     addPie(diff);
   });
 }
@@ -32,7 +31,7 @@ function receivedText(e) {
 }
 
 function addPie(diff) {
-  $('#chart')[0].innerHTML = '';
+  $('#chart').html('');
   var with_changes = diff.with_changes;
   var failed = diff.pull_output.failed_nodes_total;
   var no_changes = diff.pull_output.total_nodes - with_changes - failed;
@@ -155,7 +154,7 @@ function displayNode(node) {
     html += "<pre class='sh_diff'>\n"+data.content_differences[diffFiles[i]]+"\n</pre>";
   }
 
-  $('#node')[0].innerHTML = html;
+  $('#node').html(html);
   sh_highlightDocument();
 }
 
