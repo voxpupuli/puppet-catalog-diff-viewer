@@ -142,8 +142,9 @@ function listNodes(label) {
 
     var failed = Object.keys(diff.pull_output.failed_nodes);
     for (var i=0; i < failed.length; i++) {
+      var node = failed[i];
       var nodeLine = $('<tr>')
-        .append($('<td>', { html: failed[i] }))
+        .append($('<td>', { html: node }))
         .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
       table.append(nodeLine);
     }
