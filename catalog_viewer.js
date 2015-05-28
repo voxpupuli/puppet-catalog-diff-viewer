@@ -10,7 +10,7 @@ function loadFromSelect() {
 
 function loadReport(r) {
   $('#chart').innerHTML = 'Loading data...';
-  $.getJSON(r+'.json', function(data) {
+  $.getJSON('data/'+r+'.json', function(data) {
     diff = data;
     $('#chart')[0].innerHTML = '';
     addPie(diff);
