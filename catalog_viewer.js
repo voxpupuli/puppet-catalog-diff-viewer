@@ -224,7 +224,7 @@ function differencesAsDiff(data) {
 
     var diff_str = data.differences_as_diff[d];
     if (diff_str.constructor === Array) {
-      diff_str = diff_str.join("\n");
+      diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
     html.append($('<h4>', { html: d }));
     html.append($('<pre>', { class: 'sh_diff', html: diff_str }));
