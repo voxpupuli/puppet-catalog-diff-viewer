@@ -114,7 +114,7 @@ function addPie(diff) {
 function makePanel(title, content, id, n) {
   var heading = $('<div>', { class: 'panel-heading' })
     .append($('<h4>', { class: 'panel-title' })
-      .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, href: '#'+ id, html: title })
+      .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title })
       ));
 
   var body = $('<div>', { id: id, class: 'panel-collapse collapse in' })
