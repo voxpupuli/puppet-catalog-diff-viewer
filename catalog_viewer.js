@@ -140,8 +140,24 @@ function listNodes(label) {
       .append($('<th>', { html: 'Node' }));
     table.append(tableHead);
 
+    var failed_files = diff.pull_output.failed_to_compile_files;
+    $('#node').html($('<h2>', { html: "Failed to compile files" }));
+    var node_tr = $('<tr>')
+      .append($('<th>', { html: "File" }))
+      .append($('<th>', { html: "Affected nodes" }));
+    var node_table = $('<table>').append(node_tr);
+    for (var i=0; i < failed_files.length; i++) {
+      var obj = failed_files[i];
+      var f = Object.keys(obj)[0];
+      var nodeLine = ($('<tr>'))
+              .append($('<td>', { html: f }))
+              .append($('<td>', { html: obj[f] }));
+      node_table.append(nodeLine);
+    }
+    $('#node').append(node_table);
+
     var compile_errs = diff.pull_output.example_compile_errors;
-    $('#node').html($('<h2>', { html: "Compile error examples" }));
+    $('#node').append($('<h2>', { html: "Compile error examples" }));
     var ul = $('<ul>');
     for (var i=0; i < compile_errs.length; i++) {
       var err = compile_errs[i];
