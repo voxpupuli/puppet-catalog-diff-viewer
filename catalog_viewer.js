@@ -140,6 +140,17 @@ function listNodes(label) {
       .append($('<th>', { html: 'Node' }));
     table.append(tableHead);
 
+    var compile_errs = diff.pull_output.example_compile_errors;
+    $('#node').html($('<h2>', { html: "Compile error examples" }));
+    var ul = $('<ul>');
+    for (var i=0; i < compile_errs.length; i++) {
+      var err = compile_errs[i];
+      var err_k = Object.keys(err)[0];
+      ul.append($('<li>', { html: compile_errs[i][err_k] }))
+        .append($('<pre>', { html: err_k }));
+      $('#node').append(ul);
+    }
+
     var failed = Object.keys(diff.pull_output.failed_nodes);
     for (var i=0; i < failed.length; i++) {
       var node = failed[i];
@@ -148,8 +159,6 @@ function listNodes(label) {
         .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
       table.append(nodeLine);
     }
-    table.append($('<tr>')
-        .append($('<td>', { html: "Displaying failed catalogs", colspan: 3 })));
   } else {
     table.append($('<tr>')
         .append($('<td>', { html: "Nothing to display for OK machines", colspan: 3 })));
