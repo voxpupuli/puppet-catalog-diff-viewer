@@ -17,7 +17,6 @@ function loadReport(r) {
 }
 
 function loadFile() {
-  console.log("loading file");
   var file = $('#fileinput')[0].files[0];
   fr = new FileReader();
   fr.onload = receivedText;
@@ -184,7 +183,6 @@ function displayNodeDiff(node) {
 
   $('#node').html($('<h2>', { html: node }));
 
-console.log(node);
   var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1);
   var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2);
   var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4);
@@ -223,7 +221,6 @@ function differencesAsDiff(data) {
   var diffs = Object.keys(data.differences_as_diff);
   for (var i=0; i < diffs.length; i++) {
     var d = diffs[i];
-    console.log(d);
 
     var diff_str = data.differences_as_diff[d];
     if (diff_str.constructor === Array) {
