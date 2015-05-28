@@ -40,8 +40,8 @@ function addPie(diff) {
   { "label": "no changes",   "value": no_changes,   "color": "#94AD5F" }
   ];
 
-  var width = 380,
-      height = 380,
+  var width = 350,
+      height = 350,
       radius = Math.min(width, height) / 2;
 
   var pie = d3.layout.pie()
