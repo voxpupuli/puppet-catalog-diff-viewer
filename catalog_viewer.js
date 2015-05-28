@@ -9,7 +9,7 @@ function loadFromSelect() {
 }
 
 function loadReport(r) {
-  $('#chart')[0].innerHTML = 'Loading data...';
+  $('#chart').html('Loading data...');
   $.getJSON('data/'+r+'.json', function(data) {
     diff = data;
     $('#chart')[0].innerHTML = '';
