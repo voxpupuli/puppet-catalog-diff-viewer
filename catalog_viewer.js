@@ -140,6 +140,13 @@ function listNodes(label) {
       .append($('<th>', { html: 'Node' }));
     table.append(tableHead);
 
+    var failed = Object.keys(diff.pull_output.failed_nodes);
+    for (var i=0; i < failed.length; i++) {
+      var nodeLine = $('<tr>')
+        .append($('<td>', { html: failed[i] }))
+        .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
+      table.append(nodeLine);
+    }
     table.append($('<tr>')
         .append($('<td>', { html: "Displaying failed catalogs", colspan: 3 })));
   } else {
@@ -160,6 +167,17 @@ function displayNodeDiff(node) {
     html.append($('<h4>', { html: diffFiles[i] }));
     html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
   }
+
+  $('#node').html(html);
+  sh_highlightDocument();
+}
+
+function displayNodeFail(node) {
+  var data = diff.pull_output.failed_nodes[node];
+
+  var html = $('<h2>', { html: node });
+  html.append($('<h3>', { html: "Fail output" }));
+      .append($('<pre>', { html: data }));
 
   $('#node').html(html);
   sh_highlightDocument();
