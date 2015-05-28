@@ -136,6 +136,10 @@ function listNodes(label) {
       table.append(nodeLine);
     }
   } else if (label === 'failed') {
+    var tableHead = $('<tr>')
+      .append($('<th>', { html: 'Node' }));
+    table.append(tableHead);
+
     table.append($('<tr>')
         .append($('<td>', { html: "Displaying failed catalogs", colspan: 3 })));
   } else {
