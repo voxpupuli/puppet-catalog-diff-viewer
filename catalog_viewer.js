@@ -196,13 +196,13 @@ function displayNodeDiff(node) {
 }
 
 function diffStats(data) {
-  var ul = $('<ul>');
-  ul.append($('<li>', { html: 'Catalog percentage added: '+data.catalag_percentage_added }));
-  ul.append($('<li>', { html: 'Catalog percentage removed: '+data.catalog_percentage_removed }));
-  ul.append($('<li>', { html: 'Catalog percentage changed: '+data.catalog_percentage_changed }));
-  ul.append($('<li>', { html: 'Added and removed resources: '+data.added_and_removed_resources }));
-  ul.append($('<li>', { html: 'Node percentage: '+data.node_percentage }));
-  ul.append($('<li>', { html: 'Node differences: '+data.node_differences }));
+  var ul = $('<ul>', { class: 'list-group' });
+  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage added: '+data.catalag_percentage_added }));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage removed: '+data.catalog_percentage_removed }));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage changed: '+data.catalog_percentage_changed }));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Added and removed resources: '+data.added_and_removed_resources }));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Node percentage: '+data.node_percentage }));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Node differences: '+data.node_differences }));
   return ul;
 }
 
@@ -262,11 +262,11 @@ function failedFiles() {
 
 function compileErrors() {
   var compile_errs = diff.pull_output.example_compile_errors;
-  var ul = $('<ul>');
+  var ul = $('<ul>', { class: 'list-group' });
   for (var i=0; i < compile_errs.length; i++) {
     var err = compile_errs[i];
     var err_k = Object.keys(err)[0];
-    ul.append($('<li>', { html: compile_errs[i][err_k] }))
+    ul.append($('<li>', { class: 'list-group-item', html: compile_errs[i][err_k] }))
       .append($('<pre>', { html: err_k }));
   }
   return ul;
