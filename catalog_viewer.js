@@ -226,7 +226,7 @@ function displayNodeFail(node) {
 
   var html = $('<h2>', { html: node });
   html.append($('<h3>', { html: "Fail output" }));
-  html.append($('<pre>', { html: data }));
+  html.append($('<pre>', { class: 'compile-error', html: data }));
 
   $('#node').html(html);
   sh_highlightDocument();
