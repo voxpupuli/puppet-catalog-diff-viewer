@@ -175,6 +175,7 @@ function displayNodeDiff(node) {
 
   $('#node').append(panels);
   sh_highlightDocument();
+  $('#node')[0].scrollIntoView(true);
 }
 
 function diffStats(data) {
@@ -229,6 +230,7 @@ function displayNodeFail(node) {
 
   $('#node').html(html);
   sh_highlightDocument();
+  $('#node')[0].scrollIntoView(true);
 }
 
 function failedFiles() {
