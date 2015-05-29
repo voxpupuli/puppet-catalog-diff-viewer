@@ -11,19 +11,21 @@
     <script src="lib/sh_diff.js"></script>
     <script src="catalog_viewer.js"></script>
     <style>
-    body, html {
-      margin: 0;
-      overflow: hidden;
-      height:100%;
-    }
-    #nodes, #node {
-      overflow-y: auto;
-    }
-    #nodes {
-      height: calc(100% - 400px);
-    }
-    #node {
-      height: calc(100% - 50px);
+    @media (min-width: 992px) {
+      body, html {
+        margin: 0;
+        overflow: hidden;
+        height:100%;
+      }
+      #nodes, #node {
+        overflow-y: auto;
+      }
+      #nodes {
+        height: calc(100% - 400px);
+      }
+      #node {
+        height: calc(100% - 50px);
+      }
     }
     #chart {
       height: 350px;
