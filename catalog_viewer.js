@@ -245,19 +245,15 @@ function displayNodeFail(node) {
 
 function failedFiles() {
   var failed_files = diff.pull_output.failed_to_compile_files;
-  var node_tr = $('<tr>')
-    .append($('<th>', { html: "File" }))
-    .append($('<th>', { html: "Affected nodes" }));
-  var node_table = $('<table>').append(node_tr);
+  var ul = $('<ul>', { class: 'list-group' });
   for (var i=0; i < failed_files.length; i++) {
     var obj = failed_files[i];
     var f = Object.keys(obj)[0];
-    var nodeLine = ($('<tr>'))
-            .append($('<td>', { html: f }))
-            .append($('<td>', { html: obj[f] }));
-    node_table.append(nodeLine);
+    var nodeLine = ($('<li>', { class: 'list-group-item', html: f }))
+            .append($('<span>', { class: 'badge', html: obj[f] }));
+    ul.append(nodeLine);
   }
-  return node_table;
+  return ul;
 }
 
 function compileErrors() {
