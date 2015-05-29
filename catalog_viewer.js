@@ -253,7 +253,7 @@ function compileErrors() {
     var err = compile_errs[i];
     var err_k = Object.keys(err)[0];
     ul.append($('<li>', { class: 'list-group-item', html: compile_errs[i][err_k] }))
-      .append($('<pre>', { html: err_k }));
+      .append($('<pre>', { class: 'compile-error', html: err_k }));
   }
   return ul;
 }
