@@ -197,12 +197,18 @@ function displayNodeDiff(node) {
 
 function diffStats(data) {
   var ul = $('<ul>', { class: 'list-group' });
-  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage added: '+data.catalag_percentage_added }));
-  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage removed: '+data.catalog_percentage_removed }));
-  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage changed: '+data.catalog_percentage_changed }));
-  ul.append($('<li>', { class: 'list-group-item', html: 'Added and removed resources: '+data.added_and_removed_resources }));
-  ul.append($('<li>', { class: 'list-group-item', html: 'Node percentage: '+data.node_percentage }));
-  ul.append($('<li>', { class: 'list-group-item', html: 'Node differences: '+data.node_differences }));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage added' })
+    .append($('<span>', { class: 'badge', html: data.catalag_percentage_added })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage removed' })
+    .append($('<span>', { class: 'badge', html: data.catalog_percentage_removed })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage changed' })
+    .append($('<span>', { class: 'badge', html: data.catalog_percentage_changed })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Added and removed resources' })
+    .append($('<span>', { class: 'badge', html: data.added_and_removed_resources })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Node percentage' })
+    .append($('<span>', { class: 'badge', html: data.node_percentage })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Node differences' })
+    .append($('<span>', { class: 'badge', html: data.node_differences })));
   return ul;
 }
 
