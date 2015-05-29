@@ -110,7 +110,7 @@ function addPie(diff) {
 }
 
 
-function makePanel(title, content, id, n) {
+function makePanel(title, content, id, n, type) {
   var heading = $('<div>', { class: 'panel-heading' })
     .append($('<h4>', { class: 'panel-title' })
       .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title })
@@ -119,7 +119,7 @@ function makePanel(title, content, id, n) {
   var body = $('<div>', { id: id, class: 'panel-collapse collapse in' })
     .append($('<div>', { class: 'panel-body', html: content }));
 
-  var panel = $('<div>', { class: 'panel panel-default', id: 'panel'+n })
+  var panel = $('<div>', { class: 'panel panel-'+type, id: 'panel'+n })
     .append(heading)
     .append(body);
 
@@ -140,8 +140,8 @@ function listNodes(label) {
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
-    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 1);
-    var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors', 2);
+    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 1, 'danger');
+    var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors', 2, 'danger');
     var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
                 .append(failed_panel)
                 .append(errs_panel);
@@ -165,9 +165,9 @@ function displayNodeDiff(node) {
 
   $('#node').html($('<h2>', { html: node }));
 
-  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1);
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2);
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4);
+  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1, 'info');
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2, 'warning');
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4, 'warning');
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
