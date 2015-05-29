@@ -127,34 +127,19 @@ function makePanel(title, content, id, n) {
 }
 
 function listNodes(label) {
-  var table = $('<table>', {
-    id: 'nodeslist',
-      class: 'table'
-  });
+  var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
   if (label === 'with changes') {
-    var tableHead = $('<tr>')
-      .append($('<th>', { html: 'Node' }))
-      .append($('<th>', { html: 'Diff&nbsp;#' }))
-      .append($('<th>', { html: 'Diff&nbsp;%' }));
-    table.append(tableHead);
-
     var most_differences = diff.most_differences;
     for (var i=0; i < most_differences.length; i++) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
-      var nodeLine = $('<tr>')
-        .append($('<td>', { html: node }))
-        .append($('<td>', { html: most_differences[i][node] }))
-        .append($('<td>', { html: diff[node].catalog_percentage_changed }))
+      var nodeLine = $('<li>', { class: 'list-group-item', html: node })
+        .append($('<span>', { class: 'badge', html: most_differences[i][node] }))
         .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
-      table.append(nodeLine);
+      ul.append(nodeLine);
     }
   } else if (label === 'failed') {
-    var tableHead = $('<tr>')
-      .append($('<th>', { html: 'Node' }));
-    table.append(tableHead);
-
     var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 1);
     var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors', 2);
     var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
@@ -165,17 +150,14 @@ function listNodes(label) {
     var failed = Object.keys(diff.pull_output.failed_nodes);
     for (var i=0; i < failed.length; i++) {
       var node = failed[i];
-      var nodeLine = $('<tr>')
-        .append($('<td>', { html: node }))
+      var nodeLine = $('<li>', { class: 'list-group-item', html: node})
         .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
-      table.append(nodeLine);
+      ul.append(nodeLine);
     }
   } else {
-    table.append($('<tr>')
-        .append($('<td>', { html: "Nothing to display for OK machines", colspan: 3 })));
+    ul.append($('<li>', { class: 'list-group-item', html: "Nothing to display for OK machines"} ));
   }
-  $('#nodes').html(table);
-  sorttable.makeSortable($('#nodeslist')[0]);
+  $('#nodes').html(ul);
 }
 
 function displayNodeDiff(node) {
