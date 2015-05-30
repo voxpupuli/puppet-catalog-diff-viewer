@@ -114,7 +114,7 @@ function makePanel(title, content, id, n, type, title_badge) {
   var title_h = $('<h4>', { class: 'panel-title' })
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title }));
   if (title_badge !== null) {
-    title_h.append($('<span', { class: 'badge', html: title_badge}));
+    title_h.append($('<span>', { class: 'badge', html: title_badge}));
   }
   var heading = $('<div>', { class: 'panel-heading' })
     .append(title_h);
