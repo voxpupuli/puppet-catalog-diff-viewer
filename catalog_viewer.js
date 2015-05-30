@@ -169,8 +169,8 @@ function displayNodeDiff(node) {
   $('#node').html($('<h2>', { html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1, 'info');
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2, 'warning');
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4, 'warning');
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2, 'warning', Object.keys(data.content_differences).length);
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4, 'warning', Object.keys(data.differences_as_diff).length);
   var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', 5, 'warning', data.only_in_old.length+' / '+data.total_resources_in_old);
   var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 6, 'warning', data.only_in_new.length+' / '+data.total_resources_in_new);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
