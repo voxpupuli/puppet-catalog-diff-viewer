@@ -143,7 +143,7 @@ function listNodes(label) {
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
-    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 1, 'danger');
+    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 1, 'danger', diff.pull_output.failed_to_compile_files.length);
     var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors', 2, 'danger');
     var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
                 .append(failed_panel)
