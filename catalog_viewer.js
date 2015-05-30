@@ -168,8 +168,10 @@ function displayNodeDiff(node) {
   var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1, 'info');
   var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2, 'warning');
   var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4, 'warning');
-  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', 5, 'warning');
-  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 6, 'warning');
+
+  var only_in_old_title = 'Only in old <span class="badge">'+data.oly_in_old.length+' / '+data.total_resources_in_old+'</span>';
+  var only_in_old_panel = makePanel(only_in_old_title, onlyInOld(data), 'only-in-old', 5, 'warning');
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 6, 'warning', data.only_in_new.length+' / '+data.total_resources_in_new);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
