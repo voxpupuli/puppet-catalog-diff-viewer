@@ -110,11 +110,14 @@ function addPie(diff) {
 }
 
 
-function makePanel(title, content, id, n, type) {
+function makePanel(title, content, id, n, type, title_badge) {
+  var title_h = $('<h4>', { class: 'panel-title' })
+    .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title }));
+  if (title_badge !== null) {
+    title_h.append($('<span', { class: 'badge', html: title_badge}));
+  }
   var heading = $('<div>', { class: 'panel-heading' })
-    .append($('<h4>', { class: 'panel-title' })
-      .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title })
-      ));
+    .append(title_h);
 
   var body = $('<div>', { id: id, class: 'panel-collapse collapse in' })
     .append($('<div>', { class: 'panel-body', html: content }));
@@ -168,11 +171,8 @@ function displayNodeDiff(node) {
   var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1, 'info');
   var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2, 'warning');
   var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-diff', 4, 'warning');
-
-  var only_in_old_title = 'Only in old<span class="badge">'+data.only_in_old.length+' / '+data.total_resources_in_old+'</span>';
-  var only_in_old_panel = makePanel(only_in_old_title, onlyInOld(data), 'only-in-old', 5, 'warning');
-  var only_in_new_title = 'Only in new<span class="badge">'+data.only_in_new.length+' / '+data.total_resources_in_new+'</span>';
-  var only_in_new_panel = makePanel(only_in_new_title, onlyInNew(data), 'only-in-new', 6, 'warning');
+  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', 5, 'warning', data.only_in_old.length+' / '+data.total_resources_in_old);
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 6, 'warning', data.only_in_new.length+' / '+data.total_resources_in_new);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
