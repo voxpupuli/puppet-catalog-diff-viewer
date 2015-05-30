@@ -199,6 +199,10 @@ function diffStats(data) {
     .append($('<span>', { class: 'badge', html: data.node_percentage })));
   ul.append($('<li>', { class: 'list-group-item', html: 'Node differences' })
     .append($('<span>', { class: 'badge', html: data.node_differences })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Total resources in old' })
+    .append($('<span>', { class: 'badge', html: data.total_resources_in_old })));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Total resources in new' })
+    .append($('<span>', { class: 'badge', html: data.total_resources_in_new })));
   return ul;
 }
 
