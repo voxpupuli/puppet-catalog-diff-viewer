@@ -26,6 +26,9 @@
       #node {
         height: calc(100% - 50px);
       }
+      .back-to-top {
+        visibility: hidden;
+      }
     }
     #chart {
       height: 350px;
@@ -57,9 +60,19 @@
       float: right;
       margin-right: 10px;
     }
+    .back-to-top {
+      position: fixed;
+      top: 400px;
+      left: 15px;
+      text-decoration: none;
+      display: none;
+    }
     </style>
   </head>
 <body>
+<a href="#" class="back-to-top" style="display: inline;">
+<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Back to top
+</a>
   <div class="container">
     <div class="row">
       <form class="form-inline">
@@ -96,7 +109,26 @@
     </div>
   </div>
   <script>
-    loadReport('stable3_staging3');
+    loadReport('datafile1');
+
+    // Back to top link
+    jQuery(document).ready(function() {
+      var offset = 220;
+      var duration = 500;
+      jQuery(window).scroll(function() {
+        if (jQuery(this).scrollTop() > offset) {
+          jQuery('.back-to-top').fadeIn(duration);
+        } else {
+          jQuery('.back-to-top').fadeOut(duration);
+        }
+      });
+
+      jQuery('.back-to-top').click(function(event) {
+        event.preventDefault();
+        jQuery('html, body').animate({scrollTop: 0}, duration);
+        return false;
+      })
+    });
   </script>
   </body>
 </html>
