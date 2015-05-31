@@ -55,7 +55,7 @@ function receivedText(e) {
     diff = JSON.parse(lines);
   }
   catch(err) {
-    loadingAlert('Failed to load report from file', 'danger');
+    loadingAlert('File does not seem to be in JSON format', 'danger');
     return;
   }
   addPie(diff);
