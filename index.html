@@ -74,8 +74,10 @@
     <div class="row">
       <form class="form-inline">
         <select id="fileselect" class="form-control input-sm" onchange="loadFromSelect()">                                     
-          <option>datafile1</option>
-          <option>datafile2</option>
+          <option>c2c_stable3_staging3</option>
+          <option>c2c_staging3_rpinson3</option>
+          <option>chtopo_stable3_staging3</option>
+          <option>epfl_stable3_staging3</option>
         </select>   
         <input type="file" class="form-control input-sm" id="fileinput" onchange="loadFile()">
       </form>
@@ -106,7 +108,7 @@
     </div>
   </div>
   <script>
-    loadReport('datafile1');
+    loadReport('c2c_stable3_staging3');
 
     // Back to top link
     jQuery(document).ready(function() {
