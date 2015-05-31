@@ -31,7 +31,7 @@ function loadReport(r) {
     if (!success) {
       loadingAlert('Loading data from '+r+' seems to have failed', 'danger');
     }
-  }, 5000);
+  }, 20000);
 }
 
 function loadFile() {
