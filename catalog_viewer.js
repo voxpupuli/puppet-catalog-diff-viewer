@@ -63,6 +63,8 @@ function receivedText(e) {
 
 function addPie(diff) {
   $('#chart').html('');
+  $('#nodes').html('');
+  $('#node').html('');
   try {
     var with_changes = diff.with_changes;
     var failed = diff.pull_output.failed_nodes_total;
