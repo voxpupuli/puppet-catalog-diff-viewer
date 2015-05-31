@@ -223,7 +223,7 @@ function displayNodeDiff(node) {
   // Mobile interface: scroll to div
   $('#node')[0].scrollIntoView(true);
   // Desktop interface: scroll up in div
-  $('#node').animate({scrollTop: 0}, {duration: 'slow', easing: 'swing'});
+  $('#node').animate({scrollTop: 0}, 500);
 }
 
 function diffStats(data) {
