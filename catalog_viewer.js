@@ -146,7 +146,6 @@ function addPie(diff) {
       listNodes(d.label);
     });
   $('#nodes').html('');
-  $('#node').html('');
 }
 
 
