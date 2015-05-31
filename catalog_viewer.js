@@ -8,8 +8,7 @@ function loadFromSelect() {
 
 function loadReport(r) {
   var bar = $('<div>', {
-      class:"progress progress-striped active",
-      html: 'Loading data...'
+      class:"progress progress-striped active"
     })
     .append($('<div>', {
       class:"progress-bar",
