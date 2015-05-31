@@ -251,8 +251,8 @@ function contentDiff(data) {
   var diffFiles = Object.keys(data.content_differences);
   var html = $('<p>');
   for (var i=0; i < diffFiles.length; i++) {
-    html.append($('<h4>', { html: diffFiles[i] }));
-    html.append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] }));
+    html.append($('<ul>', { class: 'list-group', html: diffFiles[i] })
+        .append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] })));
   }
   return html;
 }
@@ -267,8 +267,8 @@ function differencesAsDiff(data) {
     if (diff_str.constructor === Array) {
       diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
-    html.append($('<h4>', { html: d }));
-    html.append($('<pre>', { class: 'sh_diff', html: diff_str }));
+    html.append($('<ul>', { class: 'list-group', html: d })
+        .append($('<pre>', { class: 'sh_diff', html: diff_str })));
   }
   return html;
 }
