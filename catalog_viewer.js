@@ -220,7 +220,10 @@ function displayNodeDiff(node) {
 
   $('#node').append(panels);
   sh_highlightDocument();
+  // Mobile interface: scroll to div
   $('#node')[0].scrollIntoView(true);
+  // Desktop interface: scroll up in div
+  $('#node')[0].scrollTop = 0;
 }
 
 function diffStats(data) {
