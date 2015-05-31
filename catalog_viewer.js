@@ -51,15 +51,27 @@ function loadingAlert(message, level) {
 
 function receivedText(e) {
   lines = e.target.result;
-  diff = JSON.parse(lines);
+  try {
+    diff = JSON.parse(lines);
+  }
+  catch(err) {
+    loadingAlert('Failed to load report from file', 'danger');
+    return;
+  }
   addPie(diff);
 }
 
 function addPie(diff) {
   $('#chart').html('');
-  var with_changes = diff.with_changes;
-  var failed = diff.pull_output.failed_nodes_total;
-  var no_changes = diff.pull_output.total_nodes - with_changes - failed;
+  try {
+    var with_changes = diff.with_changes;
+    var failed = diff.pull_output.failed_nodes_total;
+    var no_changes = diff.pull_output.total_nodes - with_changes - failed;
+  }
+  catch(err) {
+    loadingAlert('Failed to parse report: missing fields', 'danger');
+    return;
+  }
   var dataset = [
   { "label": "with changes", "value": with_changes, "color": "#DB843D" },
   { "label": "failed",       "value": failed,       "color": "#AA4643" },
