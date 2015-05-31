@@ -20,10 +20,18 @@ function loadReport(r) {
       html: 'Loading data...'
     }));
   $('#chart').html(bar);
+  var success = false;
   $.getJSON('data/'+r+'.json', function(data) {
+    success = true;
     diff = data;
     addPie(diff);
   });
+  // Monitor JSONP request for 20 seconds
+  setTimeout(function() {
+    if (!success) {
+      loadingAlert('Loading data from '+r+' seems to have failed', 'danger');
+    }
+  }, 5000);
 }
 
 function loadFile() {
@@ -31,6 +39,14 @@ function loadFile() {
   fr = new FileReader();
   fr.onload = receivedText;
   fr.readAsText(file);
+}
+
+function loadingAlert(message, level) {
+  var alert_div = $('<div>', {
+    class: 'alert alert-'+level,
+    html: '<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> '+message
+  });
+  $('#chart').html(alert_div);
 }
 
 function receivedText(e) {
