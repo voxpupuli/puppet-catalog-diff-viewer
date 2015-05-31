@@ -1,7 +1,5 @@
 var diff;
 
-loadReport('staging3_rpinson3');
-
 function loadFromSelect() {
   var idx = $('#fileselect')[0].selectedIndex;
   var opts = $('#fileselect')[0].options;
