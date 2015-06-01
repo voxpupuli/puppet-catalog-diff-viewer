@@ -12,7 +12,7 @@
     <script src="catalog_viewer.js"></script>
     <style>
     @media (min-width: 992px) {
-      body, html {
+      body, html, #mainrow, #leftcol {
         margin: 0;
         overflow: hidden;
         height:100%;
@@ -95,8 +95,8 @@
         <input type="file" class="form-control input-sm" id="fileinput" onchange="loadFile()">
       </form>
     </div>
-    <div class="row">
-      <div class="col-md-4">
+    <div id="mainrow" class="row">
+      <div id="leftcol" class="col-md-4">
         <div id="chart">
         </div>
         <div id="nodes">
