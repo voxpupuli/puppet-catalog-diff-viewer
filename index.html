@@ -63,9 +63,10 @@
     .back-to-top {
       position: fixed;
       top: 10px;
-      left: 15px;
-      text-decoration: none;
+      left: calc(100% / 2);
       display: none;
+      z-index: 99999;
+      cursor: pointer;
     }
     #node .diff-stats .progress {
       text-align: center;
@@ -76,9 +77,9 @@
     </style>
   </head>
 <body>
-<a href="#" class="back-to-top">
+<span class="label label-primary back-to-top">
 <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Back to top
-</a>
+</span>
   <div class="container">
     <div id="nav" class="row">
       <form class="form-inline">
