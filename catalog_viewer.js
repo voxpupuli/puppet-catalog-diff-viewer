@@ -213,10 +213,13 @@ function displayNodeDiff(node) {
 
   $('#node').append(panels);
   sh_highlightDocument();
-  // Mobile interface: scroll to div
-  $('#node')[0].scrollIntoView(true);
-  // Desktop interface: scroll up in div
-  $('#node').animate({scrollTop: 0}, 500);
+  if ($(window).width() < 992) {
+    // Mobile interface: scroll to div
+    $('#node')[0].scrollIntoView(true);
+  } else {
+    // Desktop interface: scroll up in div
+    $('#node').animate({scrollTop: 0}, 500);
+  }
 }
 
 function percentBar(percentage) {
