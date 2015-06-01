@@ -175,9 +175,9 @@ function listNodes(label) {
       var p_oin = 100 * data.only_in_new.length / data.node_differences;
       var nodeLine = $('<li>', { class: 'list-group-item', html: node })
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
-          .append($('<div>', { class: 'progress-bar progress-bar-primary', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length+' differences' }))
-          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_oio+'%;', html: data.only_in_old.length+' only in old' }))
-          .append($('<div>', { class: 'progress-bar progress-bar-info', style: 'width: '+p_oin+'%;', html: data.only_in_new.length+' only in new' })))
+          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length+' differences' }))
+          .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: data.only_in_old.length+' only in old' }))
+          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: data.only_in_new.length+' only in new' })))
         .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
       ul.append(nodeLine);
     }
