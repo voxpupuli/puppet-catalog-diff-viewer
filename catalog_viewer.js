@@ -231,9 +231,10 @@ function displayNodeDiff(node, elem) {
   if ($(window).width() < 992) {
     // Mobile interface: scroll to div
     if (elem === undefined) {
-      $('#node')[0].scrollIntoView({block: "start", behavior: "smooth"});
+      // Navbar is 50px high
+      window.scrollTo(0, $('#node').position().top - 50);
     } else {
-      $('#'+elem)[0].scrollIntoView({block: "start", behavior: "smooth"});
+      window.scrollTo(0, $('#node').position().top - 50 + $('#'+elem).position().top);
     }
   } else {
     // Desktop interface: scroll up in div
