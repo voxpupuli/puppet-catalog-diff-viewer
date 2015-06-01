@@ -333,7 +333,7 @@ function differencesAsDiff(data) {
 }
 
 function onlyInOld(data) {
-  var ul = $('<ul>', { class: 'list-group' });
+  var ul = $('<ul>', { id: 'only-in-old', class: 'list-group' });
   var r = data.only_in_old;
   for (var i=0; i < r.length; i++) {
     var d = r[i];
@@ -353,7 +353,7 @@ function onlyInOld(data) {
 }
 
 function onlyInNew(data) {
-  var ul = $('<ul>', { class: 'list-group' });
+  var ul = $('<ul>', { id: 'only-in-new', class: 'list-group' });
   var r = data.only_in_new;
   for (var i=0; i < r.length; i++) {
     var d = r[i];
