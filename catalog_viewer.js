@@ -17,6 +17,8 @@ function loadReport(r) {
     success = true;
     diff = data;
     addPie(diff);
+    var report_title = $('#'+r)[0].text;
+    $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
   });
   // Monitor JSONP request for 20 seconds
   setTimeout(function() {
@@ -24,8 +26,6 @@ function loadReport(r) {
       loadingAlert('Loading data from '+r+' seems to have failed', 'danger');
     }
   }, 20000);
-  var report_title = $('#'+r)[0].text;
-  $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
 }
 
 function loadFile() {
