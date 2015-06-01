@@ -165,11 +165,19 @@ function listNodes(label) {
 
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
+    var max_diff = most_differences[0][Object.keys(diff.most_differences[0])];
     for (var i=0; i < most_differences.length; i++) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
+      var data = diff[node];
+      var p_diff = 100 * Object.keys(data.differences_as_diff).length / data.node_differences;
+      var p_oio = 100 * data.only_in_old.length / data.node_differences;
+      var p_oin = 100 * data.only_in_new.length / data.node_differences;
       var nodeLine = $('<li>', { class: 'list-group-item', html: node })
-        .append($('<span>', { class: 'badge', html: most_differences[i][node] }))
+        .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
+          .append($('<div>', { class: 'progress-bar progress-bar-primary', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length+' differences' }))
+          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_oio+'%;', html: data.only_in_old.length+' only in old' }))
+          .append($('<div>', { class: 'progress-bar progress-bar-info', style: 'width: '+p_oin+'%;', html: data.only_in_new.length+' only in new' })))
         .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
       ul.append(nodeLine);
     }
