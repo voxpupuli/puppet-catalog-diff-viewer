@@ -29,6 +29,7 @@ function loadReport(r) {
 }
 
 function loadFile() {
+  $('#nodeslist').html('');
   var file = $('#fileinput')[0].files[0];
   fr = new FileReader();
   fr.onload = receivedText;
