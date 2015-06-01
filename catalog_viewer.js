@@ -25,7 +25,7 @@ function loadReport(r) {
     }
   }, 20000);
   var report_title = $('#'+r)[0].text;
-  $('#loaded-report').html(report_title);
+  $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
 }
 
 function loadFile() {
