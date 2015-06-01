@@ -176,7 +176,7 @@ function listNodes(label) {
       var p_diff = 100 * Object.keys(data.differences_as_diff).length / data.node_differences;
       var p_oio = 100 * data.only_in_old.length / data.node_differences;
       var p_oin = 100 * data.only_in_new.length / data.node_differences;
-      var nodeLine = $('<li>', { class: 'list-group-item'})
+      var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node })
         .append($('<span>', { html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
@@ -211,6 +211,11 @@ function listNodes(label) {
 
 function displayNodeDiff(node, elem) {
   var data = diff[node];
+
+  // Set active node in list
+  $('#nodeslist').children('.active').removeClass('active');
+
+  $('[id="nodeslist:'+node+'"]').addClass('active');
 
   $('#node').html($('<h2>', { html: node }));
 
