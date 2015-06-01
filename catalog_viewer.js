@@ -302,7 +302,13 @@ function differencesAsDiff(data) {
     if (diff_str.constructor === Array) {
       diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
-    var ul = $('<ul>', { id: 'resource:diff:'+d, class: 'list-group', html: d });
+
+    var acked_class = '';
+    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf(diff_str) !== -1) {
+      acked_class = ' acked';
+    }
+
+    var ul = $('<ul>', { id: 'resource:diff:'+d, class: 'list-group'+acked_class, html: d });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d, diff_str) { ackDiff(d, diff_str, 'resource:diff:'+d) }, null, d, diff_str)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
@@ -369,7 +375,6 @@ function compileErrors() {
 function ackDiff(d, str, id) {
   if (diff['acks'] === undefined) diff['acks'] = new Object;
   if (diff.acks[d] === undefined) diff.acks[d] = new Array;
-  if (diff.acks[d].indexOf(str) !== -1) diff.acks[d].push(str);
-  console.log($('[id="'+id+'"]'));
+  if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
   $('[id="'+id+'"]').fadeOut(500);
 }
