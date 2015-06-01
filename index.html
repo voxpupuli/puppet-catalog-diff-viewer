@@ -79,12 +79,16 @@
   <div class="container">
     <div class="row">
       <form class="form-inline">
-        <select id="fileselect" class="form-control input-sm" onchange="loadFromSelect()">                                     
-          <option>c2c_stable3_staging3</option>
-          <option>c2c_staging3_rpinson3</option>
-          <option>chtopo_stable3_staging3</option>
-          <option>epfl_stable3_staging3</option>
-        </select>   
+        <div class="btn-group">
+          <a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+            Choose a report
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="javascript:loadReport('datafile1')">Report 1</a></li>
+            <li><a href="javascript:loadReport('datafile2')">Report 2</a></li>
+          </ul>
+        </div>
         <input type="file" class="form-control input-sm" id="fileinput" onchange="loadFile()">
       </form>
     </div>

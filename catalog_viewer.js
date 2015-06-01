@@ -1,11 +1,3 @@
-var diff;
-
-function loadFromSelect() {
-  var idx = $('#fileselect')[0].selectedIndex;
-  var opts = $('#fileselect')[0].options;
-  loadReport(opts[idx].text);
-}
-
 function loadReport(r) {
   var bar = $('<div>', {
       class:"progress progress-striped active"
