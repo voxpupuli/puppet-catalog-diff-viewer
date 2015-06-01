@@ -108,14 +108,17 @@
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="javascript:loadReport('datafile1')">Report 1</a></li>
-            <li><a href="javascript:loadReport('datafile2')">Report 2</a></li>
+            <li><a id="datafile1" href="javascript:loadReport('datafile1')">Report 1</a></li>
+            <li><a id="datafile2" href="javascript:loadReport('datafile2')">Report 2</a></li>
           </ul>
         </li>
         <li class="btn-file">
           <a href="#">
           Upload file... <input type="file" class="form-control" id="fileinput" style="display: block;" onchange="loadFile()">
           </a>
+        </li>
+        <li>
+          <p class="navbar-text" id="loaded-report"></p>
         </li>
       </ul>
     </div>

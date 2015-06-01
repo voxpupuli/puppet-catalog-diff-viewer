@@ -24,6 +24,8 @@ function loadReport(r) {
       loadingAlert('Loading data from '+r+' seems to have failed', 'danger');
     }
   }, 20000);
+  var report_title = $('#'+r)[0].text;
+  $('#loaded-report').html(report_title);
 }
 
 function loadFile() {
