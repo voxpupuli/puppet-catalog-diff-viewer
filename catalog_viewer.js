@@ -231,12 +231,11 @@ function displayNodeDiff(node, elem) {
   if ($(window).width() < 992) {
     // Mobile interface: scroll to div
     if (elem === undefined) {
-      $('#node')[0].scrollIntoView(true);
+      $('#node')[0].scrollIntoView({block: "start", behavior: "smooth"});
     } else {
-      $('#'+elem)[0].scrollIntoView(true);
+      $('#'+elem)[0].scrollIntoView({block: "start", behavior: "smooth"});
     }
   } else {
-          console.log(elem);
     // Desktop interface: scroll up in div
     if (elem === undefined) {
       $('#node').animate({scrollTop: 0}, 500);
