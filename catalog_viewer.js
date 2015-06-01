@@ -79,7 +79,7 @@ function addPie(diff) {
     .sort(null);
 
   var arc = d3.svg.arc()
-    .innerRadius(radius - 60)
+    .innerRadius(radius - 55)
     .outerRadius(radius - 20);
 
   var svg = d3.select("#chart").append("svg")
