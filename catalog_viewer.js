@@ -227,18 +227,26 @@ function displayNodeDiff(node) {
   $('#node').animate({scrollTop: 0}, 500);
 }
 
+function percentBar(percentage) {
+  return $('<div>', { class: 'progress', html: percentage+'%' })
+      .append($('<div>', {
+        class: 'progress-bar',
+        style: 'width: '+percentage+'%;'
+      }));
+}
+
 function diffStats(data) {
-  var ul = $('<ul>', { class: 'list-group' });
+  var ul = $('<ul>', { class: 'list-group diff-stats' });
   ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage added' })
-    .append($('<span>', { class: 'badge', html: data.catalag_percentage_added })));
+    .append(percentBar(data.catalag_percentage_added)));
   ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage removed' })
-    .append($('<span>', { class: 'badge', html: data.catalog_percentage_removed })));
+    .append(percentBar(data.catalog_percentage_removed)));
   ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage changed' })
-    .append($('<span>', { class: 'badge', html: data.catalog_percentage_changed })));
+    .append(percentBar(data.catalog_percentage_changed)));
+  ul.append($('<li>', { class: 'list-group-item', html: 'Node percentage' })
+    .append(percentBar(data.node_percentage.toFixed(2))));
   ul.append($('<li>', { class: 'list-group-item', html: 'Added and removed resources' })
     .append($('<span>', { class: 'badge', html: data.added_and_removed_resources })));
-  ul.append($('<li>', { class: 'list-group-item', html: 'Node percentage' })
-    .append($('<span>', { class: 'badge', html: data.node_percentage })));
   ul.append($('<li>', { class: 'list-group-item', html: 'Node differences' })
     .append($('<span>', { class: 'badge', html: data.node_differences })));
   ul.append($('<li>', { class: 'list-group-item', html: 'Total resources in old' })
