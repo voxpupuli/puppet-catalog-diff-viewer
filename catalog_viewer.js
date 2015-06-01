@@ -178,7 +178,7 @@ function listNodes(label) {
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
           .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length+' differences' })
-            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-diff') }, null, node) ))
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-content') }, null, node) ))
           .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: data.only_in_old.length+' only in old' })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
           .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: data.only_in_new.length+' only in new' })
