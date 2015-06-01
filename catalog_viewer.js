@@ -336,7 +336,18 @@ function onlyInOld(data) {
   var ul = $('<ul>', { class: 'list-group' });
   var r = data.only_in_old;
   for (var i=0; i < r.length; i++) {
-    ul.append($('<li>', { class: 'list-group-item', html: r[i] }));
+    var d = r[i];
+
+    var acked_class = '';
+    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf('old') !== -1) {
+      console.log(d+' is acked already');
+      acked_class = ' acked';
+    }
+
+    ul.append($('<li>', { id: 'only-in:old:'+d, class: 'list-group-item'+acked_class, html: d })
+      .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+          .on("click", $.proxy(function(d) { ackDiff(d, 'old', 'only-in:old:'+d) }, null, d)))
+    );
   }
   return ul;
 }
@@ -345,7 +356,18 @@ function onlyInNew(data) {
   var ul = $('<ul>', { class: 'list-group' });
   var r = data.only_in_new;
   for (var i=0; i < r.length; i++) {
-    ul.append($('<li>', { class: 'list-group-item', html: r[i] }));
+    var d = r[i];
+
+    var acked_class = '';
+    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf('new') !== -1) {
+      console.log(d+' is acked already');
+      acked_class = ' acked';
+    }
+
+    ul.append($('<li>', { id: 'only-in:new:'+d, class: 'list-group-item'+acked_class, html: d })
+      .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+          .on("click", $.proxy(function(d) { ackDiff(d, 'new', 'only-in:new:'+d) }, null, d)))
+    );
   }
   return ul;
 }
