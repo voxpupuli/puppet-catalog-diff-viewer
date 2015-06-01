@@ -20,9 +20,6 @@
       #nodes, #node {
         overflow-y: auto;
       }
-      #nav {
-        height: 40px;
-      }
       #nodes {
         height: calc(100% - 350px);
       }
@@ -74,17 +71,36 @@
       display: inline;
       float: right;
     }
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
     </style>
   </head>
 <body>
-<span class="label label-primary back-to-top">
-<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Back to top
-</span>
-  <div class="container">
-    <div id="nav" class="row">
-      <form class="form-inline">
-        <div class="btn-group">
-          <a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+  <span class="label label-primary back-to-top">
+    <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Back to top
+  </span>
+  <div class="navbar navbar-default">
+    <div class="container_fluid">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
             Choose a report
             <span class="caret"></span>
           </a>
@@ -92,10 +108,16 @@
             <li><a href="javascript:loadReport('datafile1')">Report 1</a></li>
             <li><a href="javascript:loadReport('datafile2')">Report 2</a></li>
           </ul>
-        </div>
-        <input type="file" class="form-control input-sm" id="fileinput" onchange="loadFile()">
-      </form>
+        </li>
+        <li class="btn-file">
+          <a href="#">
+          Upload file... <input type="file" class="form-control" id="fileinput" style="display: block;" onchange="loadFile()">
+          </span>
+        </li>
+      </ul>
     </div>
+  </div>
+  <div class="container">
     <div id="mainrow" class="row">
       <div id="leftcol" class="col-md-4">
         <div id="chart">
