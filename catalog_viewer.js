@@ -302,8 +302,11 @@ function differencesAsDiff(data) {
     if (diff_str.constructor === Array) {
       diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
-    html.append($('<ul>', { class: 'list-group', html: d })
-        .append($('<pre>', { class: 'sh_diff', html: diff_str })));
+    var ul = $('<ul>', { id: 'resource:diff:'+d, class: 'list-group', html: d });
+    ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+          .on("click", $.proxy(function(d, diff_str) { ackDiff(d, diff_str, 'resource:diff:'+d) }, null, d, diff_str)));
+    ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
+    html.append(ul);
   }
   return html;
 }
@@ -361,4 +364,12 @@ function compileErrors() {
       .append($('<pre>', { class: 'compile-error', html: err_k }));
   }
   return ul;
+}
+
+function ackDiff(d, str, id) {
+  if (diff['acks'] === undefined) diff['acks'] = new Object;
+  if (diff.acks[d] === undefined) diff.acks[d] = new Array;
+  if (diff.acks[d].indexOf(str) !== -1) diff.acks[d].push(str);
+  console.log($('[id="'+id+'"]'));
+  $('[id="'+id+'"]').fadeOut(500);
 }
