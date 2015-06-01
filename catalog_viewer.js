@@ -173,12 +173,16 @@ function listNodes(label) {
       var p_diff = 100 * Object.keys(data.differences_as_diff).length / data.node_differences;
       var p_oio = 100 * data.only_in_old.length / data.node_differences;
       var p_oin = 100 * data.only_in_new.length / data.node_differences;
-      var nodeLine = $('<li>', { class: 'list-group-item', html: node })
+      var nodeLine = $('<li>', { class: 'list-group-item'})
+        .append($('<span>', { html: node })
+          .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
-          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length+' differences' }))
-          .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: data.only_in_old.length+' only in old' }))
-          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: data.only_in_new.length+' only in new' })))
-        .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
+          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length+' differences' })
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-diff') }, null, node) ))
+          .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: data.only_in_old.length+' only in old' })
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
+          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: data.only_in_new.length+' only in new' })
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) )));
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
@@ -202,16 +206,16 @@ function listNodes(label) {
   $('#nodes').html(ul);
 }
 
-function displayNodeDiff(node) {
+function displayNodeDiff(node, elem) {
   var data = diff[node];
 
   $('#node').html($('<h2>', { html: node }));
 
-  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 1, 'info');
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 2, 'warning', Object.keys(data.content_differences).length);
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-info', 3, 'warning', Object.keys(data.differences_as_diff).length);
-  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', 4, 'danger', data.only_in_old.length+' / '+data.total_resources_in_old);
-  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 5, 'success', data.only_in_new.length+' / '+data.total_resources_in_new);
+  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', '-stats', 'info');
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', '-content', 'warning', Object.keys(data.content_differences).length);
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-info', '-diff', 'warning', Object.keys(data.differences_as_diff).length);
+  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', '-in-old', 'danger', data.only_in_old.length+' / '+data.total_resources_in_old);
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', '-in-new', 'success', data.only_in_new.length+' / '+data.total_resources_in_new);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
@@ -223,10 +227,20 @@ function displayNodeDiff(node) {
   sh_highlightDocument();
   if ($(window).width() < 992) {
     // Mobile interface: scroll to div
-    $('#node')[0].scrollIntoView(true);
+    if (elem === undefined) {
+      $('#node')[0].scrollIntoView(true);
+    } else {
+      $('#'+elem)[0].scrollIntoView(true);
+    }
   } else {
+          console.log(elem);
     // Desktop interface: scroll up in div
-    $('#node').animate({scrollTop: 0}, 500);
+    if (elem === undefined) {
+      $('#node').animate({scrollTop: 0}, 500);
+    } else {
+      $('#node')[0].scrollTop = 0;
+      $('#node').animate({scrollTop: $('#'+elem).position().top}, 500);
+    }
   }
 }
 
