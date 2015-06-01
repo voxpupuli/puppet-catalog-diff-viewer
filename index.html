@@ -20,15 +20,18 @@
       #nodes, #node {
         overflow-y: auto;
       }
+      #nav {
+        height: 40px;
+      }
       #nodes {
-        height: calc(100% - 400px);
+        height: calc(100% - 350px);
       }
       #node {
-        height: calc(100% - 50px);
+        height: calc(100% - 40px);
       }
     }
     #chart {
-      height: 350px;
+      height: 310px;
     }
     #chart svg g, #nodeslist li, .panel-title a {
       cursor: pointer;
@@ -77,7 +80,7 @@
 <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span> Back to top
 </a>
   <div class="container">
-    <div class="row">
+    <div id="nav" class="row">
       <form class="form-inline">
         <div class="btn-group">
           <a class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#">

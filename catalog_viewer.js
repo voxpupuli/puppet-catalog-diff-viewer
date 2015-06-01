@@ -70,8 +70,8 @@ function addPie(diff) {
   { "label": "no changes",   "value": no_changes,   "color": "#94AD5F" }
   ];
 
-  var width = 350,
-      height = 350,
+  var width = 310,
+      height = 310,
       radius = Math.min(width, height) / 2;
 
   var pie = d3.layout.pie()
@@ -79,8 +79,8 @@ function addPie(diff) {
     .sort(null);
 
   var arc = d3.svg.arc()
-    .innerRadius(radius - 80)
-    .outerRadius(radius - 50);
+    .innerRadius(radius - 60)
+    .outerRadius(radius - 20);
 
   var svg = d3.select("#chart").append("svg")
     .attr("width", width)
