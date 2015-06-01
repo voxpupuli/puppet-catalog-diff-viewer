@@ -286,8 +286,22 @@ function contentDiff(data) {
   var diffFiles = Object.keys(data.content_differences);
   var html = $('<p>');
   for (var i=0; i < diffFiles.length; i++) {
-    html.append($('<ul>', { class: 'list-group', html: diffFiles[i] })
-        .append($('<pre>', { class: 'sh_diff', html: data.content_differences[diffFiles[i]] })));
+    var d = diffFiles[i];
+    var diff_str = data.content_differences[d];
+    // Remove header lines that vary
+    var anon_diff_str = diff_str.split("\n").slice(2).join("\n");
+
+    var acked_class = '';
+    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf(anon_diff_str) !== -1) {
+      console.log(d+' is acked already');
+      acked_class = ' acked';
+    }
+
+    var ul = $('<ul>', { id: 'content:diff:'+d, class: 'list-group'+acked_class, html: d });
+    ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+          .on("click", $.proxy(function(d, anon_diff_str) { ackDiff(d, anon_diff_str, 'content:diff:'+d) }, null, d, anon_diff_str)));
+    ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
+    html.append(ul);
   }
   return html;
 }
@@ -305,6 +319,7 @@ function differencesAsDiff(data) {
 
     var acked_class = '';
     if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf(diff_str) !== -1) {
+      console.log(d+' is acked already');
       acked_class = ' acked';
     }
 
