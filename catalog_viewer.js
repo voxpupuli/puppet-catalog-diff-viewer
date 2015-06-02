@@ -472,18 +472,31 @@ function compileErrors() {
 
 function toggleAckDiff(d, str, type, id, data) {
   if (isAcked(d, str)) {
-    idx = diff.acks[d].indexOf(str);
-    diff.acks[d].splice(idx, 1);
-    $('[id="'+type+':'+id+'"]').removeClass('acked');
+    unackDiff(d, str, type, id, data);
   } else {
-    if (diff['acks'] === undefined) diff['acks'] = new Object;
-    if (diff.acks[d] === undefined) diff.acks[d] = new Array;
-    if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
-    $('[id="'+type+':'+id+'"]').addClass('acked');
+    ackDiff(d, str, type, id, data);
   }
+}
+
+function ackDiff(d, str, type, id, data) {
+  if (diff['acks'] === undefined) diff['acks'] = new Object;
+  if (diff.acks[d] === undefined) diff.acks[d] = new Array;
+  if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
+  $('[id="'+type+':'+id+'"]').addClass('acked');
+  refreshStats(type, data);
+  autoCollapseAll();
+}
+
+function unackDiff(d, str, type, id, data) {
+  idx = diff.acks[d].indexOf(str);
+  diff.acks[d].splice(idx, 1);
+  $('[id="'+type+':'+id+'"]').removeClass('acked');
+  refreshStats(type, data);
+}
+
+function refreshStats(type, data) {
   // Refresh node list
   listNodes('with changes');
   // Refresh badge
   $('[id="badge-'+type+'"]').html(badgeValue(type, data));
-  autoCollapseAll();
 }
