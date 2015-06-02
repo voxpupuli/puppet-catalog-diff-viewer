@@ -185,14 +185,21 @@ function makePanel(title, content, id, type, data) {
 }
 
 function autoCollapse(n) {
-  if ($('#badge-'+n).text().charAt(0) === "0") $('#panel-body-'+n).collapse();
+  if ($('#badge-'+n).text().charAt(0) === "0") {
+    $('#panel-body-'+n).collapse();
+    return $('#panel-body-'+n).height();
+  } else {
+    return 0;
+  }
 }
 
 function autoCollapseAll() {
-  autoCollapse('content');
-  autoCollapse('diff');
-  autoCollapse('in-old');
-  autoCollapse('in-new');
+  var offset = 0;
+  offset += autoCollapse('content');
+  offset += autoCollapse('diff');
+  offset += autoCollapse('in-old');
+  offset += autoCollapse('in-new');
+  return offset;
 }
 
 function listNodes(label) {
@@ -268,7 +275,7 @@ function displayNodeDiff(node, elem) {
 
   $('#node').append(panels);
 
-  autoCollapseAll();
+  var offset = autoCollapseAll();
 
   sh_highlightDocument();
   if ($(window).width() < 992) {
@@ -277,7 +284,7 @@ function displayNodeDiff(node, elem) {
       // Navbar is 50px high
       window.scrollTo(0, $('#node').position().top - 50);
     } else {
-      window.scrollTo(0, $('#node').position().top - 50 + $('#'+elem).position().top);
+      window.scrollTo(0, $('#node').position().top - 50 + $('#'+elem).position().top - offset);
     }
   } else {
     // Desktop interface: scroll up in div
@@ -285,7 +292,7 @@ function displayNodeDiff(node, elem) {
       $('#node').animate({scrollTop: 0}, 500);
     } else {
       $('#node')[0].scrollTop = 0;
-      $('#node').animate({scrollTop: $('#'+elem).position().top}, 500);
+      $('#node').animate({scrollTop: $('#'+elem).position().top - offset}, 500);
     }
   }
 }
