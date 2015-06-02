@@ -221,7 +221,7 @@ function listNodes(label, refresh_crumbs) {
       breadcrumb.append($('<li>', { class: 'navbar-text', html: label }));
     } else {
       crumbs[1].innerHTML = label;
-      crumbs[2].remove();
+      if (crumbs.length > 2) crumbs[2].remove();
     }
   }
 
