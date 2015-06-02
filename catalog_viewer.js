@@ -260,7 +260,8 @@ function listNodes(label, refresh_crumbs) {
       var p_oio = 100 * n_oio / data.node_differences;
       var n_oin = data.unacked_only_in_new.length;
       var p_oin = 100 * n_oin / data.node_differences;
-      var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node })
+      var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
+      var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class, id: 'nodeslist:'+node })
         .append($('<span>', { html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
