@@ -375,7 +375,7 @@ function contentDiff(data) {
     var acked_class = isAcked(k, anon_diff_str) ? ' acked' : '';
     var ul = $('<ul>', { id: 'content:'+k, class: 'list-group'+acked_class, html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, anon_diff_str, data) { ackDiff(k, anon_diff_str, 'content', k, data) }, null, k, anon_diff_str, data)));
+          .on("click", $.proxy(function(k, anon_diff_str, data) { toggleAckDiff(k, anon_diff_str, 'content', k, data) }, null, k, anon_diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -396,7 +396,7 @@ function differencesAsDiff(data) {
     var acked_class = isAcked(k, diff_str) ? ' acked' : '';
     var ul = $('<ul>', { id: 'diff:'+k, class: 'list-group'+acked_class, html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, diff_str, data) { ackDiff(k, diff_str, 'diff', k, data) }, null, k, diff_str, data)));
+          .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', k, data) }, null, k, diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -412,7 +412,7 @@ function onlyInOld(data) {
     var acked_class = isAcked(d, 'old') ? ' acked' : '';
     ul.append($('<li>', { id: 'in-old:'+d, class: 'list-group-item'+acked_class, html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d, data) { ackDiff(d, 'old', 'in-old', d, data) }, null, d, data)))
+          .on("click", $.proxy(function(d, data) { toggleAckDiff(d, 'old', 'in-old', d, data) }, null, d, data)))
     );
   }
   return ul;
@@ -427,7 +427,7 @@ function onlyInNew(data) {
     var acked_class = isAcked(d, 'new') ? ' acked' : '';
     ul.append($('<li>', { id: 'in-new:'+d, class: 'list-group-item'+acked_class, html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d, data) { ackDiff(d, 'new', 'in-new', d, data) }, null, d, data)))
+          .on("click", $.proxy(function(d, data) { toggleAckDiff(d, 'new', 'in-new', d, data) }, null, d, data)))
     );
   }
   return ul;
@@ -470,7 +470,7 @@ function compileErrors() {
   return ul;
 }
 
-function ackDiff(d, str, type, id, data) {
+function toggelAckDiff(d, str, type, id, data) {
   if (isAcked(d, str)) {
     idx = diff.acks[d].indexOf(str);
     diff.acks[d].splice(idx, 1);
