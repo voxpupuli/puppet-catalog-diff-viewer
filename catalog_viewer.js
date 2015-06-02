@@ -344,8 +344,7 @@ function isAcked(k, str) {
 
 function contentDiff(data) {
   var diffFiles = data.content_differences;
-  var keys = Object.keys(diffFiles);
-  console.log(diffFiles);
+  var keys = Object.keys(diffFiles).sort();
   var html = $('<p>');
   for (var i=0; i < keys.length; i++) {
     var k = keys[i];
@@ -365,7 +364,7 @@ function contentDiff(data) {
 function differencesAsDiff(data) {
   var html = $('<p>');
   var diffs = data.differences_as_diff;
-  var keys = Object.keys(diffs);
+  var keys = Object.keys(diffs).sort();
   for (var i=0; i < keys.length; i++) {
     var k = keys[i];
     var diff_str = diffs[k];
@@ -385,7 +384,7 @@ function differencesAsDiff(data) {
 
 function onlyInOld(data) {
   var ul = $('<ul>', { id: 'only-in-old', class: 'list-group' });
-  var r = data.only_in_old;
+  var r = data.only_in_old.sort();
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
@@ -400,7 +399,7 @@ function onlyInOld(data) {
 
 function onlyInNew(data) {
   var ul = $('<ul>', { id: 'only-in-new', class: 'list-group' });
-  var r = filterAckedArray(data.only_in_new, 'new');
+  var r = data.only_in_new.sort();
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
