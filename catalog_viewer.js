@@ -169,8 +169,8 @@ function makePanel(title, content, id, type, data, ack_button) {
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
 
     if (ack_button) {
-      title_h.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-      .on("click", $.proxy(function(id, data) { ackAllDiff(id, data) }, null, id, data)));
+      title_h.append($('<span>', { id: 'ack-all-'+id, class: 'glyphicon glyphicon-ok ack' })
+      .on("click", $.proxy(function(id, data) { toggleAckAllDiff(id, data) }, null, id, data)));
     }
   var title_badge = badgeValue(id, data);
   if (title_badge !== undefined) {
@@ -491,7 +491,19 @@ function arrayToObj(arr, v) {
   return obj;
 }
 
-function ackAllDiff(id, data) {
+function hasClass(element, cls) {
+  return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+}
+
+function toggleAckAllDiff(id, data) {
+  if (hasClass($('#ack-all-'+id)[0], 'acked')) {
+    unackAllDiff(id, data);
+  } else {
+    ackAllDiff(id, data);
+  }
+}
+
+function foreachDiff(id, data, cb) {
   var diffs;
   var join_diff;
   var anon_diff;
@@ -524,13 +536,32 @@ function ackAllDiff(id, data) {
       comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
     // Remove header lines that vary
     if (anon_diff) comp_d = comp_d.split("\n").splice(2).join("\n");
-    if (isAcked(k, comp_d)) continue;
-    ackDiff(k, comp_d, id, data);
+    cb(k, comp_d);
   }
+}
+
+function ackAllDiff(id, data) {
+  foreachDiff(id, data, function(k, d) {
+    if (isAcked(k, d)) return;
+    ackDiff(k, d, id, data);
+  })
+
+  $('#ack-all-'+id).addClass('acked');
 
   // Only refresh once
   refreshStats(id, data);
   autoCollapseAll();
+}
+
+function unackAllDiff(id, data) {
+  foreachDiff(id, data, function(k, d) {
+    unackDiff(k, d, id, data);
+  })
+
+  $('#ack-all-'+id).removeClass('acked');
+
+  // Only refresh once
+  refreshStats(id, data);
 }
 
 function ackDiff(d, str, type, data, refresh) {
