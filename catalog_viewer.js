@@ -470,7 +470,7 @@ function compileErrors() {
   return ul;
 }
 
-function toggelAckDiff(d, str, type, id, data) {
+function toggleAckDiff(d, str, type, id, data) {
   if (isAcked(d, str)) {
     idx = diff.acks[d].indexOf(str);
     diff.acks[d].splice(idx, 1);
