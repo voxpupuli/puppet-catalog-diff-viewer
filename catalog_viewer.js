@@ -166,9 +166,12 @@ function badgeValue(n, data) {
 
 function makePanel(title, content, id, type, data, ack_button) {
   var title_h = $('<h4>', { class: 'panel-title' })
-    .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }))
-    .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+    .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
+
+    if (ack_button) {
+      title_h.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
       .on("click", $.proxy(function(id, data) { ackAllDiff(id, data) }, null, id, data)));
+    }
   var title_badge = badgeValue(id, data);
   if (title_badge !== undefined) {
     title_h.append($('<span>', { id: 'badge-'+id, class: 'badge', html: title_badge}));
@@ -264,10 +267,10 @@ function displayNodeDiff(node, elem) {
   $('#node').html($('<h2>', { html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content', 'warning', data);
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data),'diff', 'warning', data);
-  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data);
-  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data);
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content', 'warning', data, true);
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data),'diff', 'warning', data, true);
+  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data, true);
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data, true);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
