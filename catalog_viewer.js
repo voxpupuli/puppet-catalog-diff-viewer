@@ -19,6 +19,9 @@ function loadReport(r) {
     addPie(diff);
     var report_title = $('#'+r)[0].text;
     $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
+    var crumbs =  $('#breadcrumb').children('li');
+    if (crumbs.length > 2) $('#breadcrumb').children('li')[2].remove();
+    if (crumbs.length > 1) $('#breadcrumb').children('li')[1].remove();
   });
   // Monitor JSONP request for 20 seconds
   setTimeout(function() {
@@ -211,6 +214,15 @@ function autoCollapseAll() {
 function listNodes(label) {
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
+  var breadcrumb = $('#breadcrumb');
+  var crumbs = breadcrumb.children('li');
+  if (crumbs.length < 2) {
+    breadcrumb.append($('<li>', { class: 'navbar-text', html: label }));
+  } else {
+    crumbs[1].innerHTML = label;
+    crumbs[2].remove();
+  }
+
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
     var max_diff = most_differences[0][Object.keys(diff.most_differences[0])];
@@ -259,6 +271,13 @@ function listNodes(label) {
 
 function displayNodeDiff(node, elem) {
   var data = diff[node];
+
+  var crumbs = $('#breadcrumb').children('li');
+  if (crumbs.length == 3) {
+    crumbs[2].innerHTML = node;
+  } else {
+    $('#breadcrumb').append($('<li>', { class: 'navbar-text', html: node }));
+  }
 
   // Set active node in list
   $('#nodeslist').children('.active').removeClass('active');
@@ -439,6 +458,13 @@ function onlyInNew(data) {
 
 function displayNodeFail(node) {
   var data = diff.pull_output.failed_nodes[node];
+
+  var crumbs = $('#breadcrumb').children('li');
+  if (crumbs.length == 3) {
+    crumbs[2].innerHTML = node;
+  } else {
+    $('#breadcrumb').append($('<li>', { class: 'navbar-text', html: node }));
+  }
 
   $('#nodeslist').children('.active').removeClass('active');
   $('[id="nodeslist:'+node+'"]').addClass('active');

@@ -130,6 +130,10 @@
     .acked .glyphicon-ok:hover, .glyphicon-ok.acked:hover {
       color: gray;
     }
+    .navbar .breadcrumb {
+      margin: 0; 
+      background-color: inherit;
+    }
     </style>
   </head>
 <body>
@@ -168,9 +172,9 @@
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <p class="navbar-text" id="loaded-report"></p>
-        </li>
+        <ol id="breadcrumb" class="breadcrumb">
+          <li class="navbar-text" id="loaded-report"></li>
+        </ol>
       </ul>
     </div>
   </div>
