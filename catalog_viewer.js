@@ -174,18 +174,21 @@ function listNodes(label) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
-      var p_diff = 100 * Object.keys(data.differences_as_diff).length / data.node_differences;
-      var p_oio = 100 * data.only_in_old.length / data.node_differences;
-      var p_oin = 100 * data.only_in_new.length / data.node_differences;
+      var n_diff = Object.keys(filterAckedObj(data.differences_as_diff, true, false)).length;
+      var p_diff = 100 * n_diff / data.node_differences;
+      var n_oio = filterAckedArray(data.only_in_old, 'old').length;
+      var p_oio = 100 * n_oio / data.node_differences;
+      var n_oin = filterAckedArray(data.only_in_new, 'new').length;
+      var p_oin = 100 * n_oin / data.node_differences;
       var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node })
         .append($('<span>', { html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
-          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  Object.keys(data.differences_as_diff).length })
+          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  n_diff })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-content') }, null, node) ))
-          .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: data.only_in_old.length })
+          .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: n_oio })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
-          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: data.only_in_new.length })
+          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) )));
       ul.append(nodeLine);
     }
@@ -437,4 +440,6 @@ function ackDiff(d, str, id) {
   if (diff.acks[d] === undefined) diff.acks[d] = new Array;
   if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
   $('[id="'+id+'"]').fadeOut(500);
+  // Refresh node list
+  listNodes('with changes');
 }
