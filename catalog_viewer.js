@@ -254,11 +254,11 @@ function listNodes(label, refresh_crumbs) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
-      var n_diff = Object.keys(filterAckedObj(data.differences_as_diff, true, false)).length;
+      var n_diff = Object.keys(data.unacked_differences_as_diff).length;
       var p_diff = 100 * n_diff / data.node_differences;
-      var n_oio = filterAckedArray(data.only_in_old, 'old').length;
+      var n_oio = data.unacked_only_in_old.length;
       var p_oio = 100 * n_oio / data.node_differences;
-      var n_oin = filterAckedArray(data.only_in_new, 'new').length;
+      var n_oin = data.unacked_only_in_new.length;
       var p_oin = 100 * n_oin / data.node_differences;
       var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node })
         .append($('<span>', { html: node })
