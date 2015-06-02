@@ -228,26 +228,49 @@ function listNodes(label, refresh_crumbs) {
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
     var max_diff = most_differences[0][Object.keys(diff.most_differences[0])];
+
+    // Calculate ack stats for all nodes
+    for (var i=0; i < most_differences.length; i++) {
+      var node = Object.keys(most_differences[i])[0];
+      var data = diff[node];
+
+      data['unacked_differences_as_diff'] = filterAckedObj(data.differences_as_diff, true, false);
+      data['unacked_only_in_old'] = filterAckedArray(data.only_in_old, 'old');
+      data['unacked_only_in_new'] = filterAckedArray(data.only_in_new, 'new');
+      data['unacked_node_differences'] = Object.keys(data['unacked_differences_as_diff']).length
+                                       + data['unacked_only_in_old'].length
+                                       + data['unacked_only_in_new'].length;
+    }
+
+    // Sort nodes by unacked differences
+    most_differences.sort(function(a, b) {
+      var a_node = Object.keys(a)[0];
+      var b_node = Object.keys(b)[0];
+
+      return diff[b_node]['unacked_node_differences'] - diff[a_node]['unacked_node_differences'];
+    });
+
     for (var i=0; i < most_differences.length; i++) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
-      var n_diff = Object.keys(filterAckedObj(data.differences_as_diff, true, false)).length;
+      var n_diff = Object.keys(data.unacked_differences_as_diff).length;
       var p_diff = 100 * n_diff / data.node_differences;
-      var n_oio = filterAckedArray(data.only_in_old, 'old').length;
+      var n_oio = data.unacked_only_in_old.length;
       var p_oio = 100 * n_oio / data.node_differences;
-      var n_oin = filterAckedArray(data.only_in_new, 'new').length;
+      var n_oin = data.unacked_only_in_new.length;
       var p_oin = 100 * n_oin / data.node_differences;
-      var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node })
+      var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
+      var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class, id: 'nodeslist:'+node })
         .append($('<span>', { html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
-          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  n_diff })
-            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-content') }, null, node) ))
+          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) ))
           .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: n_oio })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
-          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
-            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) )));
+          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  n_diff })
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-content') }, null, node) )));
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
