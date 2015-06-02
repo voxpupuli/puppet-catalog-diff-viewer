@@ -313,20 +313,11 @@ function filterAckedObj(diffs, join_diff, anon_diff) {
     var k = keys[i];
     var d = diffs[k];
     var comp_d = d;
-
-    if (join_diff && comp_d.constructor === Array) {
+    if (join_diff && comp_d.constructor === Array)
       comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
-    }
-
-    if (anon_diff) {
-      // Remove header lines that vary
-      comp_d = comp_d.split("\n").splice(2).join("\n");
-    }
-
-    if (diff['acks'] !== undefined && diff['acks'][k] !== undefined && diff['acks'][k].indexOf(comp_d) !== -1) {
-      continue;
-    }
-
+    // Remove header lines that vary
+    if (anon_diff) comp_d = comp_d.split("\n").splice(2).join("\n");
+    if (isAcked(k, comp_d)) continue;
     filtered[k] = d;
   }
 
@@ -335,18 +326,20 @@ function filterAckedObj(diffs, join_diff, anon_diff) {
 
 function filterAckedArray(diffs, type) {
   var filtered = new Array;
-
   for (var i=0; i < diffs.length; i++) {
     var k = diffs[i];
-
-    if (diff['acks'] !== undefined && diff['acks'][k] !== undefined && diff['acks'][k].indexOf(type) !== -1) {
-      continue;
-    }
-
+    if (isAcked(k, type)) continue;
     filtered.push(k);
   }
-
   return filtered;
+}
+
+function isAcked(k, str) {
+  if (diff['acks'] !== undefined && diff['acks'][k] !== undefined && diff['acks'][k].indexOf(str) !== -1) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function contentDiff(data) {
