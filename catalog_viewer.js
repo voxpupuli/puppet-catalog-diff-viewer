@@ -189,11 +189,12 @@ function makePanel(title, content, id, type, data, ack_button) {
   return panel;
 }
 
-function autoCollapse(n) {
+function autoCollapse(n, show) {
   if ($('#badge-'+n).text().charAt(0) === "0") {
     $('#panel-body-'+n).collapse('hide');
     return $('#panel-body-'+n).height();
   } else {
+    if (show) $('#panel-body-'+n).collapse('show');
     return 0;
   }
 }
@@ -550,7 +551,7 @@ function ackAllDiff(id, data) {
 
   // Only refresh once
   refreshStats(id, data);
-  autoCollapseAll();
+  autoCollapse(id);
 }
 
 function unackAllDiff(id, data) {
@@ -562,6 +563,7 @@ function unackAllDiff(id, data) {
 
   // Only refresh once
   refreshStats(id, data);
+  autoCollapse(id, true);
 }
 
 function ackDiff(d, str, type, data, refresh) {
