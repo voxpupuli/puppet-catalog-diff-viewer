@@ -144,12 +144,32 @@ function addPie(diff) {
   $('#nodes').html('');
 }
 
+function badgeValue(n, data) {
+  switch (n) {
+    case 'content':
+      return Object.keys(filterAckedObj(data.content_differences, false, true)).length;
+      break;
 
-function makePanel(title, content, id, n, type, title_badge) {
+    case 'diff':
+      return Object.keys(filterAckedObj(data.differences_as_diff, true, false)).length;
+      break;
+
+    case 'in-old':
+      return filterAckedArray(data.only_in_old, 'old').length+' / '+data.total_resources_in_old;
+      break;
+
+    case 'in-new':
+      return filterAckedArray(data.only_in_new, 'new').length+' / '+data.total_resources_in_new;
+      break;
+  }
+}
+
+function makePanel(title, content, id, n, type, data) {
   var title_h = $('<h4>', { class: 'panel-title' })
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title }));
-  if (title_badge !== null) {
-    title_h.append($('<span>', { class: 'badge', html: title_badge}));
+  var title_badge = badgeValue(n, data);
+  if (title_badge !== undefined) {
+    title_h.append($('<span>', { id: 'badge-'+n, class: 'badge', html: title_badge}));
   }
   var heading = $('<div>', { class: 'panel-heading' })
     .append(title_h);
@@ -157,7 +177,7 @@ function makePanel(title, content, id, n, type, title_badge) {
   var body = $('<div>', { id: id, class: 'panel-collapse collapse in' })
     .append($('<div>', { class: 'panel-body', html: content }));
 
-  var panel = $('<div>', { class: 'panel panel-'+type, id: 'panel'+n })
+  var panel = $('<div>', { class: 'panel panel-'+type, id: 'panel-'+n })
     .append(heading)
     .append(body);
 
@@ -223,11 +243,11 @@ function displayNodeDiff(node, elem) {
 
   $('#node').html($('<h2>', { html: node }));
 
-  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', '-stats', 'info');
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', '-content', 'warning', Object.keys(data.content_differences).length);
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-info', '-diff', 'warning', Object.keys(data.differences_as_diff).length);
-  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', '-in-old', 'danger', data.only_in_old.length+' / '+data.total_resources_in_old);
-  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', '-in-new', 'success', data.only_in_new.length+' / '+data.total_resources_in_new);
+  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 'stats', 'info', data);
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 'content', 'warning', data);
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-info', 'diff', 'warning', data);
+  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', 'in-old', 'danger', data);
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 'in-new', 'success', data);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
@@ -342,7 +362,7 @@ function contentDiff(data) {
 
     var ul = $('<ul>', { id: 'content:'+k, class: 'list-group', html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, anon_diff_str) { ackDiff(k, anon_diff_str, 'content:', k) }, null, k, anon_diff_str)));
+          .on("click", $.proxy(function(k, anon_diff_str, data) { ackDiff(k, anon_diff_str, 'content', k, data) }, null, k, anon_diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -363,7 +383,7 @@ function differencesAsDiff(data) {
 
     var ul = $('<ul>', { id: 'diff:'+k, class: 'list-group', html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, diff_str) { ackDiff(k, diff_str, 'diff', k) }, null, k, diff_str)));
+          .on("click", $.proxy(function(k, diff_str, data) { ackDiff(k, diff_str, 'diff', k, data) }, null, k, diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -378,7 +398,7 @@ function onlyInOld(data) {
 
     ul.append($('<li>', { id: 'in-old:'+d, class: 'list-group-item', html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d) { ackDiff(d, 'old', 'in-old', d) }, null, d)))
+          .on("click", $.proxy(function(d, data) { ackDiff(d, 'old', 'in-old', d, data) }, null, d, data)))
     );
   }
   return ul;
@@ -392,7 +412,7 @@ function onlyInNew(data) {
 
     ul.append($('<li>', { id: 'in-new:'+d, class: 'list-group-item', html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d) { ackDiff(d, 'new', 'in-new', d) }, null, d)))
+          .on("click", $.proxy(function(d, data) { ackDiff(d, 'new', 'in-new', d, data) }, null, d, data)))
     );
   }
   return ul;
@@ -435,7 +455,7 @@ function compileErrors() {
   return ul;
 }
 
-function ackDiff(d, str, type, id) {
+function ackDiff(d, str, type, id, data) {
   if (diff['acks'] === undefined) diff['acks'] = new Object;
   if (diff.acks[d] === undefined) diff.acks[d] = new Array;
   if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
@@ -443,4 +463,5 @@ function ackDiff(d, str, type, id) {
   // Refresh node list
   listNodes('with changes');
   // Refresh badge
+  $('[id="badge-'+type+'"]').html(badgeValue(type, data));
 }
