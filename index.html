@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <link href="css/sh_style.css" rel="stylesheet" type="text/css">
     
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="lib/sh_main.min.js"></script>
@@ -160,16 +160,6 @@
       </div>
 
       <ul class="nav navbar-nav navbar-collapse collapse" id="bs-example-navbar-collapse-1">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-            Choose a report
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a id="datafile1" href="javascript:loadReport('datafile1')">Report 1</a></li>
-            <li><a id="datafile2" href="javascript:loadReport('datafile2')">Report 2</a></li>
-          </ul>
-        </li>
         <li class="btn-file">
           <a href="#">
           Upload file... <input type="file" class="form-control" id="fileinput" style="display: block;" onchange="loadFile()">
@@ -210,8 +200,6 @@
     </div>
   </div>
   <script>
-    loadReport('c2c_stable3_staging3');
-
     // Back to top link
     jQuery(document).ready(function() {
       var offset = 220;
