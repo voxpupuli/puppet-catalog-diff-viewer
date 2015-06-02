@@ -282,24 +282,64 @@ function diffStats(data) {
   return ul;
 }
 
+function filterAckedObj(diffs, join_diff, anon_diff) {
+  var keys = Object.keys(diffs);
+  var filtered = new Object;
+
+  for (var i=0; i < keys.length; i++) {
+    var k = keys[i];
+    var d = diffs[k];
+    var comp_d = d;
+
+    if (join_diff && comp_d.constructor === Array) {
+      comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
+    }
+
+    if (anon_diff) {
+      // Remove header lines that vary
+      comp_d = comp_d.split("\n").splice(2).join("\n");
+    }
+
+    if (diff['acks'] !== undefined && diff['acks'][k] !== undefined && diff['acks'][k].indexOf(comp_d) !== -1) {
+      continue;
+    }
+
+    filtered[k] = d;
+  }
+
+  return filtered;
+}
+
+function filterAckedArray(diffs, type) {
+  var filtered = new Array;
+
+  for (var i=0; i < diffs.length; i++) {
+    var k = diffs[i];
+
+    if (diff['acks'] !== undefined && diff['acks'][k] !== undefined && diff['acks'][k].indexOf(type) !== -1) {
+      continue;
+    }
+
+    filtered.push(k);
+  }
+
+  return filtered;
+}
+
 function contentDiff(data) {
-  var diffFiles = Object.keys(data.content_differences);
+  var diffFiles = filterAckedObj(data.content_differences, false, true);
+  var keys = Object.keys(diffFiles);
+  console.log(diffFiles);
   var html = $('<p>');
-  for (var i=0; i < diffFiles.length; i++) {
-    var d = diffFiles[i];
-    var diff_str = data.content_differences[d];
+  for (var i=0; i < keys.length; i++) {
+    var k = keys[i];
+    var diff_str = diffFiles[k];
     // Remove header lines that vary
     var anon_diff_str = diff_str.split("\n").slice(2).join("\n");
 
-    var acked_class = '';
-    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf(anon_diff_str) !== -1) {
-      console.log(d+' is acked already');
-      acked_class = ' acked';
-    }
-
-    var ul = $('<ul>', { id: 'content:diff:'+d, class: 'list-group'+acked_class, html: d });
+    var ul = $('<ul>', { id: 'content:diff:'+k, class: 'list-group', html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d, anon_diff_str) { ackDiff(d, anon_diff_str, 'content:diff:'+d) }, null, d, anon_diff_str)));
+          .on("click", $.proxy(function(k, anon_diff_str) { ackDiff(k, anon_diff_str, 'content:diff:'+k) }, null, k, anon_diff_str)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -308,24 +348,19 @@ function contentDiff(data) {
 
 function differencesAsDiff(data) {
   var html = $('<p>');
-  var diffs = Object.keys(data.differences_as_diff);
-  for (var i=0; i < diffs.length; i++) {
-    var d = diffs[i];
+  var diffs = filterAckedObj(data.differences_as_diff, true, false);
+  var keys = Object.keys(diffs);
+  for (var i=0; i < keys.length; i++) {
+    var k = keys[i];
+    var diff_str = diffs[k];
 
-    var diff_str = data.differences_as_diff[d];
     if (diff_str.constructor === Array) {
       diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
 
-    var acked_class = '';
-    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf(diff_str) !== -1) {
-      console.log(d+' is acked already');
-      acked_class = ' acked';
-    }
-
-    var ul = $('<ul>', { id: 'resource:diff:'+d, class: 'list-group'+acked_class, html: d });
+    var ul = $('<ul>', { id: 'resource:diff:'+k, class: 'list-group', html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d, diff_str) { ackDiff(d, diff_str, 'resource:diff:'+d) }, null, d, diff_str)));
+          .on("click", $.proxy(function(k, diff_str) { ackDiff(k, diff_str, 'resource:diff:'+k) }, null, k, diff_str)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -334,17 +369,11 @@ function differencesAsDiff(data) {
 
 function onlyInOld(data) {
   var ul = $('<ul>', { id: 'only-in-old', class: 'list-group' });
-  var r = data.only_in_old;
+  var r = filterAckedArray(data.only_in_old, 'old');
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
-    var acked_class = '';
-    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf('old') !== -1) {
-      console.log(d+' is acked already');
-      acked_class = ' acked';
-    }
-
-    ul.append($('<li>', { id: 'only-in:old:'+d, class: 'list-group-item'+acked_class, html: d })
+    ul.append($('<li>', { id: 'only-in:old:'+d, class: 'list-group-item', html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d) { ackDiff(d, 'old', 'only-in:old:'+d) }, null, d)))
     );
@@ -354,17 +383,11 @@ function onlyInOld(data) {
 
 function onlyInNew(data) {
   var ul = $('<ul>', { id: 'only-in-new', class: 'list-group' });
-  var r = data.only_in_new;
+  var r = filterAckedArray(data.only_in_new, 'new');
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
-    var acked_class = '';
-    if (diff['acks'] !== undefined && diff['acks'][d] !== undefined && diff['acks'][d].indexOf('new') !== -1) {
-      console.log(d+' is acked already');
-      acked_class = ' acked';
-    }
-
-    ul.append($('<li>', { id: 'only-in:new:'+d, class: 'list-group-item'+acked_class, html: d })
+    ul.append($('<li>', { id: 'only-in:new:'+d, class: 'list-group-item', html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d) { ackDiff(d, 'new', 'only-in:new:'+d) }, null, d)))
     );
