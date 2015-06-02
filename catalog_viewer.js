@@ -64,8 +64,15 @@ function addPie(diff) {
   $('#chart').html('');
   try {
     var with_changes = diff.with_changes;
-    var failed = diff.pull_output.failed_nodes_total;
-    var no_changes = diff.pull_output.total_nodes - with_changes - failed;
+    var failed;
+    var no_changes;
+    if (diff['pull_output'] === undefined) {
+      failed = 0;
+      no_changes = 0;
+    } else {
+      failed = diff.pull_output.failed_nodes_total;
+      no_changes = diff.pull_output.total_nodes - with_changes - failed;
+    }
   }
   catch(err) {
     loadingAlert('Failed to parse report: missing fields', 'danger');
