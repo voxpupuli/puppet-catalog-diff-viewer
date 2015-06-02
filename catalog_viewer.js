@@ -191,7 +191,7 @@ function makePanel(title, content, id, type, data, ack_button) {
 
 function autoCollapse(n) {
   if ($('#badge-'+n).text().charAt(0) === "0") {
-    $('#panel-body-'+n).collapse();
+    $('#panel-body-'+n).collapse('hide');
     return $('#panel-body-'+n).height();
   } else {
     return 0;
