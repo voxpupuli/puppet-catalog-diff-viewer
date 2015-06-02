@@ -101,7 +101,7 @@ function addPie(diff) {
     .attr("fill", function(d, i) { return d.data.color; })
     .attr("d", arc)
     .on("click", function(d) {
-      listNodes(d.data.label);
+      listNodes(d.data.label, true);
     });
 
   var legendRectSize = 25;
@@ -134,7 +134,7 @@ function addPie(diff) {
       .style("text-anchor", "middle")
       .text(function(d) { return d.value })
       .on("click", function(d) {
-        listNodes(d.label);
+        listNodes(d.label, true);
       });
 
   legend.append('text')
@@ -142,7 +142,7 @@ function addPie(diff) {
     .attr('y', legendRectSize - legendSpacing)
     .text(function(d) { return d.label; })
     .on("click", function(d) {
-      listNodes(d.label);
+      listNodes(d.label, true);
     });
   $('#nodes').html('');
 }
@@ -211,16 +211,18 @@ function autoCollapseAll() {
   return offset;
 }
 
-function listNodes(label) {
+function listNodes(label, refresh_crumbs) {
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
-  var breadcrumb = $('#breadcrumb');
-  var crumbs = breadcrumb.children('li');
-  if (crumbs.length < 2) {
-    breadcrumb.append($('<li>', { class: 'navbar-text', html: label }));
-  } else {
-    crumbs[1].innerHTML = label;
-    crumbs[2].remove();
+  if (refresh_crumbs) {
+    var breadcrumb = $('#breadcrumb');
+    var crumbs = breadcrumb.children('li');
+    if (crumbs.length < 2) {
+      breadcrumb.append($('<li>', { class: 'navbar-text', html: label }));
+    } else {
+      crumbs[1].innerHTML = label;
+      crumbs[2].remove();
+    }
   }
 
   if (label === 'with changes') {
