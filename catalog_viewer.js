@@ -164,24 +164,35 @@ function badgeValue(n, data) {
   }
 }
 
-function makePanel(title, content, id, n, type, data) {
+function makePanel(title, content, id, type, data) {
   var title_h = $('<h4>', { class: 'panel-title' })
-    .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#'+id, html: title }));
-  var title_badge = badgeValue(n, data);
+    .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
+  var title_badge = badgeValue(id, data);
   if (title_badge !== undefined) {
-    title_h.append($('<span>', { id: 'badge-'+n, class: 'badge', html: title_badge}));
+    title_h.append($('<span>', { id: 'badge-'+id, class: 'badge', html: title_badge}));
   }
   var heading = $('<div>', { class: 'panel-heading' })
     .append(title_h);
 
-  var body = $('<div>', { id: id, class: 'panel-collapse collapse in' })
+  var body = $('<div>', { id: 'panel-body-'+id, class: 'panel-collapse collapse in' })
     .append($('<div>', { class: 'panel-body', html: content }));
 
-  var panel = $('<div>', { class: 'panel panel-'+type, id: 'panel-'+n })
+  var panel = $('<div>', { class: 'panel panel-'+type, id: 'panel-'+id })
     .append(heading)
     .append(body);
 
   return panel;
+}
+
+function autoCollapse(n) {
+  if ($('#badge-'+n).text().charAt(0) === "0") $('#panel-body-'+n).collapse();
+}
+
+function autoCollapseAll() {
+  autoCollapse('content');
+  autoCollapse('diff');
+  autoCollapse('in-old');
+  autoCollapse('in-new');
 }
 
 function listNodes(label) {
@@ -213,8 +224,8 @@ function listNodes(label) {
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
-    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 'failed', 'danger', diff.pull_output.failed_to_compile_files.length);
-    var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors', 'errors', 'danger');
+    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 'danger', diff.pull_output.failed_to_compile_files.length);
+    var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors','danger');
     var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
                 .append(failed_panel)
                 .append(errs_panel);
@@ -243,11 +254,11 @@ function displayNodeDiff(node, elem) {
 
   $('#node').html($('<h2>', { html: node }));
 
-  var stats_panel = makePanel('Diff stats', diffStats(data), 'diff-stats', 'stats', 'info', data);
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content-diff', 'content', 'warning', data);
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data), 'differences-as-info', 'diff', 'warning', data);
-  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'only-in-old', 'in-old', 'danger', data);
-  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'only-in-new', 'in-new', 'success', data);
+  var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
+  var content_panel = makePanel('Content differences', contentDiff(data), 'content', 'warning', data);
+  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data),'diff', 'warning', data);
+  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data);
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(content_panel)
@@ -256,6 +267,9 @@ function displayNodeDiff(node, elem) {
               .append(only_in_new_panel);
 
   $('#node').append(panels);
+
+  autoCollapseAll();
+
   sh_highlightDocument();
   if ($(window).width() < 992) {
     // Mobile interface: scroll to div
@@ -464,4 +478,5 @@ function ackDiff(d, str, type, id, data) {
   listNodes('with changes');
   // Refresh badge
   $('[id="badge-'+type+'"]').html(badgeValue(type, data));
+  autoCollapseAll();
 }
