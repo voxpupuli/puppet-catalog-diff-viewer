@@ -340,9 +340,9 @@ function contentDiff(data) {
     // Remove header lines that vary
     var anon_diff_str = diff_str.split("\n").slice(2).join("\n");
 
-    var ul = $('<ul>', { id: 'content:diff:'+k, class: 'list-group', html: k });
+    var ul = $('<ul>', { id: 'content:'+k, class: 'list-group', html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, anon_diff_str) { ackDiff(k, anon_diff_str, 'content:diff:'+k) }, null, k, anon_diff_str)));
+          .on("click", $.proxy(function(k, anon_diff_str) { ackDiff(k, anon_diff_str, 'content:', k) }, null, k, anon_diff_str)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -361,9 +361,9 @@ function differencesAsDiff(data) {
       diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
 
-    var ul = $('<ul>', { id: 'resource:diff:'+k, class: 'list-group', html: k });
+    var ul = $('<ul>', { id: 'diff:'+k, class: 'list-group', html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, diff_str) { ackDiff(k, diff_str, 'resource:diff:'+k) }, null, k, diff_str)));
+          .on("click", $.proxy(function(k, diff_str) { ackDiff(k, diff_str, 'diff', k) }, null, k, diff_str)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -376,9 +376,9 @@ function onlyInOld(data) {
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
-    ul.append($('<li>', { id: 'only-in:old:'+d, class: 'list-group-item', html: d })
+    ul.append($('<li>', { id: 'in-old:'+d, class: 'list-group-item', html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d) { ackDiff(d, 'old', 'only-in:old:'+d) }, null, d)))
+          .on("click", $.proxy(function(d) { ackDiff(d, 'old', 'in-old', d) }, null, d)))
     );
   }
   return ul;
@@ -390,9 +390,9 @@ function onlyInNew(data) {
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
-    ul.append($('<li>', { id: 'only-in:new:'+d, class: 'list-group-item', html: d })
+    ul.append($('<li>', { id: 'in-new:'+d, class: 'list-group-item', html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d) { ackDiff(d, 'new', 'only-in:new:'+d) }, null, d)))
+          .on("click", $.proxy(function(d) { ackDiff(d, 'new', 'in-new', d) }, null, d)))
     );
   }
   return ul;
@@ -435,11 +435,12 @@ function compileErrors() {
   return ul;
 }
 
-function ackDiff(d, str, id) {
+function ackDiff(d, str, type, id) {
   if (diff['acks'] === undefined) diff['acks'] = new Object;
   if (diff.acks[d] === undefined) diff.acks[d] = new Array;
   if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
-  $('[id="'+id+'"]').fadeOut(500);
+  $('[id="'+type+':'+id+'"]').fadeOut(500);
   // Refresh node list
   listNodes('with changes');
+  // Refresh badge
 }
