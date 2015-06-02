@@ -246,7 +246,7 @@ function listNodes(label) {
     var failed = Object.keys(diff.pull_output.failed_nodes);
     for (var i=0; i < failed.length; i++) {
       var node = failed[i];
-      var nodeLine = $('<li>', { class: 'list-group-item', html: node})
+      var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node, html: node })
         .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
       ul.append(nodeLine);
     }
@@ -261,9 +261,7 @@ function displayNodeDiff(node, elem) {
 
   // Set active node in list
   $('#nodeslist').children('.active').removeClass('active');
-
   $('[id="nodeslist:'+node+'"]').addClass('active');
-
   $('#node').html($('<h2>', { html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
@@ -441,6 +439,8 @@ function onlyInNew(data) {
 function displayNodeFail(node) {
   var data = diff.pull_output.failed_nodes[node];
 
+  $('#nodeslist').children('.active').removeClass('active');
+  $('[id="nodeslist:'+node+'"]').addClass('active');
   var html = $('<h2>', { html: node });
   html.append($('<h3>', { html: "Fail output" }));
   html.append($('<pre>', { class: 'compile-error', html: data }));
