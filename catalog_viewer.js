@@ -1,4 +1,6 @@
 function loadReport(r) {
+  // Close collapsed if need be
+  $('#navbar-collapse-menu').collapse('hide');
   var bar = $('<div>', {
       class:"progress progress-striped active"
     })
@@ -32,6 +34,9 @@ function loadReport(r) {
 }
 
 function loadFile() {
+  // Close collapsed if need be
+  $('#navbar-collapse-menu').collapse('hide');
+
   $('#nodeslist').html('');
   var file = $('#fileinput')[0].files[0];
   fr = new FileReader();
@@ -239,7 +244,7 @@ function listNodes(label, refresh_crumbs) {
   var crumbs = breadcrumb.children('li');
   if (refresh_crumbs) {
     if (crumbs.length < 2) {
-      breadcrumb.append($('<li>', { class: 'navbar-text', html: label }));
+      breadcrumb.append($('<li>', { id: 'crumb-label', class: 'navbar-text', html: label }));
     } else {
       crumbs[1].innerHTML = label;
       if (crumbs.length > 2) crumbs[2].remove();
@@ -325,7 +330,7 @@ function displayNodeDiff(node, elem) {
   if (crumbs.length == 3) {
     crumbs[2].innerHTML = node;
   } else {
-    $('#breadcrumb').append($('<li>', { class: 'navbar-text', html: node }));
+    $('#breadcrumb').append($('<li>', { id: 'crumb-node', class: 'navbar-text', html: node }));
   }
 
   // Set active node in list
@@ -546,7 +551,7 @@ function displayNodeFail(node) {
   if (crumbs.length == 3) {
     crumbs[2].innerHTML = node;
   } else {
-    $('#breadcrumb').append($('<li>', { class: 'navbar-text', html: node }));
+    $('#breadcrumb').append($('<li>', { id: 'crumb-node', class: 'navbar-text', html: node }));
   }
 
   $('#nodeslist').children('.active').removeClass('active');
