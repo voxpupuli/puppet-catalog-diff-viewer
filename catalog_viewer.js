@@ -587,11 +587,9 @@ function toggleAckAllDiff(id, data) {
 
 function foreachDiff(id, data, cb) {
   var diffs;
-  var join_diff;
   switch (id) {
     case 'diff':
       diffs = data.differences_as_diff;
-      join_diff = true;
       break;
 
     case 'in-old':
@@ -608,7 +606,7 @@ function foreachDiff(id, data, cb) {
     var k = keys[i];
     var d = diffs[k];
     var comp_d = d;
-    if (join_diff && comp_d.constructor === Array)
+    if (comp_d.constructor === Array)
       comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
     cb(k, comp_d);
   }
