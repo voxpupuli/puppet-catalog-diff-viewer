@@ -588,7 +588,6 @@ function toggleAckAllDiff(id, data) {
 function foreachDiff(id, data, cb) {
   var diffs;
   var join_diff;
-  var anon_diff;
   switch (id) {
     case 'diff':
       diffs = data.differences_as_diff;
@@ -611,8 +610,6 @@ function foreachDiff(id, data, cb) {
     var comp_d = d;
     if (join_diff && comp_d.constructor === Array)
       comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
-    // Remove header lines that vary
-    if (anon_diff) comp_d = comp_d.split("\n").splice(2).join("\n");
     cb(k, comp_d);
   }
 }
