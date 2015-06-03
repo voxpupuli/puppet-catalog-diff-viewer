@@ -393,6 +393,12 @@ function diffStats(data) {
     .append($('<span>', { class: 'badge', html: data.total_resources_in_old })));
   ul.append($('<li>', { class: 'list-group-item', html: 'Total resources in new' })
     .append($('<span>', { class: 'badge', html: data.total_resources_in_new })));
+  if (data['old_version'])
+    ul.append($('<li>', { class: 'list-group-item', html: 'Old catalog version' })
+      .append($('<span>', { class: 'badge', html: data.old_version })));
+  if (data['new_version'])
+    ul.append($('<li>', { class: 'list-group-item', html: 'New catalog version' })
+      .append($('<span>', { class: 'badge', html: data.new_version })));
   return ul;
 }
 
