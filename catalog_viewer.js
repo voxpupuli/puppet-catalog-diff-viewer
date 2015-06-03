@@ -418,6 +418,42 @@ function isAcked(k, str) {
   }
 }
 
+function isStarred(k, str) {
+  if (diff['stars'] !== undefined && diff['stars'][k] !== undefined && diff['stars'][k].indexOf(str) !== -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function toggleStarDiff(d, str, type, data) {
+  if (isStarred(d, str)) {
+    unstarDiff(d, str, type, data, true);
+  } else {
+    starDiff(d, str, type, data, true);
+  }
+}
+
+function starDiff(d, str, type, data, refresh) {
+  if (diff['stars'] === undefined) diff['stars'] = new Object;
+  if (diff.stars[d] === undefined) diff.stars[d] = new Array;
+  if (diff.stars[d].indexOf(str) === -1) diff.stars[d].push(str);
+  $('[id="'+type+':'+d+'"]').addClass('starred');
+
+  if (refresh) {
+    refreshStats(type, data);
+    autoCollapseAll();
+  }
+}
+
+function unstarDiff(d, str, type, data, refresh) {
+  idx = diff.star[d].indexOf(str);
+  diff.star[d].splice(idx, 1);
+  $('[id="'+type+':'+d+'"]').removeClass('starred');
+  
+  if (refresh) refreshStats(type, data);
+}
+
 function contentDiff(data) {
   var diffFiles = data.content_differences;
   var keys = Object.keys(diffFiles).sort();
@@ -428,9 +464,12 @@ function contentDiff(data) {
     // Remove header lines that vary
     var anon_diff_str = diff_str.split("\n").slice(2).join("\n");
     var acked_class = isAcked(k, anon_diff_str) ? ' acked' : '';
-    var ul = $('<ul>', { id: 'content:'+k, class: 'list-group'+acked_class, html: k });
+    var starred_class = isStarred(k, anon_diff_str) ? ' starred' : '';
+    var ul = $('<ul>', { id: 'content:'+k, class: 'list-group'+acked_class+starred_class, html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, anon_diff_str, data) { toggleAckDiff(k, anon_diff_str, 'content', data) }, null, k, anon_diff_str, data)));
+          .on("click", $.proxy(function(k, anon_diff_str, data) { toggleAckDiff(k, anon_diff_str, 'content', data) }, null, k, anon_diff_str, data)))
+    ul.append($('<span>', { class: 'glyphicon glyphicon-star star' })
+          .on("click", $.proxy(function(k, anon_diff_str, data) { toggleStarDiff(k, anon_diff_str, 'content', data) }, null, k, anon_diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -449,9 +488,12 @@ function differencesAsDiff(data) {
       diff_str = "--- old\n+++ new\n"+diff_str.join("\n");
     }
     var acked_class = isAcked(k, diff_str) ? ' acked' : '';
-    var ul = $('<ul>', { id: 'diff:'+k, class: 'list-group'+acked_class, html: k });
+    var starred_class = isStarred(k, diff_str) ? ' starred' : '';
+    var ul = $('<ul>', { id: 'diff:'+k, class: 'list-group'+acked_class+starred_class, html: k });
     ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)));
+          .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
+    ul.append($('<span>', { class: 'glyphicon glyphicon-star star' })
+          .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
     html.append(ul);
   }
@@ -465,9 +507,12 @@ function onlyInOld(data) {
     var d = r[i];
 
     var acked_class = isAcked(d, 'old') ? ' acked' : '';
-    ul.append($('<li>', { id: 'in-old:'+d, class: 'list-group-item'+acked_class, html: d })
+    var starred_class = isStarred(d, 'old') ? ' starred' : '';
+    ul.append($('<li>', { id: 'in-old:'+d, class: 'list-group-item'+acked_class+starred_class, html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, 'old', 'in-old', data) }, null, d, data)))
+      .append($('<span>', { class: 'glyphicon glyphicon-star star' })
+          .on("click", $.proxy(function(d, data) { toggleStarDiff(d, 'old', 'in-old', data) }, null, d, data)))
     );
   }
   return ul;
@@ -480,9 +525,12 @@ function onlyInNew(data) {
     var d = r[i];
 
     var acked_class = isAcked(d, 'new') ? ' acked' : '';
-    ul.append($('<li>', { id: 'in-new:'+d, class: 'list-group-item'+acked_class, html: d })
+    var starred_class = isStarred(d, 'new') ? ' starred' : '';
+    ul.append($('<li>', { id: 'in-new:'+d, class: 'list-group-item'+acked_class+starred_class, html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, 'new', 'in-new', data) }, null, d, data)))
+      .append($('<span>', { class: 'glyphicon glyphicon-star star' })
+          .on("click", $.proxy(function(d, data) { toggleStarDiff(d, 'new', 'in-new', data) }, null, d, data)))
     );
   }
   return ul;
@@ -602,6 +650,7 @@ function foreachDiff(id, data, cb) {
 function ackAllDiff(id, data) {
   foreachDiff(id, data, function(k, d) {
     if (isAcked(k, d)) return;
+    if (isStarred(k, d)) return;
     ackDiff(k, d, id, data);
   })
 
