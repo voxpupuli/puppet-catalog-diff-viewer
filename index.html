@@ -149,6 +149,12 @@
     pre.sh_sourceCode .sh_oldfile {
       color: red;
     }
+    .resource-title {
+      width: calc(100% - 40px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .glyphicon-ok.ack, .glyphicon.star {
       float: right;
       color: gray;
@@ -161,7 +167,7 @@
     .glyphicon-ok.ack:hover {
       color: green;
     }
-    ul.acked, li.list-group-item.acked {
+    div.acked, li.list-group-item.acked {
       opacity: 0.5;
     }
     .acked pre {
