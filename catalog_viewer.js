@@ -686,6 +686,9 @@ function ackDiff(d, str, type, data, refresh) {
 }
 
 function unackDiff(d, str, type, data, refresh) {
+  // Happens if starred
+  if (diff.acks[d] !== undefined) return;
+
   idx = diff.acks[d].indexOf(str);
   diff.acks[d].splice(idx, 1);
   $('[id="'+type+':'+d+'"]').removeClass('acked');
