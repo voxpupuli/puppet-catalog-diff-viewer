@@ -102,6 +102,7 @@ function addPie(diff) {
     .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+  // Add arcs
   var path = svg.selectAll("path")
     .data(pie(dataset))
     .enter().append("path")
@@ -111,9 +112,11 @@ function addPie(diff) {
       listNodes(d.data.label, true);
     });
 
+  // Legend
   var legendRectSize = 25;
   var legendSpacing = 10;
 
+  // Create legend in the center of the chart
   var legend = svg.selectAll('.legend')
     .data(dataset)
     .enter()
@@ -127,23 +130,26 @@ function addPie(diff) {
       return 'translate(' + horz + ',' + vert + ')';
         });
 
-      legend.append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', function(d) { return d.color })
-      .style('stroke', function(d) { return d.color });
+  // legend squares
+  legend.append('rect')
+  .attr('width', legendRectSize)
+  .attr('height', legendRectSize)
+  .style('fill', function(d) { return d.color })
+  .style('stroke', function(d) { return d.color });
 
-      legend.append('text')
-      .classed("data", true)
-      .attr("x", function(d) { return legendRectSize/2; }) // Center text
-      .attr("y", function(d) { return legendRectSize/2; }) // Center text
-      .style({"font-size":"12px", "z-index": "999999999"})
-      .style("text-anchor", "middle")
-      .text(function(d) { return d.value })
-      .on("click", function(d) {
-        listNodes(d.label, true);
-      });
+  // legend squares text
+  legend.append('text')
+  .classed("data", true)
+  .attr("x", function(d) { return legendRectSize/2; }) // Center text
+  .attr("y", function(d) { return legendRectSize/2; }) // Center text
+  .style({"font-size":"12px", "z-index": "999999999"})
+  .style("text-anchor", "middle")
+  .text(function(d) { return d.value })
+  .on("click", function(d) {
+    listNodes(d.label, true);
+  });
 
+  // legend text
   legend.append('text')
     .attr('x', legendRectSize + legendSpacing)
     .attr('y', legendRectSize - legendSpacing)
@@ -151,6 +157,19 @@ function addPie(diff) {
     .on("click", function(d) {
       listNodes(d.label, true);
     });
+
+  // Add date
+  if (diff['date'] !== undefined) {
+    var date = new Date(diff['date']);
+    svg.append('text')
+      .attr('x', 0)
+      .attr('y', 70)
+      .attr('text-anchor', 'middle')
+      .style('font-size', '10px')
+      .text(date.toLocaleString());
+  }
+
+  // Wipe node list
   $('#nodes').html('');
 }
 
