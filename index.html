@@ -119,9 +119,14 @@
     pre.sh_sourceCode .sh_oldfile {
       color: red;
     }
-    .glyphicon-ok.ack {
+    .glyphicon-ok.ack, .glyphicon.star {
       float: right;
       color: gray;
+      padding-left: 5px;
+    }
+    .glyphicon-star.star:hover, .starred .star {
+      content: "\e050";
+      color: orange;
     }
     .glyphicon-ok.ack:hover {
       color: green;
