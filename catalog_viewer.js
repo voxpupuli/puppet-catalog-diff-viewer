@@ -492,19 +492,20 @@ function differencesAsDiff(data) {
     }
     var acked_class = isAcked(k, diff_str) ? ' acked' : '';
     var starred_class = isStarred(k, diff_str) ? ' starred' : '';
-    var ul = $('<ul>', { id: 'diff:'+k, class: 'list-group'+acked_class+starred_class, html: k });
-    ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+    var resource = $('<div>', { id: 'diff:'+k, class: 'list-group'+acked_class+starred_class })
+      .append($('<div>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
-    ul.append($('<span>', { class: 'glyphicon glyphicon-star star' })
-          .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)));
-    ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
+      .append($('<div>', { class: 'glyphicon glyphicon-star star' })
+          .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
+      .append($('<div>', { class: 'resource-title', html: k }))
+      .append($('<pre>', { class: 'sh_diff', html: diff_str }));
 
     if (data.content_differences[k]) {
       var content_diff_str = data.content_differences[k];
-      ul.append($('<pre>', { class: 'sh_diff', html: content_diff_str }));
+      resource.append($('<pre>', { class: 'sh_diff', html: content_diff_str }));
     } 
 
-    html.append(ul);
+    html.append(resource);
   }
   return html;
 }
