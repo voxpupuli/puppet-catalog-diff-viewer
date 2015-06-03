@@ -337,7 +337,7 @@ function displayNodeDiff(node, elem) {
   // Set active node in list
   $('#nodeslist').children('.active').removeClass('active');
   $('[id="nodeslist:'+node+'"]').addClass('active');
-  $('#node').html($('<h2>', { html: node }));
+  $('#node').html($('<h2>', { class: 'node-title', html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
   var differences_panel = makePanel('Differences', differencesAsDiff(data),'diff', 'warning', data, true);
@@ -557,7 +557,7 @@ function displayNodeFail(node) {
 
   $('#nodeslist').children('.active').removeClass('active');
   $('[id="nodeslist:'+node+'"]').addClass('active');
-  var html = $('<h2>', { html: node });
+  var html = $('<h2>', { class: 'node-title', html: node });
   html.append($('<h3>', { html: "Fail output" }));
   html.append($('<pre>', { class: 'compile-error', html: data }));
 
