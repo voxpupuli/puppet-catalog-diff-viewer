@@ -157,7 +157,7 @@ function addPie(diff) {
 function badgeValue(n, data) {
   switch (n) {
     case 'diff':
-      return Object.keys(filterAckedObj(data.differences_as_diff, true, false)).length;
+      return Object.keys(filterAckedObj(data.differences_as_diff)).length;
       break;
 
     case 'in-old':
@@ -236,7 +236,7 @@ function listNodes(label, refresh_crumbs) {
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
 
-      data['unacked_differences_as_diff'] = filterAckedObj(data.differences_as_diff, true, false);
+      data['unacked_differences_as_diff'] = filterAckedObj(data.differences_as_diff);
       data['unacked_only_in_old'] = filterAckedArray(data.only_in_old, 'old');
       data['unacked_only_in_new'] = filterAckedArray(data.only_in_new, 'new');
       data['unacked_node_differences'] = Object.keys(data['unacked_differences_as_diff']).length
@@ -374,7 +374,7 @@ function diffStats(data) {
   return ul;
 }
 
-function filterAckedObj(diffs, join_diff, anon_diff) {
+function filterAckedObj(diffs) {
   var keys = Object.keys(diffs);
   var filtered = new Object;
 
@@ -382,10 +382,8 @@ function filterAckedObj(diffs, join_diff, anon_diff) {
     var k = keys[i];
     var d = diffs[k];
     var comp_d = d;
-    if (join_diff && comp_d.constructor === Array)
+    if (comp_d.constructor === Array)
       comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
-    // Remove header lines that vary
-    if (anon_diff) comp_d = comp_d.split("\n").splice(2).join("\n");
     if (isAcked(k, comp_d)) continue;
     filtered[k] = d;
   }
