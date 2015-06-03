@@ -42,6 +42,9 @@
     #chart {
       height: 310px;
     }
+    #chart svg {
+      margin-left: calc((100% - 310px)/2);
+    }
     #chart svg g path, #chart svg g g, #nodeslist li, .panel-title a, .ack, .star {
       cursor: pointer;
     }
@@ -104,8 +107,10 @@
     .checkbox {
       position: absolute;
       top: -10px;
-      left: 10px;
-      padding-left: 10px;
+      left: 20px;
+      margin-bottom: 0;
+      color: #777;
+      padding: 15px 0 15px 10px;
     }
     #nodeslist .progress-bar {
       text-indent: -9999px; // Hide text to the left
@@ -191,9 +196,7 @@
         </li>
         <!--
         <li class="checkbox">
-          <a href="#">
             <input type="checkbox" id="setcache" class="autosubmit" checked="true" onChange="javascript:setCache();"> Cache reports
-          </a>
         </li>
         -->
       </ul>
