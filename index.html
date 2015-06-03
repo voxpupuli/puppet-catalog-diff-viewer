@@ -1,5 +1,12 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Puppet Catalog Diff Viewer</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <link href="css/sh_style.css" rel="stylesheet" type="text/css">
@@ -20,6 +27,10 @@
         position: absolute;
         top: 0;
         right: 20px;
+      }
+
+      #crumb-node {
+        display: none;
       }
     }
     @media (min-width: 992px) {
@@ -68,7 +79,7 @@
     .back-to-top {
       position: fixed;
       top: 10px;
-      left: calc(100% / 2);
+      left: 70px;
       display: none;
       height: 30px;
       z-index: 99999;
@@ -179,7 +190,7 @@
 
       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-menu">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -188,7 +199,7 @@
         <!--<a class="navbar-brand" href="#">Brand</a>-->
       </div>
 
-      <ul class="nav navbar-nav navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-collapse collapse" id="navbar-collapse-menu">
         <li class="btn-file">
           <a href="#">
           Upload file... <input type="file" class="form-control" id="fileinput" style="display: block;" onchange="loadFile()">
@@ -258,6 +269,8 @@
     });
 
     function setCache() {
+      // Close collapsed if need be
+      $('#navbar-collapse-menu').collapse('hide');
       var cache = $('#setcache')[0].checked;
       $.ajaxSetup({cache: cache});
     }
