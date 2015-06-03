@@ -216,15 +216,17 @@ function autoCollapseAll() {
 function listNodes(label, refresh_crumbs) {
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
+  var breadcrumb = $('#breadcrumb');
+  var crumbs = breadcrumb.children('li');
   if (refresh_crumbs) {
-    var breadcrumb = $('#breadcrumb');
-    var crumbs = breadcrumb.children('li');
     if (crumbs.length < 2) {
       breadcrumb.append($('<li>', { class: 'navbar-text', html: label }));
     } else {
       crumbs[1].innerHTML = label;
       if (crumbs.length > 2) crumbs[2].remove();
     }
+  } else {
+    var cur_node = (crumbs.length > 2) ? crumbs[2].innerHTML : undefined;
   }
 
   if (label === 'with changes') {
@@ -263,7 +265,8 @@ function listNodes(label, refresh_crumbs) {
       var n_oin = data.unacked_only_in_new.length;
       var p_oin = 100 * n_oin / data.node_differences;
       var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
-      var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class, id: 'nodeslist:'+node })
+      var cur_node_class = (node === cur_node) ? ' active' : '';
+      var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class+cur_node_class, id: 'nodeslist:'+node })
         .append($('<span>', { html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
