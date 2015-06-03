@@ -156,10 +156,6 @@ function addPie(diff) {
 
 function badgeValue(n, data) {
   switch (n) {
-    case 'content':
-      return Object.keys(filterAckedObj(data.content_differences, false, true)).length;
-      break;
-
     case 'diff':
       return Object.keys(filterAckedObj(data.differences_as_diff, true, false)).length;
       break;
@@ -211,7 +207,6 @@ function autoCollapse(n, show) {
 
 function autoCollapseAll() {
   var offset = 0;
-  offset += autoCollapse('content');
   offset += autoCollapse('diff');
   offset += autoCollapse('in-old');
   offset += autoCollapse('in-new');
@@ -277,7 +272,7 @@ function listNodes(label, refresh_crumbs) {
           .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: n_oio })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
           .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  n_diff })
-            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-content') }, null, node) )));
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-diff') }, null, node) )));
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
@@ -317,13 +312,11 @@ function displayNodeDiff(node, elem) {
   $('#node').html($('<h2>', { html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
-  var content_panel = makePanel('Content differences', contentDiff(data), 'content', 'warning', data, true);
   var differences_panel = makePanel('Differences as diff', differencesAsDiff(data),'diff', 'warning', data, true);
   var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data, true);
   var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data, true);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
-              .append(content_panel)
               .append(differences_panel)
               .append(only_in_old_panel)
               .append(only_in_new_panel);
@@ -454,28 +447,6 @@ function unstarDiff(d, str, type, data, refresh) {
   if (refresh) refreshStats(type, data);
 }
 
-function contentDiff(data) {
-  var diffFiles = data.content_differences;
-  var keys = Object.keys(diffFiles).sort();
-  var html = $('<p>');
-  for (var i=0; i < keys.length; i++) {
-    var k = keys[i];
-    var diff_str = diffFiles[k];
-    // Remove header lines that vary
-    var anon_diff_str = diff_str.split("\n").slice(2).join("\n");
-    var acked_class = isAcked(k, anon_diff_str) ? ' acked' : '';
-    var starred_class = isStarred(k, anon_diff_str) ? ' starred' : '';
-    var ul = $('<ul>', { id: 'content:'+k, class: 'list-group'+acked_class+starred_class, html: k });
-    ul.append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(k, anon_diff_str, data) { toggleAckDiff(k, anon_diff_str, 'content', data) }, null, k, anon_diff_str, data)))
-    ul.append($('<span>', { class: 'glyphicon glyphicon-star star' })
-          .on("click", $.proxy(function(k, anon_diff_str, data) { toggleStarDiff(k, anon_diff_str, 'content', data) }, null, k, anon_diff_str, data)));
-    ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
-    html.append(ul);
-  }
-  return html;
-}
-
 function differencesAsDiff(data) {
   var html = $('<p>');
   var diffs = data.differences_as_diff;
@@ -495,6 +466,12 @@ function differencesAsDiff(data) {
     ul.append($('<span>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)));
     ul.append($('<pre>', { class: 'sh_diff', html: diff_str }));
+
+    if (data.content_differences[k]) {
+      var content_diff_str = data.content_differences[k];
+      ul.append($('<pre>', { class: 'sh_diff', html: content_diff_str }));
+    } 
+
     html.append(ul);
   }
   return html;
@@ -615,11 +592,6 @@ function foreachDiff(id, data, cb) {
   var join_diff;
   var anon_diff;
   switch (id) {
-    case 'content':
-      diffs = data.content_differences;
-      anon_diff = true;
-      break;
-
     case 'diff':
       diffs = data.differences_as_diff;
       join_diff = true;
