@@ -90,10 +90,19 @@
       display: inline;
       float: right;
     }
+    #nodeslist .node-name {
+      width: calc(100% - 5em);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     #nodeslist .progress {
       text-align: center;
       display: inline;
       float: right;
+      position: absolute;
+      right: 10px;
+      top: 10px;
     }
     .btn-file {
       position: relative;
@@ -219,13 +228,13 @@
   </div>
   <div class="container">
     <div id="mainrow" class="row">
-      <div id="leftcol" class="col-md-5">
+      <div id="leftcol" class="col-md-4">
         <div id="chart">
         </div>
         <div id="nodes">
         </div>
       </div>
-      <div id="node" class="col-md-7">
+      <div id="node" class="col-md-8">
         <div class="jumbotron">
           <h1>Puppet catalog diff viewer</h1>
           <p>

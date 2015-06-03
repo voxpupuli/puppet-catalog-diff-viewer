@@ -290,10 +290,11 @@ function listNodes(label, refresh_crumbs) {
       var p_oin = 100 * n_oin / data.node_differences;
       var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
       var cur_node_class = (node === cur_node) ? ' active' : '';
+      var bar_width = (5 * data.node_differences / max_diff) + 'em';
       var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class+cur_node_class, id: 'nodeslist:'+node })
-        .append($('<span>', { html: node })
+        .append($('<div>', { class: 'node-name', style: 'width: calc(100% - '+bar_width+')', html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
-        .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+(5*data.node_differences/max_diff)+'em' })
+        .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+bar_width })
           .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) ))
           .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: n_oio })
