@@ -312,7 +312,7 @@ function displayNodeDiff(node, elem) {
   $('#node').html($('<h2>', { html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
-  var differences_panel = makePanel('Differences as diff', differencesAsDiff(data),'diff', 'warning', data, true);
+  var differences_panel = makePanel('Differences', differencesAsDiff(data),'diff', 'warning', data, true);
   var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data, true);
   var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data, true);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
