@@ -447,8 +447,8 @@ function starDiff(d, str, type, data, refresh) {
 }
 
 function unstarDiff(d, str, type, data, refresh) {
-  idx = diff.star[d].indexOf(str);
-  diff.star[d].splice(idx, 1);
+  idx = diff.stars[d].indexOf(str);
+  diff.stars[d].splice(idx, 1);
   $('[id="'+type+':'+d+'"]').removeClass('starred');
   
   if (refresh) refreshStats(type, data);
