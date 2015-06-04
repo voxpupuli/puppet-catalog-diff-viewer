@@ -1,18 +1,7 @@
 function loadReport(r) {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
-  var bar = $('<div>', {
-      class:"progress progress-striped active"
-    })
-    .append($('<div>', {
-      class:"progress-bar",
-      role:"progressbar",
-      'aria-valuenow':"100",
-      'aria-valuemin':"0",
-      'aria-valuemax':"100",
-      style:"width: 100%",
-      html: 'Loading data...'
-    }));
+  var bar = percentBar('100', 'progress-striped active', false, 'Loading data...');
   $('#chart').html(bar);
   var success = false;
   $.getJSON('data/'+r+'.json', function(data) {
@@ -373,11 +362,18 @@ function displayNodeDiff(node, elem) {
   }
 }
 
-function percentBar(percentage) {
-  return $('<div>', { class: 'progress', html: percentage+'%' })
+function percentBar(percentage, classes, html, full_html) {
+  var classes_str = (classes === undefined) ? '' : ' '+classes;
+  var html_str = (html === false) ? undefined : percentage+'%';
+  return $('<div>', { class: 'progress'+classes_str, html: html_str })
       .append($('<div>', {
         class: 'progress-bar',
-        style: 'width: '+percentage+'%;'
+        role: 'progressbar',
+      'aria-valuenow':"100",
+      'aria-valuemin':"0",
+      'aria-valuemax':"100",
+        style: 'width: '+percentage+'%;',
+        html: full_html
       }));
 }
 
