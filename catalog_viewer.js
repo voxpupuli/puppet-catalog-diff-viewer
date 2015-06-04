@@ -518,12 +518,12 @@ function onlyIn(data, type) {
 
     var acked_class = isAcked(d, type) ? ' acked' : '';
     var starred_class = isStarred(d, type) ? ' starred' : '';
-    ul.append($('<li>', { id: 'in-'+type+':'+d, class: 'list-group-item'+acked_class+starred_class, html: d })
-      .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
+    ul.append($('<li>', { id: 'in-'+type+':'+d, class: 'list-group-item'+acked_class+starred_class })
+        .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, type, 'in-'+type, data) }, null, d, data)))
-      .append($('<span>', { class: 'glyphicon glyphicon-star star' })
+        .append($('<span>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(d, data) { toggleStarDiff(d, type, 'in-'+type, data) }, null, d, data)))
-    );
+        .append($('<span>', { html: d })));
   }
   return ul;
 }
