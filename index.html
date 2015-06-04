@@ -149,10 +149,13 @@
       color: red;
     }
     .resource-title {
-      width: calc(100% - 40px);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    .resource-title:hover {
+      text-overflow: clip;
+      overflow: auto;
     }
     .glyphicon-ok.ack, .glyphicon.star {
       float: right;
