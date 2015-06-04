@@ -1,7 +1,7 @@
 function loadReport(r) {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
-  var bar = percentBar('100', 'progress-striped active', false, 'Loading data...');
+  var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
   $('#chart').html(bar);
   var success = false;
   $.getJSON('data/'+r+'.json', function(data) {
@@ -284,11 +284,11 @@ function listNodes(label, refresh_crumbs) {
         .append($('<div>', { class: 'node-name', html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress', style: 'width: '+bar_width })
-          .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
+          .append(percentBarSection(p_oin, 'progress-bar-success', n_oin)
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) ))
-          .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: n_oio })
+          .append(percentBarSection(p_oio, 'progress-bar-danger', n_oio)
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
-          .append($('<div>', { class: 'progress-bar progress-bar-warning', style: 'width: '+p_diff+'%;', html:  n_diff })
+          .append(percentBarSection(p_diff, 'progress-bar-warning', n_diff)
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-diff') }, null, node) )));
       ul.append(nodeLine);
     }
@@ -362,16 +362,21 @@ function displayNodeDiff(node, elem) {
   }
 }
 
-function percentBar(percentage, classes, html, full_html) {
+function percentBarSection(percentage, classes, html) {
+  var classes_str = (classes === undefined) ? '' : ' '+classes;
+  return $('<div>', {
+        class: 'progress-bar'+classes_str,
+        role: 'progressbar',
+        style: 'width: '+percentage+'%;',
+        html: html
+      });
+}
+
+function percentBar(percentage, html, classes, bar_html, bar_classes) {
   var classes_str = (classes === undefined) ? '' : ' '+classes;
   var html_str = (html === false) ? undefined : percentage+'%';
   return $('<div>', { class: 'progress'+classes_str, html: html_str })
-      .append($('<div>', {
-        class: 'progress-bar',
-        role: 'progressbar',
-        style: 'width: '+percentage+'%;',
-        html: full_html
-      }));
+      .append(percentBarSection(percentage, bar_classes, bar_html));
 }
 
 function diffStats(data) {
