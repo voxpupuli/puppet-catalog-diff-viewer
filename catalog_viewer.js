@@ -283,7 +283,7 @@ function listNodes(label, refresh_crumbs) {
       var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class+cur_node_class, id: 'nodeslist:'+node })
         .append($('<div>', { class: 'node-name', html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
-        .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+bar_width })
+        .append($('<div>', { class: 'progress', style: 'width: '+bar_width })
           .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) ))
           .append($('<div>', { class: 'progress-bar progress-bar-danger', style: 'width: '+p_oio+'%;', html: n_oio })
@@ -369,9 +369,9 @@ function percentBar(percentage, classes, html, full_html) {
       .append($('<div>', {
         class: 'progress-bar',
         role: 'progressbar',
-      'aria-valuenow':"100",
-      'aria-valuemin':"0",
-      'aria-valuemax':"100",
+        'aria-valuenow':"100",
+        'aria-valuemin':"0",
+        'aria-valuemax':"100",
         style: 'width: '+percentage+'%;',
         html: full_html
       }));
