@@ -3,9 +3,7 @@ function loadReport(r) {
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
   $('#chart').html(bar);
-  var success = false;
   $.getJSON('data/'+r+'.json', function(data) {
-    success = true;
     diff = data;
     addPie(diff);
     var report_title = $('#'+r)[0].text;
@@ -13,13 +11,9 @@ function loadReport(r) {
     var crumbs =  $('#breadcrumb').children('li');
     if (crumbs.length > 2) $('#breadcrumb').children('li')[2].remove();
     if (crumbs.length > 1) $('#breadcrumb').children('li')[1].remove();
+  }).error(function(jqXHR, textStatus, errorThrown) {
+    loadingAlert('Failed to load report '+r+': '+errorThrown, 'danger');
   });
-  // Monitor JSONP request for 20 seconds
-  setTimeout(function() {
-    if (!success) {
-      loadingAlert('Loading data from '+r+' seems to have failed', 'danger');
-    }
-  }, 20000);
 }
 
 function loadFile() {
