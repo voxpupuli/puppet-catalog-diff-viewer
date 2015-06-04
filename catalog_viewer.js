@@ -369,9 +369,6 @@ function percentBar(percentage, classes, html, full_html) {
       .append($('<div>', {
         class: 'progress-bar',
         role: 'progressbar',
-        'aria-valuenow':"100",
-        'aria-valuemin':"0",
-        'aria-valuemax':"100",
         style: 'width: '+percentage+'%;',
         html: full_html
       }));
