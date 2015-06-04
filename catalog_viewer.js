@@ -433,20 +433,21 @@ function filterAckedArray(diffs, type) {
   return filtered;
 }
 
-function isAcked(k, str) {
-  if (diff['acks'] !== undefined && diff['acks'][k] !== undefined && diff['acks'][k].indexOf(str) !== -1) {
+
+function isMarked(mark, k, str) {
+  if (diff[mark] !== undefined && diff[mark][k] !== undefined && diff[mark][k].indexOf(str) !== -1) {
     return true;
   } else {
     return false;
   }
 }
 
+function isAcked(k, str) {
+  return isMarked('acks', k, str);
+}
+
 function isStarred(k, str) {
-  if (diff['stars'] !== undefined && diff['stars'][k] !== undefined && diff['stars'][k].indexOf(str) !== -1) {
-    return true;
-  } else {
-    return false;
-  }
+  return isMarked('stars', k, str);
 }
 
 function toggleStarDiff(d, str, type, data) {
@@ -458,23 +459,11 @@ function toggleStarDiff(d, str, type, data) {
 }
 
 function starDiff(d, str, type, data, refresh) {
-  if (diff['stars'] === undefined) diff['stars'] = new Object;
-  if (diff.stars[d] === undefined) diff.stars[d] = new Array;
-  if (diff.stars[d].indexOf(str) === -1) diff.stars[d].push(str);
-  $('[id="'+type+':'+d+'"]').addClass('starred');
-
-  if (refresh) {
-    refreshStats(type, data);
-    autoCollapseAll();
-  }
+  markDiff('stars', 'starred', d, str, type, data, refresh);
 }
 
 function unstarDiff(d, str, type, data, refresh) {
-  idx = diff.stars[d].indexOf(str);
-  diff.stars[d].splice(idx, 1);
-  $('[id="'+type+':'+d+'"]').removeClass('starred');
-  
-  if (refresh) refreshStats(type, data);
+  unmarkDiff('stars', 'starred', d, str, type, data, refresh);
 }
 
 function differencesAsDiff(data) {
@@ -661,11 +650,11 @@ function unackAllDiff(id, data) {
   autoCollapse(id, true);
 }
 
-function ackDiff(d, str, type, data, refresh) {
-  if (diff['acks'] === undefined) diff['acks'] = new Object;
-  if (diff.acks[d] === undefined) diff.acks[d] = new Array;
-  if (diff.acks[d].indexOf(str) === -1) diff.acks[d].push(str);
-  $('[id="'+type+':'+d+'"]').addClass('acked');
+function markDiff(mark, klass, d, str, type, data, refresh) {
+  if (diff[mark] === undefined) diff[mark] = new Object;
+  if (diff[mark][d] === undefined) diff[mark][d] = new Array;
+  if (diff[mark][d].indexOf(str) === -1) diff[mark][d].push(str);
+  $('[id="'+type+':'+d+'"]').addClass(klass);
 
   if (refresh) {
     refreshStats(type, data);
@@ -673,15 +662,22 @@ function ackDiff(d, str, type, data, refresh) {
   }
 }
 
+function unmarkDiff(mark, klass, d, str, type, data, refresh) {
+  idx = diff[mark][d].indexOf(str);
+  diff[mark][d].splice(idx, 1);
+  $('[id="'+type+':'+d+'"]').removeClass(klass);
+  
+  if (refresh) refreshStats(type, data);
+}
+
+function ackDiff(d, str, type, data, refresh) {
+  markDiff('acks', 'acked', d, str, type, data, refresh);
+}
+
 function unackDiff(d, str, type, data, refresh) {
   // Happens if starred
   if (diff.acks[d] === undefined) return;
-
-  idx = diff.acks[d].indexOf(str);
-  diff.acks[d].splice(idx, 1);
-  $('[id="'+type+':'+d+'"]').removeClass('acked');
-  
-  if (refresh) refreshStats(type, data);
+  unmarkDiff('acks', 'acked', d, str, type, data, refresh);
 }
 
 function refreshStats(type, data) {
