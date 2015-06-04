@@ -510,7 +510,7 @@ function onlyIn(data, type) {
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, type, 'in-'+type, data) }, null, d, data)))
         .append($('<span>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(d, data) { toggleStarDiff(d, type, 'in-'+type, data) }, null, d, data)))
-        .append($('<span>', { html: d })));
+        .append($('<div>', { class: 'resource-title', html: d })));
   }
   return ul;
 }
