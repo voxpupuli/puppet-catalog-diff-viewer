@@ -292,7 +292,7 @@ function listNodes(label, refresh_crumbs) {
       var cur_node_class = (node === cur_node) ? ' active' : '';
       var bar_width = (5 * data.node_differences / max_diff) + 'em';
       var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class+cur_node_class, id: 'nodeslist:'+node })
-        .append($('<div>', { class: 'node-name', style: 'width: calc(100% - '+bar_width+')', html: node })
+        .append($('<div>', { class: 'node-name', html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress tooltip-target', style: 'width: '+bar_width })
           .append($('<div>', { class: 'progress-bar progress-bar-success', style: 'width: '+p_oin+'%;', html: n_oin })
