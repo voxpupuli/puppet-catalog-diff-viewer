@@ -510,40 +510,30 @@ function differencesAsDiff(data) {
   return html;
 }
 
-function onlyInOld(data) {
-  var ul = $('<ul>', { id: 'only-in-old', class: 'list-group' });
-  var r = data.only_in_old.sort();
+function onlyIn(data, type) {
+  var ul = $('<ul>', { id: 'only-in-'+type, class: 'list-group' });
+  var r = data['only_in_'+type].sort();
   for (var i=0; i < r.length; i++) {
     var d = r[i];
 
-    var acked_class = isAcked(d, 'old') ? ' acked' : '';
-    var starred_class = isStarred(d, 'old') ? ' starred' : '';
-    ul.append($('<li>', { id: 'in-old:'+d, class: 'list-group-item'+acked_class+starred_class, html: d })
+    var acked_class = isAcked(d, type) ? ' acked' : '';
+    var starred_class = isStarred(d, type) ? ' starred' : '';
+    ul.append($('<li>', { id: 'in-'+type+':'+d, class: 'list-group-item'+acked_class+starred_class, html: d })
       .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d, data) { toggleAckDiff(d, 'old', 'in-old', data) }, null, d, data)))
+          .on("click", $.proxy(function(d, data) { toggleAckDiff(d, type, 'in-'+type, data) }, null, d, data)))
       .append($('<span>', { class: 'glyphicon glyphicon-star star' })
-          .on("click", $.proxy(function(d, data) { toggleStarDiff(d, 'old', 'in-old', data) }, null, d, data)))
+          .on("click", $.proxy(function(d, data) { toggleStarDiff(d, type, 'in-'+type, data) }, null, d, data)))
     );
   }
   return ul;
 }
 
-function onlyInNew(data) {
-  var ul = $('<ul>', { id: 'only-in-new', class: 'list-group' });
-  var r = data.only_in_new.sort();
-  for (var i=0; i < r.length; i++) {
-    var d = r[i];
+function onlyInOld(data) {
+  return onlyIn(data, 'old');
+}
 
-    var acked_class = isAcked(d, 'new') ? ' acked' : '';
-    var starred_class = isStarred(d, 'new') ? ' starred' : '';
-    ul.append($('<li>', { id: 'in-new:'+d, class: 'list-group-item'+acked_class+starred_class, html: d })
-      .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
-          .on("click", $.proxy(function(d, data) { toggleAckDiff(d, 'new', 'in-new', data) }, null, d, data)))
-      .append($('<span>', { class: 'glyphicon glyphicon-star star' })
-          .on("click", $.proxy(function(d, data) { toggleStarDiff(d, 'new', 'in-new', data) }, null, d, data)))
-    );
-  }
-  return ul;
+function onlyInNew(data) {
+  return onlyIn(data, 'new');
 }
 
 function displayNodeFail(node) {
