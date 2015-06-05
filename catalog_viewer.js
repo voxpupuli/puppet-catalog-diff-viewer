@@ -194,7 +194,7 @@ function panelIsStarred(type, data) {
 }
 
 function makePanel(title, content, id, type, data, ack_button, star) {
-  var starred_class = panelIsStarred(type, data) ? ' starred' : '';
+  var starred_class = panelIsStarred(id, data) ? ' starred' : '';
   var title_h = $('<h4>', { id: 'panel-title-'+id, class: 'panel-title'+starred_class })
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
 
