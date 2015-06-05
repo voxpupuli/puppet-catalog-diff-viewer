@@ -177,13 +177,17 @@ function badgeValue(n, data) {
   }
 }
 
-function makePanel(title, content, id, type, data, ack_button) {
-  var title_h = $('<h4>', { class: 'panel-title' })
+function makePanel(title, content, id, type, data, ack_button, star) {
+  var title_h = $('<h4>', { id: 'panel-title-'+id, class: 'panel-title' })
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
 
     if (ack_button) {
       title_h.append($('<span>', { id: 'ack-all-'+id, class: 'glyphicon glyphicon-ok ack' })
       .on("click", $.proxy(function(id, data) { toggleAckAllDiff(id, data) }, null, id, data)));
+    }
+
+    if (star) {
+      title_h.append($('<span>', { id: 'starred-'+id, class: 'glyphicon glyphicon-star' }));
     }
   var title_badge = badgeValue(id, data);
   if (title_badge !== undefined) {
@@ -330,9 +334,9 @@ function displayNodeDiff(node, elem) {
   $('#node').html($('<h2>', { class: 'node-title', html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
-  var differences_panel = makePanel('Differences', differencesAsDiff(data),'diff', 'warning', data, true);
-  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data, true);
-  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data, true);
+  var differences_panel = makePanel('Differences', differencesAsDiff(data),'diff', 'warning', data, true, true);
+  var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data, true, true);
+  var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data, true, true);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
               .append(stats_panel)
               .append(differences_panel)
@@ -718,4 +722,10 @@ function refreshStats(type, data) {
   listNodes('with changes');
   // Refresh badge
   $('[id="badge-'+type+'"]').html(badgeValue(type, data));
+  // data is up-to-date as listNodes was called
+  if (data.starred_node_differences === 0) {
+    $('[id="panel-title-'+type+'"]').removeClass('starred');
+  } else {
+    $('[id="panel-title-'+type+'"]').addClass('starred');
+  }
 }
