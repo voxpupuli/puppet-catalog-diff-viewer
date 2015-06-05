@@ -302,6 +302,18 @@
     }
 
     // Put this in a separate js at some point, as a plugin
+    Mousetrap.bind('w', function(e, combo) {
+      listNodes('with changes', true);
+    });
+
+    Mousetrap.bind('f', function(e, combo) {
+      listNodes('failed', true);
+    });
+
+    Mousetrap.bind('n', function(e, combo) {
+      listNodes('no changes', true);
+    });
+
     function nodeName(elem) {
       if ($('#nodeslist')[0].children[0].children.length === 0) {
         return elem.innerHTML;
