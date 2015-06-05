@@ -73,6 +73,15 @@
       background-image: none;
       color: #337ab7;
     }
+    #nodeslist .list-group-item .glyphicon-star {
+      float: right;
+      color: orange;
+      display: none;
+      margin: 3px;
+    }
+    #nodeslist .list-group-item.starred .glyphicon-star {
+      display: block;
+    }
     .compile-error {
       color: red;
       font-weight: bold;
@@ -97,7 +106,6 @@
       float: right;
     }
     #nodeslist .node-name {
-      width: calc(100% - 5em);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -106,9 +114,6 @@
       text-align: center;
       display: inline;
       float: right;
-      position: absolute;
-      right: 10px;
-      top: 10px;
     }
     .btn-file {
       position: relative;

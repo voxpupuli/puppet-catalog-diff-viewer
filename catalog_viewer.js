@@ -281,15 +281,16 @@ function listNodes(label, refresh_crumbs) {
       var cur_node_class = (node === cur_node) ? ' active' : '';
       var bar_width = (5 * data.node_differences / max_diff) + 'em';
       var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class+starred_class+cur_node_class, id: 'nodeslist:'+node })
-        .append($('<div>', { class: 'node-name', html: node })
-          .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ))
         .append($('<div>', { class: 'progress', style: 'width: '+bar_width })
           .append(percentBarSection(p_oin, 'progress-bar-success', n_oin)
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-new') }, null, node) ))
           .append(percentBarSection(p_oio, 'progress-bar-danger', n_oio)
             .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-in-old') }, null, node) ))
           .append(percentBarSection(p_diff, 'progress-bar-warning', n_diff)
-            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-diff') }, null, node) )));
+            .on("click", $.proxy(function(node) { displayNodeDiff(node, 'panel-diff') }, null, node) )))
+        .append($('<div>', { class: 'glyphicon glyphicon-star star' }))
+        .append($('<div>', { class: 'node-name', html: node })
+          .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) ));
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
