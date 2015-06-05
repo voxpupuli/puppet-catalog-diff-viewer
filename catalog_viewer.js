@@ -177,8 +177,25 @@ function badgeValue(n, data) {
   }
 }
 
+function panelIsStarred(type, data) {
+  switch (type) {
+    case 'diff':
+      return (data.markstats.differences_as_diff.starred !== 0);
+      break;
+
+    case 'in-old':
+      return (data.markstats.in_old.starred !== 0);
+      break;
+
+    case 'in-new':
+      return (data.markstats.in_old.starred !== 0);
+      break;
+  }
+}
+
 function makePanel(title, content, id, type, data, ack_button, star) {
-  var title_h = $('<h4>', { id: 'panel-title-'+id, class: 'panel-title' })
+  var starred_class = panelIsStarred(type, data) ? ' starred' : '';
+  var title_h = $('<h4>', { id: 'panel-title-'+id, class: 'panel-title'+starred_class })
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
 
     if (ack_button) {
@@ -334,7 +351,7 @@ function displayNodeDiff(node, elem) {
   $('#node').html($('<h2>', { class: 'node-title', html: node }));
 
   var stats_panel = makePanel('Diff stats', diffStats(data), 'stats', 'info', data);
-  var differences_panel = makePanel('Differences', differencesAsDiff(data),'diff', 'warning', data, true, true);
+  var differences_panel = makePanel('Differences', differencesAsDiff(data), 'diff', 'warning', data, true, true);
   var only_in_old_panel = makePanel('Only in old', onlyInOld(data), 'in-old', 'danger', data, true, true);
   var only_in_new_panel = makePanel('Only in new', onlyInNew(data), 'in-new', 'success', data, true, true);
   var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
@@ -723,9 +740,9 @@ function refreshStats(type, data) {
   // Refresh badge
   $('[id="badge-'+type+'"]').html(badgeValue(type, data));
   // data is up-to-date as listNodes was called
-  if (data.starred_node_differences === 0) {
-    $('[id="panel-title-'+type+'"]').removeClass('starred');
-  } else {
+  if (panelIsStarred(type, data)) {
     $('[id="panel-title-'+type+'"]').addClass('starred');
+  } else {
+    $('[id="panel-title-'+type+'"]').removeClass('starred');
   }
 }
