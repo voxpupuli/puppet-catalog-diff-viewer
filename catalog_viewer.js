@@ -259,7 +259,8 @@ function listNodes(label, refresh_crumbs) {
 
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
-    var max_diff = most_differences[0][Object.keys(diff.most_differences[0])];
+    if (diff.max_diff === undefined)
+      diff.max_diff = most_differences[0][Object.keys(diff.most_differences[0])];
 
     // Calculate ack stats for all nodes
     for (var i=0; i < most_differences.length; i++) {
@@ -300,7 +301,7 @@ function listNodes(label, refresh_crumbs) {
       var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
       var starred_class = (data.starred_node_differences === 0) ? '' : ' starred';
       var cur_node_class = (node === cur_node) ? ' active' : '';
-      var bar_width = (5 * data.node_differences / max_diff) + 'em';
+      var bar_width = (5 * data.node_differences / diff.max_diff) + 'em';
       var nodeLine = $('<li>', { class: 'list-group-item'+all_acked_class+starred_class+cur_node_class, id: 'nodeslist:'+node })
         .append($('<div>', { class: 'progress', style: 'width: '+bar_width })
           .append(percentBarSection(p_oin, 'progress-bar-success', n_oin)
