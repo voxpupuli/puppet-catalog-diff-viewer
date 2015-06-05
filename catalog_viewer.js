@@ -184,17 +184,17 @@ function panelIsStarred(type, data) {
       break;
 
     case 'in-old':
-      return (data.markstats.in_old.starred !== 0);
+      return (data.markstats.only_in_old.starred !== 0);
       break;
 
     case 'in-new':
-      return (data.markstats.in_old.starred !== 0);
+      return (data.markstats.only_in_new.starred !== 0);
       break;
   }
 }
 
 function makePanel(title, content, id, type, data, ack_button, star) {
-  var starred_class = panelIsStarred(type, data) ? ' starred' : '';
+  var starred_class = panelIsStarred(id, data) ? ' starred' : '';
   var title_h = $('<h4>', { id: 'panel-title-'+id, class: 'panel-title'+starred_class })
     .append($('<a>', { 'data-toggle': 'collapse', 'data-target': '#panel-body-'+id, html: title }));
 
@@ -285,7 +285,8 @@ function listNodes(label, refresh_crumbs) {
       var a_node = Object.keys(a)[0];
       var b_node = Object.keys(b)[0];
 
-      return diff[b_node]['unacked_node_differences'] - diff[a_node]['unacked_node_differences'];
+      return diff[b_node]['unacked_node_differences'] + diff[b_node]['starred_node_differences']
+           - diff[a_node]['unacked_node_differences'] - diff[a_node]['starred_node_differences'];
     });
 
     for (var i=0; i < most_differences.length; i++) {
