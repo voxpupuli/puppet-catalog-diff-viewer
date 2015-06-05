@@ -331,7 +331,7 @@
       }
     }
 
-    Mousetrap.bind('j', function(e, combo) {
+    Mousetrap.bind('k', function(e, combo) {
       if ($('#nodeslist').length === 0) return;
       if ($('#nodeslist')[0].length === 0) return;
       var active = $('#nodeslist').children('.active')[0];
@@ -343,7 +343,7 @@
       }
     });
   
-    Mousetrap.bind('k', function(e, combo) {
+    Mousetrap.bind('j', function(e, combo) {
       var active = $('#nodeslist').children('.active')[0];
       if (active === undefined) {
         nodeAction($('#nodeslist').children('li')[0]);
