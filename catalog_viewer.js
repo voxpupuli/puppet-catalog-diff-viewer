@@ -285,7 +285,8 @@ function listNodes(label, refresh_crumbs) {
       var a_node = Object.keys(a)[0];
       var b_node = Object.keys(b)[0];
 
-      return diff[b_node]['unacked_node_differences'] - diff[a_node]['unacked_node_differences'];
+      return diff[b_node]['unacked_node_differences'] + diff[b_node]['starred_node_differences']
+           - diff[a_node]['unacked_node_differences'] - diff[a_node]['starred_node_differences'];
     });
 
     for (var i=0; i < most_differences.length; i++) {
