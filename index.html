@@ -73,6 +73,14 @@
       background-image: none;
       color: #337ab7;
     }
+    #nodeslist .list-group-item .glyphicon-star, .panel-title .glyphicon-star {
+      float: right;
+      color: orange;
+      display: none;
+    }
+    #nodeslist .list-group-item.starred .glyphicon-star, .panel-title.starred .glyphicon-star {
+      display: block;
+    }
     .compile-error {
       color: red;
       font-weight: bold;
@@ -97,7 +105,6 @@
       float: right;
     }
     #nodeslist .node-name {
-      width: calc(100% - 5em);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -106,9 +113,7 @@
       text-align: center;
       display: inline;
       float: right;
-      position: absolute;
-      right: 10px;
-      top: 10px;
+      margin-left: 5px;
     }
     .btn-file {
       position: relative;
