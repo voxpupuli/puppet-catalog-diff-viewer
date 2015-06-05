@@ -453,6 +453,8 @@ function toggleStarDiff(d, str, type, data) {
 }
 
 function starDiff(d, str, type, data, refresh) {
+  if (isAcked(d, str))
+    unackDiff(d, str, type, data, false)
   markDiff('stars', 'starred', d, str, type, data, refresh);
 }
 
@@ -669,6 +671,8 @@ function unmarkDiff(mark, klass, d, str, type, data, refresh) {
 }
 
 function ackDiff(d, str, type, data, refresh) {
+  if (isStarred(d, str))
+    unstarDiff(d, str, type, data, false)
   markDiff('acks', 'acked', d, str, type, data, refresh);
 }
 
