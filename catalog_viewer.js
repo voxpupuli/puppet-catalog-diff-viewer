@@ -164,15 +164,15 @@ function addPie(diff) {
 function badgeValue(n, data) {
   switch (n) {
     case 'diff':
-      return Object.keys(filterAckedObj(data.differences_as_diff)).length;
+      return markStats(data.differences_as_diff).unacked;
       break;
 
     case 'in-old':
-      return filterAckedArray(data.only_in_old, 'old').length+' / '+data.total_resources_in_old;
+      return markStats(data.only_in_old, 'old').unacked+' / '+data.total_resources_in_old;
       break;
 
     case 'in-new':
-      return filterAckedArray(data.only_in_new, 'new').length+' / '+data.total_resources_in_new;
+      return markStats(data.only_in_new, 'new').unacked+' / '+data.total_resources_in_new;
       break;
   }
 }
@@ -245,12 +245,12 @@ function listNodes(label, refresh_crumbs) {
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
 
-      data['unacked_differences_as_diff'] = filterAckedObj(data.differences_as_diff);
-      data['unacked_only_in_old'] = filterAckedArray(data.only_in_old, 'old');
-      data['unacked_only_in_new'] = filterAckedArray(data.only_in_new, 'new');
-      data['unacked_node_differences'] = Object.keys(data['unacked_differences_as_diff']).length
-                                       + data['unacked_only_in_old'].length
-                                       + data['unacked_only_in_new'].length;
+      data['unacked_differences_as_diff'] = markStats(data.differences_as_diff).unacked;
+      data['unacked_only_in_old'] = markStats(data.only_in_old, 'old').unacked;
+      data['unacked_only_in_new'] = markStats(data.only_in_new, 'new').unacked;
+      data['unacked_node_differences'] = data['unacked_differences_as_diff']
+                                       + data['unacked_only_in_old']
+                                       + data['unacked_only_in_new'];
     }
 
     // Sort nodes by unacked differences
@@ -265,11 +265,11 @@ function listNodes(label, refresh_crumbs) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
-      var n_diff = Object.keys(data.unacked_differences_as_diff).length;
+      var n_diff = data.unacked_differences_as_diff;
       var p_diff = 100 * n_diff / data.node_differences;
-      var n_oio = data.unacked_only_in_old.length;
+      var n_oio = data.unacked_only_in_old;
       var p_oio = 100 * n_oio / data.node_differences;
-      var n_oin = data.unacked_only_in_new.length;
+      var n_oin = data.unacked_only_in_new;
       var p_oin = 100 * n_oin / data.node_differences;
       var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
       var cur_node_class = (node === cur_node) ? ' active' : '';
@@ -400,9 +400,21 @@ function diffStats(data) {
   return ul;
 }
 
-function filterAckedObj(diffs) {
+function markStats(diffs, type) {
+  if (diffs.constructor === Array) {
+    return markStatsArray(diffs, type);
+  } else {
+    return markStatsObject(diffs);
+  }
+}
+
+function markStatsObject(diffs) {
   var keys = Object.keys(diffs);
-  var filtered = new Object;
+  var stats = {
+    acked: 0,
+    starred: 0,
+    total: keys.length
+  };
 
   for (var i=0; i < keys.length; i++) {
     var k = keys[i];
@@ -410,21 +422,33 @@ function filterAckedObj(diffs) {
     var comp_d = d;
     if (comp_d.constructor === Array)
       comp_d = "--- old\n+++ new\n"+comp_d.join("\n");
-    if (isAcked(k, comp_d)) continue;
-    filtered[k] = d;
+    if (isAcked(k, comp_d))
+      stats.acked += 1;
+    if (isStarred(k, comp_d))
+      stats.starred += 1;
   }
 
-  return filtered;
+  stats['unacked'] = stats.total - stats.acked;
+
+  return stats;
 }
 
-function filterAckedArray(diffs, type) {
-  var filtered = new Array;
+function markStatsArray(diffs, type) {
+  var stats = {
+    acked: 0,
+    starred: 0,
+    total: diffs.length
+  };
+
   for (var i=0; i < diffs.length; i++) {
     var k = diffs[i];
-    if (isAcked(k, type)) continue;
-    filtered.push(k);
+    if (isAcked(k, type)) stats.acked += 1;
+    if (isStarred(k, type)) stats.starred += 1;
   }
-  return filtered;
+
+  stats['unacked'] = stats.total - stats.acked;
+
+  return stats;
 }
 
 
