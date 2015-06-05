@@ -14,6 +14,7 @@
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8" type="text/javascript"></script>
     <script src="lib/sh_main.min.js" type="text/javascript"></script>
     <script src="lib/sh_diff.js" type="text/javascript"></script>
+    <script src="lib/mousetrap.min.js" type="text/javascript"></script>
     <script src="catalog_viewer.js" type="text/javascript"></script>
     <style type="text/css">
     @media (max-width:767px) {
@@ -300,6 +301,27 @@
       var cache = $('#setcache')[0].checked;
       $.ajaxSetup({cache: cache});
     }
+
+    // Put this in a separate js at some point, as a plugin
+    Mousetrap.bind('j', function(e, combo) {
+      var active = $('#nodeslist').children('.active')[0];
+      if (active === undefined) {
+        displayNodeDiff($('#nodeslist').children('li')[0].children[2].innerHTML);
+      } else {
+        var prev = active.previousSibling.children[2].innerHTML;
+        if (prev !== undefined) displayNodeDiff(prev);
+      }
+    });
+  
+    Mousetrap.bind('k', function(e, combo) {
+      var active = $('#nodeslist').children('.active')[0];
+      if (active === undefined) {
+        displayNodeDiff($('#nodeslist').children('li')[0].children[2].innerHTML);
+      } else {
+        var next = $('#nodeslist').children('.active')[0].nextSibling.children[2].innerHTML;
+        if (next !== undefined) displayNodeDiff(next);
+      }
+    });
   </script>
   </body>
 </html>
