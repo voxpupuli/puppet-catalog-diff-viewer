@@ -245,12 +245,14 @@ function listNodes(label, refresh_crumbs) {
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
 
-      data['unacked_differences_as_diff'] = markStats(data.differences_as_diff).unacked;
-      data['unacked_only_in_old'] = markStats(data.only_in_old, 'old').unacked;
-      data['unacked_only_in_new'] = markStats(data.only_in_new, 'new').unacked;
-      data['unacked_node_differences'] = data['unacked_differences_as_diff']
-                                       + data['unacked_only_in_old']
-                                       + data['unacked_only_in_new'];
+      data['markstats'] = {
+        differences_as_diff: markStats(data.differences_as_diff),
+        only_in_old: markStats(data.only_in_old, 'old'),
+        only_in_new: markStats(data.only_in_new, 'new')
+      };
+      data['unacked_node_differences'] = data.markstats.differences_as_diff.unacked
+                                       + data.markstats.only_in_old.unacked
+                                       + data.markstats.only_in_new.unacked;
     }
 
     // Sort nodes by unacked differences
@@ -265,11 +267,11 @@ function listNodes(label, refresh_crumbs) {
       // Weird data structure...
       var node = Object.keys(most_differences[i])[0];
       var data = diff[node];
-      var n_diff = data.unacked_differences_as_diff;
+      var n_diff = data.markstats.differences_as_diff.unacked;
       var p_diff = 100 * n_diff / data.node_differences;
-      var n_oio = data.unacked_only_in_old;
+      var n_oio = data.markstats.only_in_old.unacked;
       var p_oio = 100 * n_oio / data.node_differences;
-      var n_oin = data.unacked_only_in_new;
+      var n_oin = data.markstats.only_in_new.unacked;
       var p_oin = 100 * n_oin / data.node_differences;
       var all_acked_class = (data.unacked_node_differences === 0) ? ' all_acked' : '';
       var cur_node_class = (node === cur_node) ? ' active' : '';
