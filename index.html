@@ -303,23 +303,42 @@
     }
 
     // Put this in a separate js at some point, as a plugin
+    function nodeName(elem) {
+      if ($('#nodeslist')[0].children[0].children.length === 0) {
+        return elem.innerHTML;
+      } else {
+        return elem.children[2].innerHTML;
+      }
+    }
+
+    function nodeAction(elem) {
+      // This is really ugly, I should really use click() instead
+      if ($('#nodeslist')[0].children[0].children.length === 0) {
+        displayNodeFail(nodeName(elem));
+      } else {
+        displayNodeDiff(nodeName(elem));
+      }
+    }
+
     Mousetrap.bind('j', function(e, combo) {
+      if ($('#nodeslist').length === 0) return;
+      if ($('#nodeslist')[0].length === 0) return;
       var active = $('#nodeslist').children('.active')[0];
       if (active === undefined) {
-        displayNodeDiff($('#nodeslist').children('li')[0].children[2].innerHTML);
+        nodeAction($('#nodeslist').children('li')[0]);
       } else {
-        var prev = active.previousSibling.children[2].innerHTML;
-        if (prev !== undefined) displayNodeDiff(prev);
+        var prev = active.previousSibling;
+        if (prev !== undefined) nodeAction(prev);
       }
     });
   
     Mousetrap.bind('k', function(e, combo) {
       var active = $('#nodeslist').children('.active')[0];
       if (active === undefined) {
-        displayNodeDiff($('#nodeslist').children('li')[0].children[2].innerHTML);
+        nodeAction($('#nodeslist').children('li')[0]);
       } else {
-        var next = $('#nodeslist').children('.active')[0].nextSibling.children[2].innerHTML;
-        if (next !== undefined) displayNodeDiff(next);
+        var next = active.nextSibling;
+        if (next !== undefined) nodeAction(next);
       }
     });
   </script>
