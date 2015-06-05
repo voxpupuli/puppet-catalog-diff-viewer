@@ -1,4 +1,7 @@
 function loadReport(r) {
+  // Mark report as active
+  $('#reports-list').children('li.active').removeClass('active');
+  $('#'+r).parent().addClass('active');
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
