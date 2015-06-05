@@ -184,11 +184,11 @@ function panelIsStarred(type, data) {
       break;
 
     case 'in-old':
-      return (data.markstats.in_old.starred !== 0);
+      return (data.markstats.only_in_old.starred !== 0);
       break;
 
     case 'in-new':
-      return (data.markstats.in_old.starred !== 0);
+      return (data.markstats.only_in_new.starred !== 0);
       break;
   }
 }
