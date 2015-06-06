@@ -82,6 +82,13 @@
     #nodeslist .list-group-item.starred .glyphicon-star, .panel-title.starred .glyphicon-star {
       display: block;
     }
+    #node .list-group {
+      padding: 0 10px 0 10px;
+    }
+    #node .list-group.active {
+      border-left: solid #4D90F0;
+      padding-left: 7px;
+    }
     .compile-error {
       color: red;
       font-weight: bold;
@@ -312,45 +319,6 @@
 
     Mousetrap.bind('n', function(e, combo) {
       listNodes('no changes', true);
-    });
-
-    function nodeName(elem) {
-      if ($('#nodeslist')[0].children[0].children.length === 0) {
-        return elem.innerHTML;
-      } else {
-        return elem.children[2].innerHTML;
-      }
-    }
-
-    function nodeAction(elem) {
-      // This is really ugly, I should really use click() instead
-      if ($('#nodeslist')[0].children[0].children.length === 0) {
-        displayNodeFail(nodeName(elem));
-      } else {
-        displayNodeDiff(nodeName(elem));
-      }
-    }
-
-    Mousetrap.bind('k', function(e, combo) {
-      if ($('#nodeslist').length === 0) return;
-      if ($('#nodeslist')[0].length === 0) return;
-      var active = $('#nodeslist').children('.active')[0];
-      if (active === undefined) {
-        nodeAction($('#nodeslist').children('li')[0]);
-      } else {
-        var prev = active.previousSibling;
-        if (prev !== undefined) nodeAction(prev);
-      }
-    });
-  
-    Mousetrap.bind('j', function(e, combo) {
-      var active = $('#nodeslist').children('.active')[0];
-      if (active === undefined) {
-        nodeAction($('#nodeslist').children('li')[0]);
-      } else {
-        var next = active.nextSibling;
-        if (next !== undefined) nodeAction(next);
-      }
     });
   </script>
   </body>
