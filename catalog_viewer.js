@@ -244,7 +244,17 @@ function autoCollapseAll() {
   return offset;
 }
 
+function scrollToActiveNode() {
+  $('#nodes')[0].scrollTop = 0;
+  // Keep 2 items up
+  var active = $('#nodeslist .active');
+  $('#nodes')[0].scrollTop = active.position().top - 310 - active.height() * 4;
+}
+
 function listNodes(label, refresh_crumbs) {
+  if (refresh_crumbs)
+    setMousetrapNodeslist(label);
+
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
   var breadcrumb = $('#breadcrumb');
@@ -338,10 +348,73 @@ function listNodes(label, refresh_crumbs) {
     ul.append($('<li>', { class: 'list-group-item', html: "Nothing to display for OK machines"} ));
   }
   $('#nodes').html(ul);
+  scrollToActiveNode();
+}
+
+function scrollToActiveDiff() {
+  $('#node')[0].scrollTop = 0;
+  $('#node')[0].scrollTop = $('#node .resource.active').position().top - 50;
 }
 
 function displayNodeDiff(node, elem) {
   var data = diff[node];
+
+  // setup keyboard shortcuts
+
+  Mousetrap.unbind('k');
+  Mousetrap.bind('k', function(e, combo) {
+    var active = $('#node .resource.active');
+    active.removeClass('active');
+    new_active = (active.length === 0) ? $('#node .resource:first').addClass('active') : active.prev();
+    new_active.addClass('active');
+    scrollToActiveDiff();
+  });
+  
+  Mousetrap.unbind('j');
+  Mousetrap.bind('j', function(e, combo) {
+    var active = $('#node .resource.active');
+    active.removeClass('active');
+    new_active = (active.length === 0) ? $('#node .resource:first').addClass('active') : active.next();
+    new_active.addClass('active');
+    scrollToActiveDiff();
+  });
+
+  Mousetrap.bind('g d', function(e, combo) {
+    $('#node .resource.active').removeClass('active');
+    $('#node #panel-diff .resource:first').addClass('active');
+    scrollToActiveDiff();
+  });
+
+  Mousetrap.bind('g o', function(e, combo) {
+    $('#node .resource.active').removeClass('active');
+    $('#node #panel-in-old .resource:first').addClass('active');
+    scrollToActiveDiff();
+  });
+
+  Mousetrap.bind('g n', function(e, combo) {
+    $('#node .resource.active').removeClass('active');
+    $('#node #panel-in-new .resource:first').addClass('active');
+    scrollToActiveDiff();
+  });
+
+  Mousetrap.unbind('enter');
+
+  Mousetrap.bind('esc', function(e, combo) {
+    setMousetrapNodeslist('with changes');
+  });
+
+  Mousetrap.bind('a', function(e, combo) {
+    $('#node .active .ack')[0].click();
+  });
+
+  Mousetrap.bind('s', function(e, combo) {
+    $('#node .active .star')[0].click();
+  });
+
+  // ack all
+  Mousetrap.bind('* a', function(e, combo) {
+    $('#node .active').parents('.panel')[0].children[0].getElementsByClassName('ack')[0].click()
+  });
 
   var crumbs = $('#breadcrumb').children('li');
   if (crumbs.length == 3) {
@@ -536,7 +609,7 @@ function differencesAsDiff(data) {
     }
     var acked_class = isAcked(k, diff_str) ? ' acked' : '';
     var starred_class = isStarred(k, diff_str) ? ' starred' : '';
-    var resource = $('<div>', { id: 'diff:'+sanitizeStr(k), class: 'list-group'+acked_class+starred_class })
+    var resource = $('<div>', { id: 'diff:'+sanitizeStr(k), class: 'list-group resource'+acked_class+starred_class })
       .append($('<div>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
       .append($('<div>', { class: 'glyphicon glyphicon-star star' })
@@ -562,7 +635,7 @@ function onlyIn(data, type) {
 
     var acked_class = isAcked(d, type) ? ' acked' : '';
     var starred_class = isStarred(d, type) ? ' starred' : '';
-    ul.append($('<li>', { id: 'in-'+type+':'+sanitizeStr(d), class: 'list-group-item'+acked_class+starred_class })
+    ul.append($('<li>', { id: 'in-'+type+':'+sanitizeStr(d), class: 'list-group-item resource'+acked_class+starred_class })
         .append($('<span>', { class: 'glyphicon glyphicon-ok ack' })
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, type, 'in-'+type, data) }, null, d, data)))
         .append($('<span>', { class: 'glyphicon glyphicon-star star' })
@@ -749,5 +822,46 @@ function refreshStats(type, data) {
     $('[id="panel-title-'+type+'"]').addClass('starred');
   } else {
     $('[id="panel-title-'+type+'"]').removeClass('starred');
+  }
+}
+
+function setMousetrapNodeslist(label) {
+  Mousetrap.unbind('k');
+  Mousetrap.unbind('j');
+  Mousetrap.unbind('enter');
+  Mousetrap.unbind('esc');
+  Mousetrap.unbind('a');
+  Mousetrap.unbind('s');
+  Mousetrap.unbind('* a');
+  Mousetrap.unbind('g d');
+  Mousetrap.unbind('g o');
+  Mousetrap.unbind('g n');
+
+  Mousetrap.bind('k', function(e, combo) {
+    var active = $('#nodeslist .active');
+    active.removeClass('active');
+    var new_active = (active.length === 0) ? $('#nodeslist .list-group-item:first') : active.prev();
+    new_active.addClass('active');
+    scrollToActiveNode();
+  });
+
+  Mousetrap.bind('j', function(e, combo) {
+    var active = $('#nodeslist .active');
+    active.removeClass('active');
+    var new_active = (active.length === 0) ? $('#nodeslist .list-group-item:first') : active.next();
+    new_active.addClass('active');
+    scrollToActiveNode();
+  });
+
+  if (label === 'with changes') {
+    Mousetrap.bind('enter', function(e, combo) {
+      var active = $('#nodeslist .active');
+      active.children('.node-name').click()
+    });
+  } else if (label === 'failed') {
+    Mousetrap.bind('enter', function(e, combo) {
+      var active = $('#nodeslist .active');
+      active.click()
+    });
   }
 }
