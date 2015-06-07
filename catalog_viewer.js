@@ -356,9 +356,9 @@ function scrollToActiveDiff() {
   $('#node')[0].scrollTop = $('#node .resource.active').position().top - 50;
 }
 
-function firstDiff(type) {
-  var first_unmarked = $('#panel-'+type+' .resource:not(".acked"):not(".starred"):first');
-  var first = (first_unmarked.length === 0) ? $('#panel-'+type+' .resource') : first_unmarked;
+function firstDiff(panel) {
+  var first_unmarked = $('#'+panel+' .resource:not(".acked"):not(".starred"):first');
+  var first = (first_unmarked.length === 0) ? $('#'+panel+' .resource') : first_unmarked;
   return first;
 }
 
@@ -375,7 +375,13 @@ function displayNodeDiff(node, elem) {
       new_active = firstDiff('diff');
     } else {
       active.removeClass('active');
-      new_active = active.prev();
+      var prev = active.prev();
+      if (prev.length === 0) {
+        var prev_panel = $('#node .panel:has(".resource.active")').prev();
+        new_active = firstDiff(prev_panel.attr('id'));
+      } else {
+        new_active = prev;
+      }
     }
     new_active.addClass('active');
     scrollToActiveDiff();
@@ -386,10 +392,16 @@ function displayNodeDiff(node, elem) {
     var active = $('#node .resource.active');
     var new_active;
     if (active.length === 0) {
-      new_active = firstDiff('diff');
+      new_active = firstDiff('panel-diff');
     } else {
       active.removeClass('active');
-      new_active = active.next();
+      var next = active.next();
+      if (next.length === 0) {
+        var next_panel = $('#node .panel:has(".resource.active")').next();
+        new_active = firstDiff(next_panel.attr('id'));
+      } else {
+        new_active = next;
+      }
     }
     new_active.addClass('active');
     scrollToActiveDiff();
@@ -397,21 +409,21 @@ function displayNodeDiff(node, elem) {
 
   Mousetrap.bind('g d', function(e, combo) {
     $('#node .resource.active').removeClass('active');
-    var new_active = firstDiff('diff');
+    var new_active = firstDiff('panel-diff');
     new_active.addClass('active');
     scrollToActiveDiff();
   });
 
   Mousetrap.bind('g o', function(e, combo) {
     $('#node .resource.active').removeClass('active');
-    var new_active = firstDiff('in-old');
+    var new_active = firstDiff('panel-in-old');
     new_active.addClass('active');
     scrollToActiveDiff();
   });
 
   Mousetrap.bind('g n', function(e, combo) {
     $('#node .resource.active').removeClass('active');
-    var new_active = firstDiff('in-new');
+    var new_active = firstDiff('panel-in-new');
     new_active.addClass('active');
     scrollToActiveDiff();
   });
