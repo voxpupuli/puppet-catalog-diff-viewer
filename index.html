@@ -208,11 +208,58 @@
       margin-left: 0;
       margin-right: 0;
     }
+    #keys-help {
+      position: fixed;
+      display: none;
+      z-index: 999999;
+    }
+    #keys-help .jumbotron {
+      width: 500px;
+      left: 0;
+      top: 0;
+    }
     </style>
   </head>
 <body>
   <div class="label label-primary back-to-top">
     <span class="glyphicon glyphicon-chevron-up"></span> Back to top
+  </div>
+  <div id="keys-help">
+    <div class="container">
+      <div class="row">
+        <div class="jumbotron">
+          <h2>Keyboard shortcuts</h2>
+
+          <h4>General shortcuts</h4>
+          <ul>
+            <li><code>h</code> or <code>?</code>: display this help</li>
+            <li><code>w</code>: show nodes with changes</li>
+            <li><code>f</code>: show nodes that failed</li>
+            <li><code>n</code>: show nodes with no changes</li>
+          </ul>
+
+          <h4>Node list shortcuts</h4>
+          <ul>
+            <li><code>j</code>: select next node in list</li>
+            <li><code>k</code>: select previous node in list</li>
+            <li><code>Enter</code>: display report for selected node</li>
+          </ul>
+
+          <h4>Node diff view shortcuts</h4>
+          <ul>
+            <li><code>j</code>: select next diff in list</li>
+            <li><code>k</code>: select previous diff in list</li>
+            <li><code>g d</code>: go to the first diff in the Differences panel</li>
+            <li><code>g o</code>: go to the first diff in the Only in Old panel</li>
+            <li><code>g n</code>: go to the first diff in the Only in New panel</li>
+            <li><code>a</code>: (un)acknowledge current diff</li>
+            <li><code>s</code>: (un)star current diff</li>
+            <li><code>* a</code>: (un)acknowledge all diffs in current section</li>
+            <li><code>Esc</code>: go back to nodes list</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
@@ -328,6 +375,13 @@
     }
 
     // Put this in a separate js at some point, as a plugin
+    Mousetrap.bind('h', function(e, combo) {
+      $('#keys-help').toggle();
+    });
+    Mousetrap.bind('?', function(e, combo) {
+      $('#keys-help').toggle();
+    });
+
     Mousetrap.bind('w', function(e, combo) {
       listNodes('with changes', true);
     });
