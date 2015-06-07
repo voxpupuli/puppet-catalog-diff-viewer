@@ -859,7 +859,8 @@ function setMousetrapNodeslist(label) {
   Mousetrap.bind('k', function(e, combo) {
     var active = $('#nodeslist .active');
     active.removeClass('active');
-    var new_active = (active.length === 0) ? $('#nodeslist .list-group-item:first') : active.prev();
+    var prev = active.prev();
+    var new_active = (active.length === 0 || prev.length === 0) ? $('#nodeslist .list-group-item:first') : active.prev();
     new_active.addClass('active');
     scrollToActiveNode();
   });
@@ -867,7 +868,8 @@ function setMousetrapNodeslist(label) {
   Mousetrap.bind('j', function(e, combo) {
     var active = $('#nodeslist .active');
     active.removeClass('active');
-    var new_active = (active.length === 0) ? $('#nodeslist .list-group-item:first') : active.next();
+    var next = active.next();
+    var new_active = (active.length === 0 || next.length === 0) ? $('#nodeslist .list-group-item:first') : active.next();
     new_active.addClass('active');
     scrollToActiveNode();
   });
