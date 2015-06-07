@@ -278,7 +278,7 @@
 
       <ul class="nav navbar-nav navbar-collapse collapse" id="navbar-collapse-menu">
         <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          <a id="reports-list-button" class="dropdown-toggle" data-toggle="dropdown" href="#">
             Choose a report
             <span class="caret"></span>
           </a>
@@ -369,7 +369,7 @@
     });
 
     Mousetrap.bind('m', function(e, combo) {
-      $('#reports-list').dropdown('toggle');
+      $('#reports-list-button').click();
     });
 
     Mousetrap.bind('w', function(e, combo) {
