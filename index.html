@@ -233,6 +233,7 @@
           <h4>General shortcuts</h4>
           <ul>
             <li><code>h</code> or <code>?</code>: display this help</li>
+            <li><code>m</code>: toggle reports menu</li>
             <li><code>w</code>: show nodes with changes</li>
             <li><code>f</code>: show nodes that failed</li>
             <li><code>n</code>: show nodes with no changes</li>
@@ -380,6 +381,10 @@
     });
     Mousetrap.bind('?', function(e, combo) {
       $('#keys-help').toggle();
+    });
+
+    Mousetrap.bind('m', function(e, combo) {
+      $('#reports-list').dropdown('toggle');
     });
 
     Mousetrap.bind('w', function(e, combo) {
