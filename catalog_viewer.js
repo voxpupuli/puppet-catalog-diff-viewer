@@ -252,8 +252,10 @@ function scrollToActiveNode() {
 }
 
 function listNodes(label, refresh_crumbs) {
-  if (refresh_crumbs)
-    setMousetrapNodeslist(label);
+  if (refresh_crumbs) {
+    traps.node.pause();
+    traps.nodes.unpause();
+  }
 
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
@@ -369,88 +371,8 @@ function displayNodeDiff(node, elem) {
   var data = diff[node];
 
   // setup keyboard shortcuts
-
-  Mousetrap.unbind('k');
-  Mousetrap.bind('k', function(e, combo) {
-    var active = $('#node .resource.active');
-    var new_active;
-    if (active.length === 0) {
-      new_active = firstDiff();
-    } else {
-      var resources = $('#node .resource');
-      var active_idx = resources.index(active);
-      if (active_idx > 0) {
-        active.removeClass('active');
-        new_active = $(resources[active_idx-1]);
-      }
-    }
-    new_active.addClass('active');
-    scrollToActiveDiff();
-  });
-  
-  Mousetrap.unbind('j');
-  Mousetrap.bind('j', function(e, combo) {
-    var active = $('#node .resource.active');
-    var new_active;
-    if (active.length === 0) {
-      new_active = firstDiff();
-    } else {
-      var resources = $('#node .resource');
-      var active_idx = resources.index(active);
-      if (active_idx < resources.length) {
-        active.removeClass('active');
-        new_active = $(resources[active_idx+1]);
-      }
-    }
-    if (new_active !== undefined) {
-      new_active.addClass('active');
-      scrollToActiveDiff();
-    }
-  });
-
-  Mousetrap.bind('g d', function(e, combo) {
-    $('#node .resource.active').removeClass('active');
-    var new_active = firstDiff('panel-diff');
-    new_active.addClass('active');
-    scrollToActiveDiff();
-  });
-
-  Mousetrap.bind('g o', function(e, combo) {
-    $('#node .resource.active').removeClass('active');
-    var new_active = firstDiff('panel-in-old');
-    new_active.addClass('active');
-    scrollToActiveDiff();
-  });
-
-  Mousetrap.bind('g n', function(e, combo) {
-    $('#node .resource.active').removeClass('active');
-    var new_active = firstDiff('panel-in-new');
-    new_active.addClass('active');
-    scrollToActiveDiff();
-  });
-
-  Mousetrap.unbind('enter');
-
-  Mousetrap.bind('esc', function(e, combo) {
-    setMousetrapNodeslist('with changes');
-  });
-
-  Mousetrap.bind('a', function(e, combo) {
-    $('#node .active .ack')[0].click();
-  });
-
-  Mousetrap.bind('s', function(e, combo) {
-    $('#node .active .star')[0].click();
-  });
-
-  // ack all
-  Mousetrap.bind('* a', function(e, combo) {
-    $('#node .active').parents('.panel')[0].children[0].getElementsByClassName('ack')[0].click()
-  });
-
-  Mousetrap.bind('c', function(e, combo) {
-    $('#node .panel-collapse:has(".resource.active")').collapse('toggle');
-  });
+  traps.nodes.pause();
+  traps.node.unpause();
 
   var crumbs = $('#breadcrumb').children('li');
   if (crumbs.length == 3) {
@@ -858,49 +780,5 @@ function refreshStats(type, data) {
     $('[id="panel-title-'+type+'"]').addClass('starred');
   } else {
     $('[id="panel-title-'+type+'"]').removeClass('starred');
-  }
-}
-
-function setMousetrapNodeslist(label) {
-  Mousetrap.unbind('k');
-  Mousetrap.unbind('j');
-  Mousetrap.unbind('enter');
-  Mousetrap.unbind('esc');
-  Mousetrap.unbind('a');
-  Mousetrap.unbind('s');
-  Mousetrap.unbind('* a');
-  Mousetrap.unbind('c');
-  Mousetrap.unbind('g d');
-  Mousetrap.unbind('g o');
-  Mousetrap.unbind('g n');
-
-  Mousetrap.bind('k', function(e, combo) {
-    var active = $('#nodeslist .active');
-    active.removeClass('active');
-    var prev = active.prev();
-    var new_active = (active.length === 0 || prev.length === 0) ? $('#nodeslist .list-group-item:first') : active.prev();
-    new_active.addClass('active');
-    scrollToActiveNode();
-  });
-
-  Mousetrap.bind('j', function(e, combo) {
-    var active = $('#nodeslist .active');
-    active.removeClass('active');
-    var next = active.next();
-    var new_active = (active.length === 0 || next.length === 0) ? $('#nodeslist .list-group-item:first') : active.next();
-    new_active.addClass('active');
-    scrollToActiveNode();
-  });
-
-  if (label === 'with changes') {
-    Mousetrap.bind('enter', function(e, combo) {
-      var active = $('#nodeslist .active');
-      active.children('.node-name').click()
-    });
-  } else if (label === 'failed') {
-    Mousetrap.bind('enter', function(e, combo) {
-      var active = $('#nodeslist .active');
-      active.click()
-    });
   }
 }
