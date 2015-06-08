@@ -121,6 +121,20 @@
       scrollToActiveNode();
     });
 
+    traps.nodes.bind('g t', function(e, combo) {
+      var active = $('#nodeslist .active');
+      active.removeClass('active');
+      $('#nodeslist .list-group-item:first').addClass('active');
+      scrollToActiveNode();
+    });
+
+    traps.nodes.bind('g b', function(e, combo) {
+      var active = $('#nodeslist .active');
+      active.removeClass('active');
+      $('#nodeslist .list-group-item:last').addClass('active');
+      scrollToActiveNode();
+    });
+
     traps.nodes.bind('enter', function(e, combo) {
       var active = $('#nodeslist .active');
       if (active.children('.node-name').length === 0) {
