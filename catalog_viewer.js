@@ -357,7 +357,8 @@ function scrollToActiveDiff() {
 }
 
 function firstDiff(panel) {
-  var first_unmarked = $('#'+panel+' .resource:not(".acked"):not(".starred"):first');
+  var panel_id = (panel === undefined) ? '' : '#'+panel;
+  var first_unmarked = $(panel_id+' .resource:not(".acked"):not(".starred"):first');
   var first = (first_unmarked.length === 0) ? $('#'+panel+' .resource') : first_unmarked;
   return first;
 }
@@ -372,15 +373,13 @@ function displayNodeDiff(node, elem) {
     var active = $('#node .resource.active');
     var new_active;
     if (active.length === 0) {
-      new_active = firstDiff('diff');
+      new_active = firstDiff();
     } else {
-      active.removeClass('active');
-      var prev = active.prev();
-      if (prev.length === 0) {
-        var prev_panel = $('#node .panel:has(".resource.active")').prev();
-        new_active = firstDiff(prev_panel.attr('id'));
-      } else {
-        new_active = prev;
+      var resources = $('#node .resource');
+      var active_idx = resources.index(active);
+      if (active_idx > 0) {
+        active.removeClass('active');
+        new_active = $(resources[active_idx-1]);
       }
     }
     new_active.addClass('active');
@@ -392,19 +391,19 @@ function displayNodeDiff(node, elem) {
     var active = $('#node .resource.active');
     var new_active;
     if (active.length === 0) {
-      new_active = firstDiff('panel-diff');
+      new_active = firstDiff();
     } else {
-      active.removeClass('active');
-      var next = active.next();
-      if (next.length === 0) {
-        var next_panel = $('#node .panel:has(".resource.active")').next();
-        new_active = firstDiff(next_panel.attr('id'));
-      } else {
-        new_active = next;
+      var resources = $('#node .resource');
+      var active_idx = resources.index(active);
+      if (active_idx < resources.length) {
+        active.removeClass('active');
+        new_active = $(resources[active_idx+1]);
       }
     }
-    new_active.addClass('active');
-    scrollToActiveDiff();
+    if (new_active !== undefined) {
+      new_active.addClass('active');
+      scrollToActiveDiff();
+    }
   });
 
   Mousetrap.bind('g d', function(e, combo) {
