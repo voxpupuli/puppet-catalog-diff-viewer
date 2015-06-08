@@ -56,10 +56,6 @@
       listNodes('failed', true);
     });
 
-    traps.main.bind('n', function(e, combo) {
-      listNodes('no changes', true);
-    });
-
     traps.main.bind('m', function(e, combo) {
       $('#reports-list-button').click();
       // See if we can do this when user clicks, too
