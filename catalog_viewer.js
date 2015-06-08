@@ -352,6 +352,8 @@ function listNodes(label, refresh_crumbs) {
 }
 
 function scrollToActiveDiff() {
+  // Open panel
+  $('#node .panel-collapse:has(".resource.active")').collapse('show');
   $('#node')[0].scrollTop = 0;
   $('#node')[0].scrollTop = $('#node .resource.active').position().top - 50;
 }
