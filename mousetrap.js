@@ -70,6 +70,7 @@
     });
 
     // Reports menu key bindings
+    traps.reports.pause();
     traps.reports.bind('j', function(e, combo) {
       var active = $('#reports-list .active');
       if (active.next().length !== 0) {
@@ -97,17 +98,15 @@
       traps.restore();
     });
 
-    traps.reports.pause();
-
     // Help key bindings
+    traps.help.pause();
     traps.help.bind('esc', function(e, combo) {
       $('#keys-help').hide();
       traps.restore();
     });
 
-    traps.help.pause();
-
     // Nodes list key bindings
+    traps.nodes.pause();
     traps.nodes.bind('k', function(e, combo) {
       var active = $('#nodeslist .active');
       active.removeClass('active');
@@ -136,6 +135,7 @@
     });
 
     // Node view key bindings
+    traps.node.pause();
     traps.node.bind('k', function(e, combo) {
       var active = $('#node .resource.active');
       var new_active;
@@ -213,6 +213,4 @@
     traps.node.bind('c', function(e, combo) {
       $('#node .panel-collapse:has(".resource.active")').collapse('toggle');
     });
-
-    traps.node.pause();
 
