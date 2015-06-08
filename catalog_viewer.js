@@ -448,6 +448,10 @@ function displayNodeDiff(node, elem) {
     $('#node .active').parents('.panel')[0].children[0].getElementsByClassName('ack')[0].click()
   });
 
+  Mousetrap.bind('c', function(e, combo) {
+    $('#node .panel-collapse:has(".resource.active")').collapse('toggle');
+  });
+
   var crumbs = $('#breadcrumb').children('li');
   if (crumbs.length == 3) {
     crumbs[2].innerHTML = node;
@@ -865,6 +869,7 @@ function setMousetrapNodeslist(label) {
   Mousetrap.unbind('a');
   Mousetrap.unbind('s');
   Mousetrap.unbind('* a');
+  Mousetrap.unbind('c');
   Mousetrap.unbind('g d');
   Mousetrap.unbind('g o');
   Mousetrap.unbind('g n');
