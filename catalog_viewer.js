@@ -359,7 +359,7 @@ function scrollToActiveDiff() {
 function firstDiff(panel) {
   var panel_id = (panel === undefined) ? '' : '#'+panel;
   var first_unmarked = $(panel_id+' .resource:not(".acked"):not(".starred"):first');
-  var first = (first_unmarked.length === 0) ? $('#'+panel+' .resource') : first_unmarked;
+  var first = (first_unmarked.length === 0) ? $('#'+panel+' .resource:first') : first_unmarked;
   return first;
 }
 
