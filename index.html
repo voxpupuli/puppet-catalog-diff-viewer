@@ -15,6 +15,8 @@
     <script src="lib/sh_main.min.js" type="text/javascript"></script>
     <script src="lib/sh_diff.js" type="text/javascript"></script>
     <script src="lib/mousetrap.min.js" type="text/javascript"></script>
+    <script src="lib/mousetrap-pause.min.js" type="text/javascript"></script>
+    <script src="mousetrap.js" type="text/javascript"></script>
     <script src="catalog_viewer.js" type="text/javascript"></script>
     <style type="text/css">
     @media (max-width:767px) {
@@ -212,11 +214,18 @@
       position: fixed;
       display: none;
       z-index: 999999;
-      left: 10px;
+      left: 15%;
       top: 10px;
     }
     #keys-help .jumbotron {
-      width: 500px;
+      width: 40%px;
+    }
+    #keys-help .shortcuts {
+      columns: 2;
+      -webkit-columns: 2;
+    }
+    #keys-help .shortcut {
+      display: inline-block;
     }
     </style>
   </head>
@@ -230,35 +239,61 @@
         <div class="jumbotron">
           <h2>Keyboard shortcuts</h2>
 
-          <h4>General shortcuts</h4>
-          <dl class='dl-horizontal'>
-            <dt><kbd>h</kbd> or <kbd>?</kbd><dt><dd>display this help</dd>
-            <dt><kbd>m</kbd></dt><dd>toggle reports menu</dd>
-            <dt><kbd>w</kbd></dt><dd>show nodes with changes</dd>
-            <dt><kbd>f</kbd></dt><dd>show nodes that failed</dd>
-            <dt><kbd>n</kbd></dt><dd>show nodes with no changes</dd>
-          </dl>
+          <div class="shortcuts">
 
-          <h4>Node list shortcuts</h4>
-          <dl class='dl-horizontal'>
-            <dt><kbd>j</kbd></dt><dd>select next node in list</dd>
-            <dt><kbd>k</kbd></dt><dd>select previous node in list</dd>
-            <dt><kbd>Enter</kbd></dt><dd>display report for selected node</dd>
-          </dl>
+            <div class="shortcut">
+              <h4>General shortcuts</h4>
+              <dl class='dl-horizontal'>
+                <dt><kbd>h</kbd> or <kbd>?</kbd><dt><dd>display this help</dd>
+                <dt><kbd>m</kbd></dt><dd>toggle reports menu</dd>
+                <dt><kbd>w</kbd></dt><dd>show nodes with changes</dd>
+                <dt><kbd>f</kbd></dt><dd>show nodes that failed</dd>
+                <dt><kbd>n</kbd></dt><dd>show nodes with no changes</dd>
+              </dl>
+            </div>
 
-          <h4>Node diff view shortcuts</h4>
-          <dl class='dl-horizontal'>
-            <dt><kbd>j</kbd></dt><dd>select next diff in list</dd>
-            <dt><kbd>k</kbd></dt><dd>select previous diff in list</dd>
-            <dt><kbd>g d</kbd></dt><dd>go to the first unmarked diff in the Differences panel</dd>
-            <dt><kbd>g o</kbd></dt><dd>go to the first unmarked diff in the Only in Old panel</dd>
-            <dt><kbd>g n</kbd></dt><dd>go to the first unmarked diff in the Only in New panel</dd>
-            <dt><kbd>a</kbd></dt><dd>(un)acknowledge current diff</dd>
-            <dt><kbd>s</kbd></dt><dd>(un)star current diff</dd>
-            <dt><kbd>* a</kbd></dt><dd>(un)acknowledge all diffs in current section</dd>
-            <dt><kbd>c</kbd></dt><dd>toggle collapsing of current panel</dd>
-            <dt><kbd>Esc</kbd></dt><dd>go back to nodes list</dd>
-          </dl>
+            <div class="shortcut">
+              <h4>Node list shortcuts</h4>
+              <dl class='dl-horizontal'>
+                <dt><kbd>j</kbd></dt><dd>select next node in list</dd>
+                <dt><kbd>k</kbd></dt><dd>select previous node in list</dd>
+                <dt><kbd>Enter</kbd></dt><dd>display report for selected node</dd>
+              </dl>
+            </div>
+
+            <div class="shortcut">
+              <h4>Help popup shortcuts</h4>
+              <dl class='dl-horizontal'>
+                <dt><kbd>Esc</kbd></dt><dd>close help popup</dd>
+              </dl>
+            </div>
+
+            <div class="shortcut">
+              <h4>Reports menu shortcuts</h4>
+              <dl class='dl-horizontal'>
+                <dt><kbd>j</kbd></dt><dd>select next report in list</dd>
+                <dt><kbd>k</kbd></dt><dd>select previous report in list</dd>
+                <dt><kbd>Enter</kbd></dt><dd>load selected report</dd>
+                <dt><kbd>Esc</kbd></dt><dd>close reports menu</dd>
+              </dl>
+            </div>
+
+            <div class="shortcut">
+              <h4>Node diff view shortcuts</h4>
+              <dl class='dl-horizontal'>
+                <dt><kbd>j</kbd></dt><dd>select next diff in list</dd>
+                <dt><kbd>k</kbd></dt><dd>select previous diff in list</dd>
+                <dt><kbd>g d</kbd></dt><dd>go to the first unmarked diff in the Differences panel</dd>
+                <dt><kbd>g o</kbd></dt><dd>go to the first unmarked diff in the Only in Old panel</dd>
+                <dt><kbd>g n</kbd></dt><dd>go to the first unmarked diff in the Only in New panel</dd>
+                <dt><kbd>a</kbd></dt><dd>(un)acknowledge current diff</dd>
+                <dt><kbd>s</kbd></dt><dd>(un)star current diff</dd>
+                <dt><kbd>* a</kbd></dt><dd>(un)acknowledge all diffs in current section</dd>
+                <dt><kbd>c</kbd></dt><dd>toggle collapsing of current panel</dd>
+                <dt><kbd>Esc</kbd></dt><dd>go back to nodes list</dd>
+              </dl>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -361,29 +396,6 @@
       $.ajaxSetup({cache: cache});
     }
 
-    // Put this in a separate js at some point, as a plugin
-    Mousetrap.bind('h', function(e, combo) {
-      $('#keys-help').toggle();
-    });
-    Mousetrap.bind('?', function(e, combo) {
-      $('#keys-help').toggle();
-    });
-
-    Mousetrap.bind('m', function(e, combo) {
-      $('#reports-list-button').click();
-    });
-
-    Mousetrap.bind('w', function(e, combo) {
-      listNodes('with changes', true);
-    });
-
-    Mousetrap.bind('f', function(e, combo) {
-      listNodes('failed', true);
-    });
-
-    Mousetrap.bind('n', function(e, combo) {
-      listNodes('no changes', true);
-    });
   </script>
   </body>
 </html>
