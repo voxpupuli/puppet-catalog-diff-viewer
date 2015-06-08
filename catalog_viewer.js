@@ -352,6 +352,8 @@ function listNodes(label, refresh_crumbs) {
 }
 
 function scrollToActiveDiff() {
+  // Open panel
+  $('#node .panel-collapse:has(".resource.active")').collapse('show');
   $('#node')[0].scrollTop = 0;
   $('#node')[0].scrollTop = $('#node .resource.active').position().top - 50;
 }
@@ -359,7 +361,7 @@ function scrollToActiveDiff() {
 function firstDiff(panel) {
   var panel_id = (panel === undefined) ? '' : '#'+panel;
   var first_unmarked = $(panel_id+' .resource:not(".acked"):not(".starred"):first');
-  var first = (first_unmarked.length === 0) ? $('#'+panel+' .resource') : first_unmarked;
+  var first = (first_unmarked.length === 0) ? $('#'+panel+' .resource:first') : first_unmarked;
   return first;
 }
 
