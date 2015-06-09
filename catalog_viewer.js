@@ -253,8 +253,9 @@ function scrollToActiveNode() {
 
 function listNodes(label, refresh_crumbs) {
   if (refresh_crumbs) {
-    traps.node.pause();
-    traps.nodes.unpause();
+    console.log('activating nodes profile');
+    traps.select('nodes');
+    console.log('activated nodes profile');
   }
 
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
@@ -371,8 +372,7 @@ function displayNodeDiff(node, elem) {
   var data = diff[node];
 
   // setup keyboard shortcuts
-  traps.nodes.pause();
-  traps.node.unpause();
+  traps.select('node');
 
   var crumbs = $('#breadcrumb').children('li');
   if (crumbs.length == 3) {
