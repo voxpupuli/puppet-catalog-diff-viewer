@@ -244,6 +244,17 @@ function autoCollapseAll() {
   return offset;
 }
 
+function firstNode() {
+  return $('#nodeslist .list-group-item:first');
+}
+
+function selectNode(node) {
+  var active = $('#nodeslist .active');
+  active.removeClass('active');
+  node.addClass('active');
+  scrollToActiveNode();
+}
+
 function scrollToActiveNode() {
   $('#nodes')[0].scrollTop = 0;
   // Keep 2 items up
@@ -376,7 +387,20 @@ function activateNextDiff() {
   var next_unmarked = next_resources.filter(':not(".acked"):not(".starred"):first');
   if (next_unmarked.length === 0) {
     var next_unacked = next_resources.filter(':not(".acked"):first');
-    new_active = (next_unacked.length === 0) ? firstDiff() : next_unacked;
+    if (next_unacked.length === 0) {
+      var first = firstDiff();
+      if (first.length === 0) {
+        // No diff left, switch to next node
+        traps.node.pause();
+        traps.nodes.unpause();
+        selectNode(firstNode());
+        firstNode().children('.node-name').click();
+      } else {
+        new_active = first;
+      }
+    } else {
+      new_active = next_unacked;
+    }
   } else {
     new_active = next_unmarked;
   }
