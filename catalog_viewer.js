@@ -367,6 +367,24 @@ function firstDiff(panel) {
   return first;
 }
 
+function activateNextDiff() {
+  var active = $('#node .resource.active');
+  var resources = $('#node .resource');
+  var active_idx = resources.index(active);
+  var next_resources = resources.slice(active_idx+1);
+  var new_active;
+  var next_unmarked = next_resources.filter(':not(".acked"):not(".starred"):first');
+  if (next_unmarked.length === 0) {
+    var next_unacked = next_resources.filter(':not(".acked"):first');
+    new_active = (next_unacked.length === 0) ? firstDiff() : next_unacked;
+  } else {
+    new_active = next_unmarked;
+  }
+  new_active.addClass('active');
+  active.removeClass('active');
+  scrollToActiveDiff();
+}
+
 function displayNodeDiff(node, elem) {
   var data = diff[node];
 
@@ -544,6 +562,7 @@ function starDiff(d, str, type, data, refresh) {
   if (isAcked(d, str))
     unackDiff(d, str, type, data, false)
   markDiff('stars', 'starred', d, str, type, data, refresh);
+  activateNextDiff();
 }
 
 function unstarDiff(d, str, type, data, refresh) {
@@ -762,6 +781,7 @@ function ackDiff(d, str, type, data, refresh) {
   if (isStarred(d, str))
     unstarDiff(d, str, type, data, false)
   markDiff('acks', 'acked', d, str, type, data, refresh);
+  activateNextDiff();
 }
 
 function unackDiff(d, str, type, data, refresh) {
