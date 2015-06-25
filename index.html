@@ -16,6 +16,7 @@
     <script src="lib/sh_diff.js" type="text/javascript"></script>
     <script src="lib/mousetrap.min.js" type="text/javascript"></script>
     <script src="lib/mousetrap-pause.min.js" type="text/javascript"></script>
+    <script src="lib/lzma-min.js"></script>
     <script src="mousetrap.js" type="text/javascript"></script>
     <script src="catalog_viewer.js" type="text/javascript"></script>
     <style type="text/css">
@@ -144,13 +145,10 @@
       cursor: inherit;
       display: block;
     }
-    .checkbox {
-      position: absolute;
-      top: -10px;
-      left: 20px;
-      margin-bottom: 0;
+    .btn-checkbox {
+      top: -2px;
       color: #777;
-      padding: 15px 0 15px 10px;
+      padding: 15px 0 15px 20px;
     }
     #nodeslist .progress-bar {
       text-indent: -9999px; // Hide text to the left
@@ -326,11 +324,6 @@
           Upload file... <input type="file" class="form-control" id="fileinput" style="display: block;" onchange="loadFile()">
           </a>
         </li>
-        <!--
-        <li class="checkbox">
-            <input type="checkbox" id="setcache" class="autosubmit" checked="checked" onChange="javascript:setCache();"> Cache reports
-        </li>
-        -->
       </ul>
       <ul id="breadcrumb" class="nav navbar-nav navbar-right breadcrumb">
         <li class="navbar-text" id="loaded-report"></li>

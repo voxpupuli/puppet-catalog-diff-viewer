@@ -6,17 +6,45 @@ function loadReport(r) {
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
   $('#chart').html(bar);
-  $.getJSON('data/'+r+'.json', function(data) {
-    diff = data;
-    addPie(diff);
-    var report_title = $('#'+r)[0].text;
-    $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
-    var crumbs =  $('#breadcrumb').children('li');
-    if (crumbs.length > 2) $('#breadcrumb').children('li')[2].remove();
-    if (crumbs.length > 1) $('#breadcrumb').children('li')[1].remove();
-  }).error(function(jqXHR, textStatus, errorThrown) {
-    loadingAlert('Failed to load report '+r+': '+errorThrown, 'danger');
-  });
+  var lzma_elem = $('#setlzma')[0];
+  var lzma = (lzma_elem) ? $('#setlzma')[0].checked : false;
+  if (lzma) {
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", 'data/'+r+'.json.lzma', true);
+    ajax.responseType = "arraybuffer";
+
+    ajax.onload = function () {
+        var my_lzma = LZMA('lib/lzma_worker.js');
+        $('#chart .progress-bar').html('Decompressing data...');
+        my_lzma.decompress(new Uint8Array(ajax.response), function on_decompress_complete(data) {
+          $('#chart .progress-bar').html('Parsing data...');
+          var json = $.parseJSON(data);
+          loadReportData(r, json);
+        });
+    };
+
+    ajax.onerror = function(e) {
+      console.log(e);
+    };
+
+    ajax.send();
+  } else {
+    $.getJSON('data/'+r+'.json', function(data) {
+      loadReportData(r, data);
+    }).error(function(jqXHR, textStatus, errorThrown) {
+      loadingAlert('Failed to load report '+r+': '+errorThrown, 'danger');
+    });
+  }
+}
+
+function loadReportData(r, data) {
+  diff = data;
+  addPie(diff);
+  var report_title = $('#'+r)[0].text;
+  $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
+  var crumbs =  $('#breadcrumb').children('li');
+  if (crumbs.length > 2) $('#breadcrumb').children('li')[2].remove();
+  if (crumbs.length > 1) $('#breadcrumb').children('li')[1].remove();
 }
 
 function loadFile() {
