@@ -1,3 +1,12 @@
+function Uint8ToString(u8a){
+  var CHUNK_SZ = 0x8000;
+  var c = [];
+  for (var i=0; i < u8a.length; i+=CHUNK_SZ) {
+    c.push(String.fromCharCode.apply(null, u8a.subarray(i, i+CHUNK_SZ)));
+  }
+  return c.join("");
+}
+
 function loadReport(r) {
   // Mark report as active
   $('#reports-list').children('li.active').removeClass('active');
@@ -23,11 +32,7 @@ function loadReport(r) {
           loadingAlert('Failed to load report '+r+': '+error, 'danger');
         }
         $('#chart .progress-bar').html('Parsing data...');
-        var str_data = '';
-        for (var i=0; i<data.byteLength; i++) {
-          str_data += String.fromCharCode(data[i]);
-        }
-        var json = $.parseJSON(str_data);
+        var json = $.parseJSON(Uint8ToString(data));
         loadReportData(r, json);
     };
 
