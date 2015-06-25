@@ -6,21 +6,49 @@ function loadReport(r) {
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
   $('#chart').html(bar);
+  var gzip_elem = $('#setgzip')[0];
+  var gzip = (gzip_elem) ? $('#setgzip')[0].checked : false;
   var lzma_elem = $('#setlzma')[0];
   var lzma = (lzma_elem) ? $('#setlzma')[0].checked : false;
-  if (lzma) {
+  if (gzip) {
+    var ajax = new XMLHttpRequest();
+    ajax.open("GET", 'data/'+r+'.json.gz', true);
+    ajax.responseType = "arraybuffer";
+
+    ajax.onload = function () {
+        $('#chart .progress-bar').html('Decompressing data...');
+        try {
+          var data = pako.inflate(ajax.response);
+        } catch(err) {
+          loadingAlert('Failed to load report '+r+': '+error, 'danger');
+        }
+        $('#chart .progress-bar').html('Parsing data...');
+        var str_data = '';
+        for (var i=0; i<data.byteLength; i++) {
+          str_data += String.fromCharCode(data[i]);
+        }
+        var json = $.parseJSON(str_data);
+        loadReportData(r, json);
+    };
+
+    ajax.onerror = function(e) {
+      console.log(e);
+    };
+
+    ajax.send();
+  } else if (lzma) {
     var ajax = new XMLHttpRequest();
     ajax.open("GET", 'data/'+r+'.json.lzma', true);
     ajax.responseType = "arraybuffer";
 
     ajax.onload = function () {
-        var my_lzma = LZMA('lib/lzma_worker.js');
-        $('#chart .progress-bar').html('Decompressing data...');
-        my_lzma.decompress(new Uint8Array(ajax.response), function on_decompress_complete(data) {
-          $('#chart .progress-bar').html('Parsing data...');
-          var json = $.parseJSON(data);
-          loadReportData(r, json);
-        });
+      var my_lzma = LZMA('lib/lzma_worker.js');
+      $('#chart .progress-bar').html('Decompressing data...');
+      my_lzma.decompress(new Uint8Array(ajax.response), function on_decompress_complete(data) {
+        $('#chart .progress-bar').html('Parsing data...');
+        var json = $.parseJSON(data);
+        loadReportData(r, json);
+      });
     };
 
     ajax.onerror = function(e) {
