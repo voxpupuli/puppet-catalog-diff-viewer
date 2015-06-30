@@ -223,6 +223,10 @@ function addPie(diff) {
 
   // Wipe node list
   $('#nodes').html('');
+  // Wipe node info
+  if ($('#node .jumbotron').length === 0) {
+    $('#node').html('');
+  }
 }
 
 function badgeValue(n, data) {
