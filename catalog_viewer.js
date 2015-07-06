@@ -688,7 +688,8 @@ function differencesAsDiff(data) {
           .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
       .append($('<div>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
-      .append($('<div>', { class: 'resource-title', html: k }))
+      .append($('<div>', { class: 'resource-title', html: k })
+          .on("click", $.proxy(function(k) { activateDiff('diff', k) }, null, k)))
       .append($('<pre>', { class: 'sh_diff', html: diff_str }));
 
     if (data.content_differences[k]) {
@@ -714,7 +715,8 @@ function onlyIn(data, type) {
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, type, 'in-'+type, data) }, null, d, data)))
         .append($('<span>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(d, data) { toggleStarDiff(d, type, 'in-'+type, data) }, null, d, data)))
-        .append($('<div>', { class: 'resource-title', html: d })));
+        .append($('<div>', { class: 'resource-title', html: d }))
+          .on("click", $.proxy(function(type, d) { activateDiff('in-'+type, d) }, null, type, d)));
   }
   return ul;
 }
