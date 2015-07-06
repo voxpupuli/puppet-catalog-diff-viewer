@@ -443,6 +443,13 @@ function firstDiff(panel) {
   return first;
 }
 
+function activateDiff(type, d) {
+  var active = $('#node .resource.active');
+  var new_active = $('[id="'+type+':'+sanitizeStr(d)+'"]');
+  new_active.addClass('active');
+  active.removeClass('active');
+}
+
 function activateNextDiff() {
   var active = $('#node .resource.active');
   var resources = $('#node .resource');
@@ -640,6 +647,7 @@ function isStarred(k, str) {
 }
 
 function toggleStarDiff(d, str, type, data) {
+  activateDiff(type, d);
   if (isStarred(d, str)) {
     unstarDiff(d, str, type, data, true);
   } else {
@@ -680,7 +688,8 @@ function differencesAsDiff(data) {
           .on("click", $.proxy(function(k, diff_str, data) { toggleAckDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
       .append($('<div>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
-      .append($('<div>', { class: 'resource-title', html: k }))
+      .append($('<div>', { class: 'resource-title', html: k })
+          .on("click", $.proxy(function(k) { activateDiff('diff', k) }, null, k)))
       .append($('<pre>', { class: 'sh_diff', html: diff_str }));
 
     if (data.content_differences[k]) {
@@ -706,7 +715,8 @@ function onlyIn(data, type) {
           .on("click", $.proxy(function(d, data) { toggleAckDiff(d, type, 'in-'+type, data) }, null, d, data)))
         .append($('<span>', { class: 'glyphicon glyphicon-star star' })
           .on("click", $.proxy(function(d, data) { toggleStarDiff(d, type, 'in-'+type, data) }, null, d, data)))
-        .append($('<div>', { class: 'resource-title', html: d })));
+        .append($('<div>', { class: 'resource-title', html: d }))
+          .on("click", $.proxy(function(type, d) { activateDiff('in-'+type, d) }, null, type, d)));
   }
   return ul;
 }
@@ -767,6 +777,7 @@ function compileErrors() {
 }
 
 function toggleAckDiff(d, str, type, data) {
+  activateDiff(type, d);
   if (isAcked(d, str)) {
     unackDiff(d, str, type, data, true);
   } else {
