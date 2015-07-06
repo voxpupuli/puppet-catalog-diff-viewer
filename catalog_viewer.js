@@ -443,6 +443,13 @@ function firstDiff(panel) {
   return first;
 }
 
+function activateDiff(type, d) {
+  var active = $('#node .resource.active');
+  var new_active = $('[id="'+type+':'+sanitizeStr(d)+'"]');
+  new_active.addClass('active');
+  active.removeClass('active');
+}
+
 function activateNextDiff() {
   var active = $('#node .resource.active');
   var resources = $('#node .resource');
@@ -640,6 +647,7 @@ function isStarred(k, str) {
 }
 
 function toggleStarDiff(d, str, type, data) {
+  activateDiff(type, d);
   if (isStarred(d, str)) {
     unstarDiff(d, str, type, data, true);
   } else {
@@ -767,6 +775,7 @@ function compileErrors() {
 }
 
 function toggleAckDiff(d, str, type, data) {
+  activateDiff(type, d);
   if (isAcked(d, str)) {
     unackDiff(d, str, type, data, true);
   } else {
