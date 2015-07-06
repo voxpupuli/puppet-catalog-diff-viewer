@@ -746,8 +746,9 @@ function failedFiles() {
   for (var i=0; i < failed_files.length; i++) {
     var obj = failed_files[i];
     var f = Object.keys(obj)[0];
-    var nodeLine = ($('<li>', { class: 'list-group-item', html: f }))
-            .append($('<span>', { class: 'badge', html: obj[f] }));
+    var nodeLine = $('<li>', { class: 'list-group-item' })
+            .append($('<div>', { class: 'badge', html: obj[f] }))
+            .append($('<div>', { class: 'resource-title', html: f }));
     ul.append(nodeLine);
   }
   return ul;
