@@ -336,12 +336,6 @@
           Upload file... <input type="file" class="form-control" id="fileinput" style="display: block;" onchange="loadFile()">
           </a>
         </li>
-        <li class="btn-checkbox">
-            <input type="checkbox" id="setcache" class="autosubmit" checked="checked" onChange="javascript:setCache();"> Cache reports
-        </li>
-        <li class="btn-checkbox">
-            <input type="checkbox" id="setgzip" checked="checked"> Use GZIP
-        </li>
       </ul>
       <ul id="breadcrumb" class="nav navbar-nav navbar-right breadcrumb">
         <li class="navbar-text" id="loaded-report"></li>
@@ -400,12 +394,8 @@
       })
     });
 
-    function setCache() {
-      // Close collapsed if need be
-      $('#navbar-collapse-menu').collapse('hide');
-      var cache = $('#setcache')[0].checked;
-      $.ajaxSetup({cache: cache});
-    }
+    // No ajax cache
+    $.ajaxSetup({cache: false});
 
   </script>
   </body>
