@@ -446,8 +446,8 @@ function firstDiff(panel) {
 function activateDiff(type, d) {
   var active = $('#node .resource.active');
   var new_active = $('[id="'+type+':'+sanitizeStr(d)+'"]');
-  new_active.addClass('active');
   active.removeClass('active');
+  new_active.addClass('active');
 }
 
 function activateNextDiff() {
