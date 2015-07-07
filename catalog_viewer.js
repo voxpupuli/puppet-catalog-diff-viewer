@@ -690,7 +690,8 @@ function differencesAsDiff(data) {
           .on("click", $.proxy(function(k, diff_str, data) { toggleStarDiff(k, diff_str, 'diff', data) }, null, k, diff_str, data)))
       .append($('<div>', { class: 'resource-title', html: k })
           .on("click", $.proxy(function(k) { activateDiff('diff', k) }, null, k)))
-      .append($('<pre>', { class: 'sh_diff', html: diff_str }));
+      .append($('<pre>', { class: 'sh_diff', html: diff_str })
+          .on("click", $.proxy(function(k) { activateDiff('diff', k) }, null, k)));
 
     if (data.content_differences[k]) {
       var content_diff_str = data.content_differences[k];
