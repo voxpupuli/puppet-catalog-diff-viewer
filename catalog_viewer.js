@@ -227,6 +227,7 @@ function addPie(diff) {
   if ($('#node .jumbotron').length === 0) {
     $('#node').html('');
   }
+  listNodes('with changes');
 }
 
 function badgeValue(n, data) {
