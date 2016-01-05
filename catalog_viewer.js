@@ -942,19 +942,19 @@ function generateS3ReportsMenu(bucket, sites) {
     var reports = Object.keys(sites[site]).sort();
     for (j=0; j<reports.length; j++) {
       var reportName = reports[j];
+      var reportID = reportName.replace(/ /g, '_');
       var report = sites[site][reportName];
       reportsList.append($('<li>').append($('<a>', {
-        id: report,
+        id: reportID,
         html: "<span class='badge'>"+site+"</span> "+reportName
-      }).on("click", $.proxy(function(bucket, reportName, report) {
-        loadS3Report(bucket, reportName, report)
-      }, null, bucket, reportName, report))));
+      }).on("click", $.proxy(function(bucket, reportID, report) {
+        loadS3Report(bucket, reportID, report)
+      }, null, bucket, reportID, report))));
     }
   }
 }
 
 function loadS3Report(bucket, name, key) {
-  console.log("Loading "+name);
   bucket.getObject({ Key: key }, function(err, data) {
     if (err) {
       console.log(err);
