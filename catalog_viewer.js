@@ -72,12 +72,9 @@ function loadReport(r) {
 
 function loadReportData(r, data) {
   diff = data;
-  addPie(diff);
   var report_title = $('#'+r)[0].text;
-  $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
-  var crumbs =  $('#breadcrumb').children('li');
-  if (crumbs.length > 2) $('#breadcrumb').children('li')[2].remove();
-  if (crumbs.length > 1) $('#breadcrumb').children('li')[1].remove();
+  $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
+  addPie(diff);
 }
 
 function loadFile() {
@@ -325,7 +322,9 @@ function scrollToActiveNode() {
   $('#nodes')[0].scrollTop = 0;
   // Keep 2 items up
   var active = $('#nodeslist .active');
-  $('#nodes')[0].scrollTop = active.position().top - 310 - active.height() * 4;
+  if (active.length != 0) {
+    $('#nodes')[0].scrollTop = active.position().top - 310 - active.height() * 4;
+  }
 }
 
 function listNodes(label, refresh_crumbs) {
@@ -336,18 +335,9 @@ function listNodes(label, refresh_crumbs) {
 
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
-  var breadcrumb = $('#breadcrumb');
-  var crumbs = breadcrumb.children('li');
-  if (refresh_crumbs) {
-    if (crumbs.length < 2) {
-      breadcrumb.append($('<li>', { id: 'crumb-label', class: 'navbar-text', html: label }));
-    } else {
-      crumbs[1].innerHTML = label;
-      if (crumbs.length > 2) crumbs[2].remove();
-    }
-  } else {
-    var cur_node = (crumbs.length > 2) ? crumbs[2].innerHTML : undefined;
-  }
+  $('#crumb-label').html(label).show();
+  $('#crumb-node').hide();
+  var cur_node = $('#crumb-node').text;
 
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
@@ -489,12 +479,7 @@ function displayNodeDiff(node, elem) {
   traps.nodes.pause();
   traps.node.unpause();
 
-  var crumbs = $('#breadcrumb').children('li');
-  if (crumbs.length == 3) {
-    crumbs[2].innerHTML = node;
-  } else {
-    $('#breadcrumb').append($('<li>', { id: 'crumb-node', class: 'navbar-text', html: node }));
-  }
+  $('#crumb-node').html(node).show();
 
   // Set active node in list
   $('#nodeslist').children('.active').removeClass('active');
@@ -734,12 +719,7 @@ function onlyInNew(data) {
 function displayNodeFail(node) {
   var data = diff.pull_output.failed_nodes[node];
 
-  var crumbs = $('#breadcrumb').children('li');
-  if (crumbs.length == 3) {
-    crumbs[2].innerHTML = node;
-  } else {
-    $('#breadcrumb').append($('<li>', { id: 'crumb-node', class: 'navbar-text', html: node }));
-  }
+  $('#crumb-node').html(node).show();
 
   $('#nodeslist').children('.active').removeClass('active');
   $('[id="nodeslist:'+node+'"]').addClass('active');
@@ -904,4 +884,63 @@ function refreshStats(type, data) {
   } else {
     $('[id="panel-title-'+type+'"]').removeClass('starred');
   }
+}
+
+// S3 functions
+function listS3Reports() {
+  AWS.config.update({accessKeyId: s3_access_key, secretAccessKey: s3_secret_key});
+  var s3Bucket = new AWS.S3({
+      params: {
+        Bucket: s3_bucketName
+      }
+  });
+  s3Bucket.listObjects(function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      var sites = new Object();
+      for (i=0; i<data.Contents.length; i++) {
+        var report = data.Contents[i].Key;
+        var split = report.split('/');
+        var site = split[0];
+        sites[site] = sites[site] || {};
+        var reportName = split[1].replace(/\.[^/.]+$/, "")
+        sites[site][reportName] = report;
+      }
+
+      generateS3ReportsMenu(s3Bucket, sites);
+    }
+  });
+}
+
+function generateS3ReportsMenu(bucket, sites) {
+  siteNames = Object.keys(sites).sort();
+  reportsList = $('#reports-list');
+  reportsList.html('');
+  for (i=0; i<siteNames.length; i++) {
+    var site = siteNames[i];
+    var reports = Object.keys(sites[site]).sort();
+    for (j=0; j<reports.length; j++) {
+      var reportName = reports[j];
+      var reportID = reportName.replace(/ /g, '_');
+      var report = sites[site][reportName];
+      reportsList.append($('<li>').append($('<a>', {
+        id: reportID,
+        html: "<span class='badge'>"+site+"</span> "+reportName
+      }).on("click", $.proxy(function(bucket, reportID, report) {
+        loadS3Report(bucket, reportID, report)
+      }, null, bucket, reportID, report))));
+    }
+  }
+}
+
+function loadS3Report(bucket, name, key) {
+  bucket.getObject({ Key: key }, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      var json = $.parseJSON(data.Body.toString());
+      loadReportData(name, json);
+    }
+  });
 }
