@@ -325,7 +325,9 @@ function scrollToActiveNode() {
   $('#nodes')[0].scrollTop = 0;
   // Keep 2 items up
   var active = $('#nodeslist .active');
-  $('#nodes')[0].scrollTop = active.position().top - 310 - active.height() * 4;
+  if (active.length != 0) {
+    $('#nodes')[0].scrollTop = active.position().top - 310 - active.height() * 4;
+  }
 }
 
 function listNodes(label, refresh_crumbs) {
