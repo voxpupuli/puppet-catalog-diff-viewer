@@ -72,12 +72,11 @@ function loadReport(r) {
 
 function loadReportData(r, data) {
   diff = data;
-  addPie(diff);
   var report_title = $('#'+r)[0].text;
-  $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
-  var crumbs =  $('#breadcrumb').children('li');
-  if (crumbs.length > 2) $('#breadcrumb').children('li')[2].remove();
-  if (crumbs.length > 1) $('#breadcrumb').children('li')[1].remove();
+  $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
+  $('#crumb-label').hide();
+  $('#crumb-node').hide();
+  addPie(diff);
 }
 
 function loadFile() {
@@ -338,18 +337,10 @@ function listNodes(label, refresh_crumbs) {
 
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
-  var breadcrumb = $('#breadcrumb');
-  var crumbs = breadcrumb.children('li');
-  if (refresh_crumbs) {
-    if (crumbs.length < 2) {
-      breadcrumb.append($('<li>', { id: 'crumb-label', class: 'navbar-text', html: label }));
-    } else {
-      crumbs[1].innerHTML = label;
-      if (crumbs.length > 2) crumbs[2].remove();
-    }
-  } else {
-    var cur_node = (crumbs.length > 2) ? crumbs[2].innerHTML : undefined;
-  }
+  $('#crumb-label').html(label);
+  $('#crumb-label').show();
+  $('#crumb-node').hide();
+  var cur_node = $('#crumb-node').text;
 
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
@@ -491,12 +482,8 @@ function displayNodeDiff(node, elem) {
   traps.nodes.pause();
   traps.node.unpause();
 
-  var crumbs = $('#breadcrumb').children('li');
-  if (crumbs.length == 3) {
-    crumbs[2].innerHTML = node;
-  } else {
-    $('#breadcrumb').append($('<li>', { id: 'crumb-node', class: 'navbar-text', html: node }));
-  }
+  $('#crumb-node').html(node);
+  $('#crumb-node').show();
 
   // Set active node in list
   $('#nodeslist').children('.active').removeClass('active');
@@ -736,12 +723,8 @@ function onlyInNew(data) {
 function displayNodeFail(node) {
   var data = diff.pull_output.failed_nodes[node];
 
-  var crumbs = $('#breadcrumb').children('li');
-  if (crumbs.length == 3) {
-    crumbs[2].innerHTML = node;
-  } else {
-    $('#breadcrumb').append($('<li>', { id: 'crumb-node', class: 'navbar-text', html: node }));
-  }
+  $('#crumb-node').html(node);
+  $('#crumb-node').show();
 
   $('#nodeslist').children('.active').removeClass('active');
   $('[id="nodeslist:'+node+'"]').addClass('active');
