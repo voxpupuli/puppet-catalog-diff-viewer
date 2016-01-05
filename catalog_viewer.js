@@ -73,8 +73,8 @@ function loadReport(r) {
 function loadReportData(r, data) {
   diff = data;
   var report_title = $('#'+r)[0].text;
-  $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
   addPie(diff);
+  $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
 }
 
 function loadFile() {
