@@ -74,8 +74,6 @@ function loadReportData(r, data) {
   diff = data;
   var report_title = $('#'+r)[0].text;
   $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
-  $('#crumb-label').hide();
-  $('#crumb-node').hide();
   addPie(diff);
 }
 
@@ -337,8 +335,7 @@ function listNodes(label, refresh_crumbs) {
 
   var ul = $('<ul>', { id: 'nodeslist', class: 'list-group' });
 
-  $('#crumb-label').html(label);
-  $('#crumb-label').show();
+  $('#crumb-label').html(label).show();
   $('#crumb-node').hide();
   var cur_node = $('#crumb-node').text;
 
@@ -482,8 +479,7 @@ function displayNodeDiff(node, elem) {
   traps.nodes.pause();
   traps.node.unpause();
 
-  $('#crumb-node').html(node);
-  $('#crumb-node').show();
+  $('#crumb-node').html(node).show();
 
   // Set active node in list
   $('#nodeslist').children('.active').removeClass('active');
@@ -723,8 +719,7 @@ function onlyInNew(data) {
 function displayNodeFail(node) {
   var data = diff.pull_output.failed_nodes[node];
 
-  $('#crumb-node').html(node);
-  $('#crumb-node').show();
+  $('#crumb-node').html(node).show();
 
   $('#nodeslist').children('.active').removeClass('active');
   $('[id="nodeslist:'+node+'"]').addClass('active');
