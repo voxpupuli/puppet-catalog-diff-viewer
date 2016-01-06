@@ -215,7 +215,7 @@ function addPie(diff) {
 
   // Add date
   if (diff['date'] !== undefined) {
-    var date = new Date(diff['date']);
+    var date = new Date(diff['date'].replace(/ /, "T").replace(/ /, ""));
     svg.append('text')
       .attr('x', 0)
       .attr('y', 70)
