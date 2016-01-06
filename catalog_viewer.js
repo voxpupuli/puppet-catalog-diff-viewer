@@ -111,22 +111,28 @@ function receivedText(e) {
 
 function addPie(diff) {
   $('#chart').html('');
-  try {
-    var with_changes = diff.with_changes;
-    var failed;
-    var no_changes;
-    if (diff['pull_output'] === undefined) {
-      failed = 0;
-      no_changes = 0;
-    } else {
-      failed = diff.pull_output.failed_nodes_total;
-      no_changes = diff.pull_output.total_nodes - with_changes - failed;
-    }
+
+  var all = Object.keys(diff);
+  var with_changes = [];
+  if (diff.most_differences.length != 0) {
+    with_changes = Object.keys(diff.most_differences[0]);
   }
-  catch(err) {
-    loadingAlert('Failed to parse report: missing fields', 'danger');
-    return;
+  var failed = [];
+  if (diff.pull_output != undefined) {
+    failed = Object.keys(diff.pull_output.failed_nodes);
   }
+  var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output'];
+  var no_changes = $(all).not(with_changes).not(failed).not(reserved);
+
+  diff.no_changes = [];
+  for (var i=0; i < no_changes.length; i++) {
+    diff.no_changes.push(no_changes[i]);
+  }
+
+  with_changes = with_changes.length;
+  failed = failed.length;
+  no_changes = no_changes.length;
+
   var dataset = [
   { "label": "with changes", "value": with_changes, "color": "#DB843D" },
   { "label": "failed",       "value": failed,       "color": "#AA4643" },
@@ -418,19 +424,9 @@ function listNodes(label, refresh_crumbs) {
       ul.append(nodeLine);
     }
   } else {
-    var all = Object.keys(diff);
-    var with_changes = [];
-    if (diff.most_differences.length != 0) {
-      with_changes = Object.keys(diff.most_differences[0]);
-    }
-    var failed = [];
-    if (diff.pull_output != undefined) {
-      failed = Object.keys(diff.pull_output.failed_nodes);
-    }
-    var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output']
-    var ok = $(all).not(with_changes).not(failed).not(reserved);
-    for (var i=0; i < ok.length; i++) {
-      var node = ok[i];
+    var no_changes = diff.no_changes;
+    for (var i=0; i < no_changes.length; i++) {
+      var node = no_changes[i];
       var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node, html: node })
           .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
       ul.append(nodeLine);
