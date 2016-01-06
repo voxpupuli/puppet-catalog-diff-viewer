@@ -5,6 +5,9 @@ services: docker
 cache: bundler
 script:
   - ./.build.sh
-  - bundle exec rspec -fd
+  - bundle exec rspec -fd spec/Dockerfile_spec.rb
+  # Specinfra won't let us clean the container manually
+  # so we need to run rspec twice
+  - bundle exec rspec -fd spec/Dockerfile_s3_spec.rb
 after_success:
   - ./.publish.sh

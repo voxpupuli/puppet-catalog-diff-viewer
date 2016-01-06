@@ -11,14 +11,21 @@ describe "Dockerfile" do
     set :os, family: :debian
     set :backend, :docker
     set :docker_image, image.id
-    set :docker_container_create_options, { "Privileged" => true }
-  end
-
-  describe service('apache2') do
-    it { should be_running }
+    set :docker_container_create_options, {
+      "Privileged" => true,
+      "Env" => [
+        "S3_BUCKET=my-bucket",
+        "S3_ACCESS_KEY=my-access",
+        "S3_SECRET_KEY=my-secret"
+      ],
+    }
   end
 
   describe file('/var/www/html/catalog_diff/s3_credentials.js') do
-    it { should_not exist }
+    it { should exist }
+    its(:content) { should match(/s3_bucketName = 'my-bucket'/) }
+    its(:content) { should match(/s3_access_key = 'my-access'/) }
+    its(:content) { should match(/s3_secret_key = 'my-secret'/) }
   end
 end
+
