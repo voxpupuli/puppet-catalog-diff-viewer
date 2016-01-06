@@ -77,6 +77,17 @@ function loadReportData(r, data) {
   $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
 }
 
+function loadReportList() {
+  $.getJSON('reportlist.json', function(data) {
+      $("#reports-list").empty();
+      $.each( data, function( name, filename ) {
+        $("#reports-list").append('<li><a id=\"' + filename + '\" href=\"javascript:loadReport(\'' + filename + '\')\">' + name + '</a></li>');
+      });
+    }).error(function(jqXHR, textStatus, errorThrown) {
+      console.log('No report list available.');
+    });
+}
+
 function loadFile() {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
@@ -121,7 +132,7 @@ function addPie(diff) {
   if (diff.pull_output != undefined) {
     failed = Object.keys(diff.pull_output.failed_nodes);
   }
-  var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output'];
+  var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output', 'fact_search'];
   var no_changes = $(all).not(with_changes).not(failed).not(reserved);
 
   diff.no_changes = [];
