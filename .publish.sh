@@ -1,6 +1,6 @@
 #!/bin/bash -e
 # Setup login
-openssl aes-256-cbc -K $encrypted_7b418231baf4_key -iv $encrypted_7b418231baf4_iv -in .dockercfg.enc -out ~\/.dockercfg -d
+openssl aes-256-cbc -K $encrypted_7b418231baf4_key -iv $encrypted_7b418231baf4_iv -in .dockercfg.enc -out ~/.dockercfg -d
 if [ "$TRAVIS_BRANCH" == "master" ]; then
   echo "Deploying image to docker hub for master (latest)"
   docker push "camptocamp/puppet-catalog-diff-viewer:latest"
