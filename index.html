@@ -184,6 +184,10 @@
         jQuery('html, body').animate({scrollTop: 0}, duration);
         return false;
       })
+
+      // try loading report list from server and update menu
+      loadReportList();
+
     });
 
     // No ajax cache
