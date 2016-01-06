@@ -1,6 +1,11 @@
 Puppet Catalog Diff Viewer
 ===========================
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/camptocamp/puppet-catalog-diff-viewer.svg)](https://hub.docker.com/r/camptocamp/puppet-catalog-diff-viewer/)
+[![Build Status](https://img.shields.io/travis/camptocamp/puppet-catalog-diff-viewer/master.svg)](https://travis-ci.org/camptocamp/puppet-catalog-diff-viewer)
+[![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
+
+
 A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/acidprime/puppet-catalog-diff)
 
 The interface can be tried online at http://camptocamp.github.io/puppet-catalog-diff-viewer.
@@ -21,7 +26,7 @@ Using with Docker
 -----------------
 
 ```shell
-$ docker run -p 8080:80 camptocamp/puppet-catalog-diff-viewer
+$ docker run -ti -p 8080:80 camptocamp/puppet-catalog-diff-viewer
 ```
 
 will let you access the catalog diff viewer at `http://localhost:8080/catalog_diff`.
