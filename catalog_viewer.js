@@ -77,6 +77,17 @@ function loadReportData(r, data) {
   $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
 }
 
+function loadReportList() {
+  $.getJSON('reportlist.json', function(data) {
+      $("#reports-list").empty();
+      $.each( data, function( name, filename ) {
+        $("#reports-list").append('<li><a id=\"' + filename + '\" href=\"javascript:loadReport(\'' + filename + '\')\">' + name + '</a></li>');
+      });
+    }).error(function(jqXHR, textStatus, errorThrown) {
+      console.log('No report list available.');
+    });
+}
+
 function loadFile() {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');

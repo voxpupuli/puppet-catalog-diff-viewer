@@ -31,6 +31,25 @@ $ docker run -ti -p 8080:80 camptocamp/puppet-catalog-diff-viewer
 
 will let you access the catalog diff viewer at `http://localhost:8080/catalog_diff`.
 
+Server Side storage
+-------------------
+
+The will automatically populate the drop-down list of available reports, if they can be read from `reportlist.json`.
+This file contains a record of the json files in `data`.
+Assuming you have
+```
+data/
+  file1.json
+  file2.json
+```
+the `reportlist.json` should have the format
+```json
+{
+  "First Report": "file1",
+  "Second Report": "file2"
+}
+```
+
 S3 storage
 ----------
 
