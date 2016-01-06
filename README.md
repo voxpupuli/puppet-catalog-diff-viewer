@@ -17,6 +17,15 @@ Starring diffs
 
 When using the global acking button, you might want to exclude some diffs from the global acking. Starring diffs does just that. Just as for acks, stars are cross-nodes.
 
+Using with Docker
+-----------------
+
+```shell
+$ docker run -p 8080:80 camptocamp/puppet-catalog-diff-viewer
+```
+
+will let you access the catalog diff viewer at `http://localhost:8080/catalog_diff`.
+
 S3 storage
 ----------
 
