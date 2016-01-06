@@ -250,7 +250,7 @@ function badgeValue(n, data) {
 }
 
 function panelIsStarred(type, data) {
-  if (data.markstats != undefined) {
+  if (data != undefined && data.markstats != undefined) {
     switch (type) {
       case 'diff':
         return (data.markstats.differences_as_diff.starred !== 0);
