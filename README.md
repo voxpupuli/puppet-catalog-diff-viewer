@@ -42,6 +42,15 @@ var s3_access_key = 'your-access-key';
 var s3_secret_key = 'your-secret-key';
 ```
 
+With the docker image, you can use:
+
+```shell
+$ docker run -ti \
+   -v ./s3_credentials.js:/var/www/html/catalog_diff/s3_credentials.js:ro \
+   -p 8080:80 \
+   camptocamp/puppet-catalog-diff-viewer
+```
+
 Make sure the access key belongs to a user that can perform actions `s3:GetObject` and `s3:ListBucket` on the bucket. Here is an example bucket policy you can use to upload files from the catalog-diff machine and retrieve them in the viewer:
 
 ```json
