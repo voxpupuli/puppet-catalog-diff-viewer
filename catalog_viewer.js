@@ -114,8 +114,8 @@ function addPie(diff) {
 
   var all = Object.keys(diff);
   var with_changes = [];
-  if (diff.most_differences.length != 0) {
-    with_changes = Object.keys(diff.most_differences[0]);
+  for (i=0; i < diff.most_differences.length; i++) {
+    with_changes.push(Object.keys(diff.most_differences[i])[0]);
   }
   var failed = [];
   if (diff.pull_output != undefined) {
@@ -250,7 +250,7 @@ function badgeValue(n, data) {
 }
 
 function panelIsStarred(type, data) {
-  if (data.markstats != undefined) {
+  if (data != undefined && data.markstats != undefined) {
     switch (type) {
       case 'diff':
         return (data.markstats.differences_as_diff.starred !== 0);
