@@ -244,18 +244,22 @@ function badgeValue(n, data) {
 }
 
 function panelIsStarred(type, data) {
-  switch (type) {
-    case 'diff':
-      return (data.markstats.differences_as_diff.starred !== 0);
-      break;
-
-    case 'in-old':
-      return (data.markstats.only_in_old.starred !== 0);
-      break;
-
-    case 'in-new':
-      return (data.markstats.only_in_new.starred !== 0);
-      break;
+  if (data.markstats != undefined) {
+    switch (type) {
+      case 'diff':
+        return (data.markstats.differences_as_diff.starred !== 0);
+        break;
+  
+      case 'in-old':
+        return (data.markstats.only_in_old.starred !== 0);
+        break;
+  
+      case 'in-new':
+        return (data.markstats.only_in_new.starred !== 0);
+        break;
+    }
+  } else {
+    return false;
   }
 }
 
@@ -414,7 +418,23 @@ function listNodes(label, refresh_crumbs) {
       ul.append(nodeLine);
     }
   } else {
-    ul.append($('<li>', { class: 'list-group-item', html: "Nothing to display for OK machines"} ));
+    var all = Object.keys(diff);
+    var with_changes = [];
+    if (diff.most_differences.length != 0) {
+      with_changes = Object.keys(diff.most_differences[0]);
+    }
+    var failed = [];
+    if (diff.pull_output != undefined) {
+      failed = Object.keys(diff.pull_output.failed_nodes);
+    }
+    var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output']
+    var ok = $(all).not(with_changes).not(failed).not(reserved);
+    for (var i=0; i < ok.length; i++) {
+      var node = ok[i];
+      var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node, html: node })
+          .on("click", $.proxy(function(node) { displayNodeDiff(node) }, null, node) );
+      ul.append(nodeLine);
+    }
   }
   $('#nodes').html(ul);
   scrollToActiveNode();
