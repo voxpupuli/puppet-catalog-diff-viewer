@@ -132,7 +132,7 @@ function addPie(diff) {
   if (diff.pull_output != undefined) {
     failed = Object.keys(diff.pull_output.failed_nodes);
   }
-  var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output'];
+  var reserved = ['date', 'max_diff', 'most_changed', 'most_differences', 'total_nodes', 'total_percentage', 'with_changes', 'pull_output', 'fact_search'];
   var no_changes = $(all).not(with_changes).not(failed).not(reserved);
 
   diff.no_changes = [];
