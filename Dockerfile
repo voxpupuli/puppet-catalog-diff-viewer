@@ -7,3 +7,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/camptocamp/puppet-catalog-diff-viewer.git /var/www/html/catalog_diff
+
+ADD entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
