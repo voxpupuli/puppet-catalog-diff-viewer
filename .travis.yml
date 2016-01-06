@@ -1,0 +1,10 @@
+---
+language: ruby
+sudo: required
+services: docker
+cache: bundler
+script:
+  - ./.build.sh
+  - bundle exec rspec -fd
+after_success:
+  - ./.publish.sh
