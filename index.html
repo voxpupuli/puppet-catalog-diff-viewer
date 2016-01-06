@@ -163,10 +163,6 @@
     </div>
   </div>
   <script type="text/javascript">
-    if (typeof s3_access_key !== 'undefined') {
-      listS3Reports();
-    }
-
     // Back to top link
     jQuery(document).ready(function() {
       var offset = 220;
@@ -184,6 +180,10 @@
         jQuery('html, body').animate({scrollTop: 0}, duration);
         return false;
       })
+      // try loading reports from S3 and update menu
+      if (typeof s3_access_key !== 'undefined') {
+        listS3Reports();
+      }
 
       // try loading report list from server and update menu
       loadReportList();
