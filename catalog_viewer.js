@@ -14,6 +14,7 @@ function loadReport(r) {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
+  $('#nodeslist').html('');
   $('#chart').html(bar);
   var gzip_elem = $('#setgzip')[0];
   var gzip = (gzip_elem) ? $('#setgzip')[0].checked : false;
@@ -32,8 +33,12 @@ function loadReport(r) {
           loadingAlert('Failed to load report '+r+': '+error, 'danger');
         }
         $('#chart .progress-bar').html('Parsing data...');
-        var json = $.parseJSON(Uint8ToString(data));
-        loadReportData(r, json);
+        try {
+          var json = $.parseJSON(Uint8ToString(data));
+          loadReportData(r, json);
+        } catch(err) {
+          loadingAlert('Failed to parse report '+r+': '+err, 'danger');
+        }
     };
 
     ajax.onerror = function(e) {
@@ -51,8 +56,12 @@ function loadReport(r) {
       $('#chart .progress-bar').html('Decompressing data...');
       my_lzma.decompress(new Uint8Array(ajax.response), function on_decompress_complete(data) {
         $('#chart .progress-bar').html('Parsing data...');
-        var json = $.parseJSON(data);
-        loadReportData(r, json);
+        try {
+          var json = $.parseJSON(data);
+          loadReportData(r, json);
+        } catch(err) {
+          loadingAlert('Failed to parse report '+r+': '+err, 'danger');
+        }
       });
     };
 
@@ -964,12 +973,25 @@ function generateS3ReportsMenu(bucket, sites) {
 }
 
 function loadS3Report(bucket, name, key) {
+  // Mark report as active
+  $('#reports-list').children('li.active').removeClass('active');
+  $('#'+name).parent().addClass('active');
+  // Close collapsed if need be
+  $('#navbar-collapse-menu').collapse('hide');
+  var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
+  $('#nodeslist').html('');
+  $('#chart').html(bar);
   bucket.getObject({ Key: key }, function(err, data) {
     if (err) {
-      console.log(err);
+      loadingAlert('Failed to load report '+name+': '+err, 'danger');
     } else {
-      var json = $.parseJSON(data.Body.toString());
-      loadReportData(name, json);
+      $('#chart .progress-bar').html('Parsing data...');
+      try {
+        var json = $.parseJSON(data.Body.toString());
+        loadReportData(name, json);
+      } catch(err) {
+        loadingAlert('Failed to parse report '+name+': '+err, 'danger');
+      }
     }
   });
 }
