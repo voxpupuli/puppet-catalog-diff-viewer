@@ -960,8 +960,8 @@ function generateS3ReportsMenu(bucket, sites) {
     var reports = Object.keys(sites[site]).sort();
     for (j=0; j<reports.length; j++) {
       var reportName = reports[j];
-      var reportID = reportName.replace(/ /g, '_');
       var report = sites[site][reportName];
+      var reportID = report.replace(/[ \/\.]/g, '_');
       reportsList.append($('<li>').append($('<a>', {
         id: reportID,
         html: "<span class='badge'>"+site+"</span> "+reportName
