@@ -49,6 +49,7 @@ the `reportlist.json` should have the format
   "Second Report": "file2"
 }
 ```
+The python script `generate_reportlist.py` will autopopulate it with all `data/*.json` using the filename also as key.
 
 S3 storage
 ----------
