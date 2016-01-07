@@ -21,6 +21,9 @@ describe "Dockerfile" do
     }
   end
 
+  describe service('apache2') do
+    it { should be_running }
+  end
   describe file('/var/www/html/catalog_diff/s3_credentials.js') do
     it { should exist }
     its(:content) { should match(/s3_bucketName = 'my-bucket'/) }
