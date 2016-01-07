@@ -420,19 +420,21 @@ function listNodes(label, refresh_crumbs) {
       ul.append(nodeLine);
     }
   } else if (label === 'failed') {
-    var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 'danger', diff.pull_output.failed_to_compile_files.length);
-    var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors','danger');
-    var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
-                .append(failed_panel)
-                .append(errs_panel);
-    $('#node').html(panels);
+    if (diff.pull_output != undefined) {
+      var failed_panel = makePanel('Failed to compile files', failedFiles(), 'failed-files', 'danger', diff.pull_output.failed_to_compile_files.length);
+      var errs_panel = makePanel('Compile error examples', compileErrors(), 'compile-errors','danger');
+      var panels = $('<div>', { class: 'panel-group', id: 'accordion' })
+                  .append(failed_panel)
+                  .append(errs_panel);
+      $('#node').html(panels);
 
-    var failed = Object.keys(diff.pull_output.failed_nodes);
-    for (var i=0; i < failed.length; i++) {
-      var node = failed[i];
-      var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node, html: node })
-        .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
-      ul.append(nodeLine);
+      var failed = Object.keys(diff.pull_output.failed_nodes);
+      for (var i=0; i < failed.length; i++) {
+        var node = failed[i];
+        var nodeLine = $('<li>', { class: 'list-group-item', id: 'nodeslist:'+node, html: node })
+          .on("click", $.proxy(function(node) { displayNodeFail(node) }, null, node) );
+        ul.append(nodeLine);
+      }
     }
   } else {
     var no_changes = diff.no_changes;
