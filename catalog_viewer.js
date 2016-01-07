@@ -32,8 +32,12 @@ function loadReport(r) {
           loadingAlert('Failed to load report '+r+': '+error, 'danger');
         }
         $('#chart .progress-bar').html('Parsing data...');
-        var json = $.parseJSON(Uint8ToString(data));
-        loadReportData(r, json);
+        try {
+          var json = $.parseJSON(Uint8ToString(data));
+          loadReportData(r, json);
+        } catch(err) {
+          loadingAlert('Failed to parse report '+r+': '+err, 'danger');
+        }
     };
 
     ajax.onerror = function(e) {
@@ -51,8 +55,12 @@ function loadReport(r) {
       $('#chart .progress-bar').html('Decompressing data...');
       my_lzma.decompress(new Uint8Array(ajax.response), function on_decompress_complete(data) {
         $('#chart .progress-bar').html('Parsing data...');
-        var json = $.parseJSON(data);
-        loadReportData(r, json);
+        try {
+          var json = $.parseJSON(data);
+          loadReportData(r, json);
+        } catch(err) {
+          loadingAlert('Failed to parse report '+r+': '+err, 'danger');
+        }
       });
     };
 
@@ -980,7 +988,7 @@ function loadS3Report(bucket, name, key) {
         var json = $.parseJSON(data.Body.toString());
         loadReportData(name, json);
       } catch(err) {
-        loadingAlert('Failed to load report '+name+': '+err, 'danger');
+        loadingAlert('Failed to parse report '+name+': '+err, 'danger');
       }
     }
   });
