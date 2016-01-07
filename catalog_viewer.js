@@ -14,6 +14,7 @@ function loadReport(r) {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
+  $('#nodeslist').html('');
   $('#chart').html(bar);
   var gzip_elem = $('#setgzip')[0];
   var gzip = (gzip_elem) ? $('#setgzip')[0].checked : false;
@@ -978,6 +979,7 @@ function loadS3Report(bucket, name, key) {
   // Close collapsed if need be
   $('#navbar-collapse-menu').collapse('hide');
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
+  $('#nodeslist').html('');
   $('#chart').html(bar);
   bucket.getObject({ Key: key }, function(err, data) {
     if (err) {
