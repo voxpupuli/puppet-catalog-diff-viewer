@@ -106,7 +106,7 @@ function loadFile() {
   fr = new FileReader();
   fr.onload = receivedText;
   fr.readAsText(file);
-  $('#loaded-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+file.name);
+  $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+file.name);
 }
 
 function loadingAlert(message, level) {
