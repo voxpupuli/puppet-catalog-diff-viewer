@@ -14,11 +14,11 @@ describe "Dockerfile" do
     set :docker_container_create_options, { "Privileged" => true }
   end
 
-  describe service('apache2') do
+  describe service('nginx') do
     it { should be_running }
   end
 
-  describe file('/var/www/html/catalog_diff/s3_credentials.js') do
+  describe file('/usr/share/nginx/html/catalog_diff/s3_credentials.js') do
     it { should_not exist }
   end
 end
