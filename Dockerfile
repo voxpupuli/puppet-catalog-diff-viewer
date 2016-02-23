@@ -11,3 +11,4 @@ RUN git clone https://github.com/camptocamp/puppet-catalog-diff-viewer.git /usr/
 ADD entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
