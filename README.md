@@ -51,6 +51,16 @@ the `reportlist.json` should have the format
 ```
 The python script `generate_reportlist.py` will autopopulate it with all `data/*.json` using the filename also as key.
 
+With the docker image, you can put everything in `/data`:
+
+```shell
+$ docker run -ti \
+   -v ./data:/data \
+   -p 8080:80 \
+   camptocamp/puppet-catalog-diff-viewer
+```
+
+
 S3 storage
 ----------
 
@@ -66,7 +76,7 @@ With the docker image, you can use:
 
 ```shell
 $ docker run -ti \
-   -v ./s3_credentials.js:/var/www/html/catalog_diff/s3_credentials.js:ro \
+   -v ./s3_credentials.js:/data/s3_credentials.js:ro \
    -p 8080:80 \
    camptocamp/puppet-catalog-diff-viewer
 ```

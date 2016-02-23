@@ -19,6 +19,19 @@ describe "Dockerfile" do
   end
 
   describe file('/usr/share/nginx/html/catalog_diff/s3_credentials.js') do
+    it { should be_symlink }
     it { should_not exist }
+  end
+
+  describe file('/usr/share/nginx/html/catalog_diff/data') do
+    it { should be_symlink }
+  end
+
+  describe file('/usr/share/nginx/html/catalog_diff/reportlist.json') do
+    it { should be_symlink }
+  end
+
+  describe file('/data') do
+    it { should be_directory }
   end
 end

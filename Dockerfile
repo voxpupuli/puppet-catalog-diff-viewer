@@ -7,6 +7,10 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/camptocamp/puppet-catalog-diff-viewer.git /usr/share/nginx/html/catalog_diff
+RUN mv /usr/share/nginx/html/catalog_diff/data /data
+RUN ln -sf /data /usr/share/nginx/html/catalog_diff/data
+RUN ln -sf /data/reportlist.json /usr/share/nginx/html/catalog_diff/reportlist.json
+RUN ln -sf /data/s3_credentials.js /usr/share/nginx/html/catalog_diff/s3_credentials.js
 
 ADD entrypoint.sh /entrypoint.sh
 
