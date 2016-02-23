@@ -8,4 +8,4 @@ var s3_secret_key = '${S3_SECRET_KEY}';
 EOF
 fi
 
-apache2 -DFOREGROUND
+exec "$@"
