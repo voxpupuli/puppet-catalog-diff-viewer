@@ -19,7 +19,6 @@ describe "Dockerfile" do
   end
 
   describe file('/usr/share/nginx/html/catalog_diff/s3_credentials.js') do
-    it { should be_symlink }
     it { should_not exist }
   end
 
