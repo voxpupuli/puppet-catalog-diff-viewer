@@ -372,7 +372,7 @@ function listNodes(label, refresh_crumbs) {
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
 
-    if (most_differences == undef)
+    if (most_differences.length === 0)
       return
 
     if (diff.max_diff === undefined)
