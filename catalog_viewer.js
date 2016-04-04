@@ -371,6 +371,10 @@ function listNodes(label, refresh_crumbs) {
 
   if (label === 'with changes') {
     var most_differences = diff.most_differences;
+
+    if (most_differences == undef)
+      return
+
     if (diff.max_diff === undefined)
       diff.max_diff = most_differences[0][Object.keys(diff.most_differences[0])];
 
