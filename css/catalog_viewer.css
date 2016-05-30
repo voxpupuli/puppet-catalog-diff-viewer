@@ -76,6 +76,7 @@ body { padding-top: 60px; }
 .compile-error {
   color: red;
   font-weight: bold;
+  white-space: normal;
 }
 .panel-title .badge {
   float: right;
