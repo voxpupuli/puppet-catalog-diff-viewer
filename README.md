@@ -29,7 +29,7 @@ Using with Docker
 $ docker run -ti -p 8080:80 camptocamp/puppet-catalog-diff-viewer
 ```
 
-will let you access the catalog diff viewer at `http://localhost:8080/catalog_diff`.
+will let you access the catalog diff viewer at http://localhost:8080/catalog_diff/.
 
 Server Side storage
 -------------------
