@@ -3,7 +3,7 @@ import json
 from os import listdir, path
 maindir = path.dirname(path.abspath(__file__))
 datadir = path.join(maindir,'data')
-datafiles = [f for f in listdir(datadir) if path.isfile(path.join(datadir, f))]
+datafiles = [f for f in listdir(datadir) if path.isfile(path.join(datadir, f)) and f != "reportlist.json"]
 datadict = {}
 for f in datafiles:
     if f.endswith('.json'):
