@@ -81,7 +81,11 @@ function loadReport(r) {
 
 function loadReportData(r, data) {
   diff = data;
-  var report_title = $('#'+r)[0].text;
+  var report_title = r;
+  var menu_entry = $('#'+r)[0];
+  if(menu_entry != undefined) {
+    report_title = menu_entry.text;
+  }
   addPie(diff);
   $('#crumb-report').html('<span class="glyphicon glyphicon-file" aria-hidden="true"></span> '+report_title);
 }
@@ -275,11 +279,11 @@ function panelIsStarred(type, data) {
       case 'diff':
         return (data.markstats.differences_as_diff.starred !== 0);
         break;
-  
+
       case 'in-old':
         return (data.markstats.only_in_old.starred !== 0);
         break;
-  
+
       case 'in-new':
         return (data.markstats.only_in_new.starred !== 0);
         break;
@@ -724,7 +728,7 @@ function differencesAsDiff(data) {
     if (data.content_differences[k]) {
       var content_diff_str = data.content_differences[k];
       resource.append($('<pre>', { class: 'sh_diff', html: content_diff_str }));
-    } 
+    }
 
     html.append(resource);
   }
@@ -898,7 +902,7 @@ function unmarkDiff(mark, klass, d, str, type, data, refresh) {
   idx = diff[mark][d].indexOf(str);
   diff[mark][d].splice(idx, 1);
   $('[id="'+safeId(type+':'+d)+'"]').removeClass(klass);
-  
+
   if (refresh) refreshStats(type, data);
 }
 
