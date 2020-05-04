@@ -584,6 +584,8 @@ function percentBar(percentage, html, classes, bar_html, bar_classes) {
 }
 
 function diffStats(data) {
+  var convertDown = new showdown.Converter();
+
   var ul = $('<ul>', { class: 'list-group diff-stats' });
   ul.append($('<li>', { class: 'list-group-item', html: 'Catalog percentage added' })
     .append(percentBar(data.catalag_percentage_added)));
@@ -609,10 +611,10 @@ function diffStats(data) {
       .append($('<span>', { class: 'badge', html: data.new_environment })));
   if (data['old_version'])
     ul.append($('<li>', { class: 'list-group-item', html: 'Old catalog version' })
-      .append($('<span>', { class: 'badge', html: data.old_version })));
+      .append($('<span>', { class: 'badge', html: convertDown.makeHtml(data.old_version) })));
   if (data['new_version'])
     ul.append($('<li>', { class: 'list-group-item', html: 'New catalog version' })
-      .append($('<span>', { class: 'badge', html: data.new_version })));
+      .append($('<span>', { class: 'badge', html: convertDown.makeHtml(data.new_version) })));
   return ul;
 }
 
