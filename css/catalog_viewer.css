@@ -82,6 +82,9 @@ body { padding-top: 60px; }
   float: right;
   margin-right: 10px;
 }
+.badge a {
+  color: white;
+}
 .back-to-top {
   position: fixed;
   top: 10px;
@@ -183,7 +186,7 @@ div.acked, li.list-group-item.acked {
 }
 .navbar .breadcrumb {
   padding: 0;
-  margin: 0 30px; 
+  margin: 0 30px;
   background-color: inherit;
 }
 .navbar .breadcrumb .navbar-text {
