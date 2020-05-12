@@ -6,7 +6,7 @@ Puppet Catalog Diff Viewer
 [![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
 
 
-A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/acidprime/puppet-catalog-diff)
+A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/camptocamp/puppet-catalog-diff)
 
 The interface can be tried online at http://camptocamp.github.io/puppet-catalog-diff-viewer.
 
