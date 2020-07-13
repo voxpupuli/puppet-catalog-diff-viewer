@@ -26,7 +26,7 @@ Using with Docker
 -----------------
 
 ```shell
-$ docker run -ti -p 8080:80 camptocamp/puppet-catalog-diff-viewer
+$ docker run -ti -p 8080:8080 camptocamp/puppet-catalog-diff-viewer
 ```
 
 will let you access the catalog diff viewer at [http://localhost:8080/catalog_diff/](http://localhost:8080/catalog_diff/).
@@ -56,7 +56,7 @@ With the docker image, you can put everything in `/data`:
 ```shell
 $ docker run -ti \
    -v ./data:/data \
-   -p 8080:80 \
+   -p 8080:8080 \
    camptocamp/puppet-catalog-diff-viewer
 ```
 
@@ -77,7 +77,7 @@ With the docker image, you can use:
 ```shell
 $ docker run -ti \
    -v ./s3_credentials.js:/data/s3_credentials.js:ro \
-   -p 8080:80 \
+   -p 8080:8080 \
    camptocamp/puppet-catalog-diff-viewer
 ```
 
@@ -88,7 +88,7 @@ $ docker run -ti \
    -e S3_BUCKET=your-bucket-name \
    -e S3_ACCESS_KEY=your-access-key \
    -e S3_SECRET_KEY=your-secret-key \
-   -p 8080:80 \
+   -p 8080:8080 \
    camptocamp/puppet-catalog-diff-viewer
 ```
 
