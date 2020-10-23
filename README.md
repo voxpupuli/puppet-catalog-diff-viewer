@@ -1,6 +1,7 @@
 Puppet Catalog Diff Viewer
 ===========================
 
+[![License](https://img.shields.io/github/license/camptocamp/puppet-catalog-diff-viewer.svg)](https://github.com/camptocamp/puppet-catalog-diff-viewer/blob/master/LICENSE)
 [![Docker Pulls](https://img.shields.io/docker/pulls/camptocamp/puppet-catalog-diff-viewer.svg)](https://hub.docker.com/r/camptocamp/puppet-catalog-diff-viewer/)
 [![Build Status](https://img.shields.io/travis/camptocamp/puppet-catalog-diff-viewer/master.svg)](https://travis-ci.org/camptocamp/puppet-catalog-diff-viewer)
 [![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
