@@ -216,4 +216,11 @@ div.acked, li.list-group-item.acked {
 .navbar-brand img {
   height: 50px;
 }
-
+.dropdown-menu {
+  width: 100%;
+}
+.scrollable-menu {
+  height: auto;
+  max-height: 90vh;
+  overflow-x: hidden;
+}
