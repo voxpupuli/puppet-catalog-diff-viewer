@@ -216,4 +216,21 @@ div.acked, li.list-group-item.acked {
 .navbar-brand img {
   height: 50px;
 }
-
+.dropdown-menu {
+  width: 100%;
+}
+.scrollable-menu {
+  height: auto;
+  max-height: 90vh;
+  overflow-x: hidden;
+}
+#reportSearchInput {
+  box-sizing: border-box;
+  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+  background-position: 14px 8px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}

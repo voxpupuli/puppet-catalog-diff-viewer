@@ -93,12 +93,32 @@ function loadReportData(r, data) {
 function loadReportList() {
   $.getJSON('reportlist.json', function(data) {
       $("#reports-list").empty();
+      $("#reports-list").append('<input class="form-control" id="reportSearchInput" type="text" placeholder="Search.." onkeyup="filterReportList()">');
       $.each( data, function( name, filename ) {
         $("#reports-list").append('<li><a id=\"' + filename + '\" href=\"javascript:loadReport(\'' + filename + '\')\">' + name + '</a></li>');
       });
     }).error(function(jqXHR, textStatus, errorThrown) {
       console.log('No report list available.');
     });
+}
+
+function filterReportList() {
+  var input, filter, ul, li, a, i, txtValue;
+  input = document.getElementById('reportSearchInput');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("reports-list");
+  li = ul.getElementsByTagName('li');
+
+  // Loop through all list items, and hide those who don't match the search query
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    txtValue = a.textContent || a.innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
 }
 
 function loadFile() {
