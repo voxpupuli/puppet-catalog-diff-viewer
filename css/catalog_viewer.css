@@ -217,7 +217,7 @@ div.acked, li.list-group-item.acked {
   height: 50px;
 }
 .dropdown-menu {
-  width: 100%;
+  width: fit-content
 }
 .scrollable-menu {
   height: auto;
