@@ -1,5 +1,5 @@
 FROM nginx:latest
 
-MAINTAINER ma@betadots.de
+MAINTAINER pmc@voxpupuli.org
 
 COPY . /usr/share/nginx/html/

@@ -5,7 +5,7 @@ on:
     paths-ignore:
       - '.github/**'
     branches:
-      - 'main'
+      - 'master'
     tags:
       - '*'
 
@@ -42,7 +42,7 @@ jobs:
             version = "${{ github.ref_name }}".replace("v", "")
             tags.add(f"{image}:latest")
 
-          if version == 'main':
+          if version == 'master':
             version = "development"
 
           tags.add(f"{image}:{version}")
