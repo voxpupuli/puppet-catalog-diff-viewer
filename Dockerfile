@@ -1,5 +1,5 @@
-FROM bitnami/nginx:latest
+FROM nginx:latest
 
-MAINTAINER raphael.pinson@camptocamp.com
+MAINTAINER ma@betadots.de
 
-COPY . /app
+COPY . /usr/share/nginx/html/
