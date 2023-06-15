@@ -9,7 +9,7 @@ Puppet Catalog Diff Viewer
 
 A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/voxpupuli/puppet-catalog-diff)
 
-The interface can be tried online at http://voxpupuli.github.io/puppet-catalog-diff-viewer.
+The interface can be tried online at http://voxpupuli.org.github.io/puppet-catalog-diff-viewer.
 
 Acking diffs
 ------------
