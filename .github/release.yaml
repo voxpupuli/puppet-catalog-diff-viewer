@@ -7,12 +7,15 @@ changelog:
     labels:
       - ignore-for-release
   categories:
-    - title: Breaking Changes 🛠
+    - title: Breaking changes
       labels:
-        - breaking-change
-    - title: New Features 🎉
+        - backwards-incompatible
+    - title: Implemented enhancements
       labels:
         - enhancement
-    - title: Other Changes
+    - title: Fixed bugs
+      labels:
+        - bug
+    - title: Merged pull requests
       labels:
         - "*"
