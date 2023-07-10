@@ -38,18 +38,22 @@ Server Side storage
 The will automatically populate the drop-down list of available reports, if they can be read from `reportlist.json`.
 This file contains a record of the json files in `data`.
 Assuming you have
-```
+
+```text
 data/
   file1.json
   file2.json
 ```
+
 the `reportlist.json` should have the format
+
 ```json
 {
   "First Report": "file1",
   "Second Report": "file2"
 }
 ```
+
 The python script `generate_reportlist.py` will autopopulate it with all `data/*.json` using the filename also as key.
 
 With the docker image, you can put everything in `/data`:
@@ -61,7 +65,6 @@ $ docker run -ti \
    ghcr.io/voxpupuli/puppet-catalog-diff-viewer
 ```
 
-
 S3 storage
 ----------
 
@@ -71,6 +74,11 @@ The viewer can automatically retrieve catalogs from an S3 bucket. In order to us
 var s3_bucketName = 'your-bucket-name';
 var s3_access_key = 'your-access-key';
 var s3_secret_key = 'your-secret-key';
+
+// if you selfhost a s3 engine or use a path within it:
+var s3_host = 'your.endpoint.example.com';
+var s3_bucketPathPrefix = '/yur/prefix';
+var s3_ForcePathStyle = true;
 ```
 
 With the docker image, you can use:
@@ -130,5 +138,3 @@ Make sure the access key belongs to a user that can perform actions `s3:GetObjec
   ]
 }
 ```
-
-

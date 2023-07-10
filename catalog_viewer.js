@@ -964,11 +964,14 @@ function refreshStats(type, data) {
 function listS3Reports() {
   AWS.config.update({accessKeyId: s3_access_key, secretAccessKey: s3_secret_key});
   var s3Bucket = new AWS.S3({
-      params: {
-        Bucket: s3_bucketName
-      }
+    params: {
+      Bucket: s3_bucketName,
+      endpoint: s3_host, // Set the S3 host, when self hosting
+      s3ForcePathStyle: s3_ForcePathStyle, // Enable path-style URLs, necessary when using custom S3 host
+    }
   });
-  s3Bucket.listObjects(function(err, data) {
+  // Add prefix to listObjects, if undefined, it is ignored
+  s3Bucket.listObjects({Prefix: s3_bucketPathPrefix}, function(err, data) {
     if (err) {
       console.log(err);
     } else {
