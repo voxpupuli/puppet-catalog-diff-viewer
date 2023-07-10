@@ -1,0 +1,21 @@
+---
+
+# https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+  categories:
+    - title: Breaking changes
+      labels:
+        - backwards-incompatible
+    - title: Implemented enhancements
+      labels:
+        - enhancement
+    - title: Fixed bugs
+      labels:
+        - bug
+    - title: Merged pull requests
+      labels:
+        - "*"

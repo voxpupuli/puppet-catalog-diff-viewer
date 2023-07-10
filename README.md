@@ -27,7 +27,7 @@ Using with Docker
 -----------------
 
 ```shell
-$ docker run -ti -p 8080:8080 camptocamp/puppet-catalog-diff-viewer
+$ docker run -ti -p 8080:8080 ghcr.io/voxpupuli/puppet-catalog-diff-viewer
 ```
 
 will let you access the catalog diff viewer at [http://localhost:8080](http://localhost:8080).
@@ -58,7 +58,7 @@ With the docker image, you can put everything in `/data`:
 $ docker run -ti \
    -v ./data:/data \
    -p 8080:8080 \
-   camptocamp/puppet-catalog-diff-viewer
+   ghcr.io/voxpupuli/puppet-catalog-diff-viewer
 ```
 
 
@@ -79,7 +79,7 @@ With the docker image, you can use:
 $ docker run -ti \
    -v ./s3_credentials.js:/data/s3_credentials.js:ro \
    -p 8080:8080 \
-   camptocamp/puppet-catalog-diff-viewer
+   ghcr.io/voxpupuli/puppet-catalog-diff-viewer
 ```
 
 or using environment variables:
@@ -90,7 +90,7 @@ $ docker run -ti \
    -e S3_ACCESS_KEY=your-access-key \
    -e S3_SECRET_KEY=your-secret-key \
    -p 8080:8080 \
-   camptocamp/puppet-catalog-diff-viewer
+   ghcr.io/voxpupuli/puppet-catalog-diff-viewer
 ```
 
 Make sure the access key belongs to a user that can perform actions `s3:GetObject` and `s3:ListBucket` on the bucket. Here is an example bucket policy you can use to upload files from the catalog-diff machine and retrieve them in the viewer:

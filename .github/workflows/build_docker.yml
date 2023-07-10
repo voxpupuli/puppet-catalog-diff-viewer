@@ -1,0 +1,61 @@
+name: publish 🐳 Docker image
+
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+    branches:
+      - 'master'
+    tags:
+      - '*'
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@465a07811f14bebb1938fbed4728c6a1ff8901fc
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get tags
+        shell: python
+        run: |
+          import re
+          import os
+          from packaging.version import parse
+
+          image   = "ghcr.io/${{ github.repository }}"
+          tags    = set()
+          version = "${{ github.ref_name }}"
+
+          if version.startswith('v'):
+            version = "${{ github.ref_name }}".replace("v", "")
+            tags.add(f"{image}:latest")
+
+          if version == 'master':
+            version = "development"
+
+          tags.add(f"{image}:{version}")
+          tags = ",".join(sorted(list(tags)))
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f'tags={tags}', file=fh)
+        id: tags
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
