@@ -11,4 +11,4 @@ var s3_ForcePathStyle = ${S3_FORCE_PATH_STYLE}; // true or false
 EOF
 fi
 
-exec "$@"
+nginx -g "daemon off;"
