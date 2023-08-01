@@ -27,7 +27,7 @@ Using with Docker
 -----------------
 
 ```shell
-$ docker run -ti -p 8080:8080 ghcr.io/voxpupuli/puppet-catalog-diff-viewer
+$ docker run -it --rm -p 8080:8080 ghcr.io/voxpupuli/puppet-catalog-diff-viewer:development
 ```
 
 will let you access the catalog diff viewer at [http://localhost:8080](http://localhost:8080).
@@ -71,34 +71,34 @@ S3 storage
 The viewer can automatically retrieve catalogs from an S3 bucket. In order to use this feature, create a `s3_credentials.js` file with the following variables:
 
 ```javascript
-var s3_bucketName = 'your-bucket-name';
-var s3_access_key = 'your-access-key';
-var s3_secret_key = 'your-secret-key';
+const s3_bucketName = 'your-bucket-name';
+const s3_access_key = 'your-access-key';
+const s3_secret_key = 'your-secret-key';
 
-// if you selfhost a s3 engine or use a path within it:
-var s3_host = 'your.endpoint.example.com';
-var s3_bucketPathPrefix = '/yur/prefix';
-var s3_ForcePathStyle = true;
+// if you self host a s3 engine or use a path within it:
+const s3_endpoint = 'http://your.endpoint.example.com:9000';
+const s3_bucketPathPrefix = 'your-prefix';
+const s3_ForcePathStyle = true;
 ```
 
 With the docker image, you can use:
 
 ```shell
-$ docker run -ti \
+$ docker run -it --rm \
    -v ./s3_credentials.js:/data/s3_credentials.js:ro \
    -p 8080:8080 \
-   ghcr.io/voxpupuli/puppet-catalog-diff-viewer
+   ghcr.io/voxpupuli/puppet-catalog-diff-viewer:development
 ```
 
 or using environment variables:
 
 ```shell
-$ docker run -ti \
+$ docker run -it --rm \
    -e S3_BUCKET=your-bucket-name \
    -e S3_ACCESS_KEY=your-access-key \
    -e S3_SECRET_KEY=your-secret-key \
    -p 8080:8080 \
-   ghcr.io/voxpupuli/puppet-catalog-diff-viewer
+   ghcr.io/voxpupuli/puppet-catalog-diff-viewer:development
 ```
 
 Make sure the access key belongs to a user that can perform actions `s3:GetObject` and `s3:ListBucket` on the bucket. Here is an example bucket policy you can use to upload files from the catalog-diff machine and retrieve them in the viewer:
