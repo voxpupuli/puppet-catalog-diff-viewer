@@ -74,9 +74,12 @@ The viewer can automatically retrieve catalogs from an S3 bucket. In order to us
 const s3_bucketName = 'your-bucket-name';
 const s3_access_key = 'your-access-key';
 const s3_secret_key = 'your-secret-key';
+// something like this for standard s3 and the corresponding region
+const s3_endpoint   = 's3.us-east-2.amazonaws.com';
+// for self hosted s3
+const s3_endpoint   = 'http://your.endpoint.example.com:9000';
 
-// if you self host a s3 engine or use a path within it:
-const s3_endpoint = 'http://your.endpoint.example.com:9000';
+// if you use a path within the bucket
 const s3_bucketPathPrefix = 'your-prefix';
 const s3_ForcePathStyle = true;
 ```
