@@ -962,16 +962,15 @@ function refreshStats(type, data) {
 
 // S3 functions
 function listS3Reports() {
-  AWS.config.update({accessKeyId: s3_access_key, secretAccessKey: s3_secret_key});
-  var s3Bucket = new AWS.S3({
-    params: {
-      Bucket: s3_bucketName,
-      endpoint: s3_host, // Set the S3 host, when self hosting
-      s3ForcePathStyle: s3_ForcePathStyle, // Enable path-style URLs, necessary when using custom S3 host
-    }
+  const s3Bucket = new AWS.S3({
+    endpoint: s3_endpoint,
+    accessKeyId: s3_access_key,
+    secretAccessKey: s3_secret_key,
+    s3ForcePathStyle: s3_ForcePathStyle,
   });
+
   // Add prefix to listObjects, if undefined, it is ignored
-  s3Bucket.listObjects({Prefix: s3_bucketPathPrefix}, function(err, data) {
+  s3Bucket.listObjects({ Prefix: s3_bucketPathPrefix, Bucket: s3_bucketName }, function(err, data) {
     if (err) {
       console.log(err);
     } else {
@@ -1020,7 +1019,7 @@ function loadS3Report(bucket, name, key) {
   var bar = percentBar('100', false, 'progress-striped active', 'Loading data...');
   $('#nodeslist').html('');
   $('#chart').html(bar);
-  bucket.getObject({ Key: key }, function(err, data) {
+  bucket.getObject({ Bucket: s3_bucketName, Key: key }, function(err, data) {
     if (err) {
       loadingAlert('Failed to load report '+name+': '+err, 'danger');
     } else {
