@@ -1,10 +1,8 @@
 Puppet Catalog Diff Viewer
 ===========================
 
-[![License](https://img.shields.io/github/license/camptocamp/puppet-catalog-diff-viewer.svg)](https://github.com/camptocamp/puppet-catalog-diff-viewer/blob/master/LICENSE)
-[![Docker Pulls](https://img.shields.io/docker/pulls/camptocamp/puppet-catalog-diff-viewer.svg)](https://hub.docker.com/r/camptocamp/puppet-catalog-diff-viewer/)
-[![Build Status](https://img.shields.io/travis/camptocamp/puppet-catalog-diff-viewer/master.svg)](https://travis-ci.org/camptocamp/puppet-catalog-diff-viewer)
-[![By Camptocamp](https://img.shields.io/badge/by-camptocamp-fb7047.svg)](http://www.camptocamp.com)
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-catalog-diff-viewer.svg)](https://github.com/voxpupuli/puppet-catalog-diff-viewer/blob/master/LICENSE)
+[![CI](https://github.com/voxpupuli/puppet-catalog-diff-viewer/actions/workflows/ci.yaml/badge.svg)](https://github.com/voxpupuli/puppet-catalog-diff-viewer/actions/workflows/ci.yaml)
 
 
 A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/voxpupuli/puppet-catalog-diff)
