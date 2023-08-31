@@ -140,3 +140,10 @@ Make sure the access key belongs to a user that can perform actions `s3:GetObjec
   ]
 }
 ```
+
+Transfer Notice
+---------------
+
+This project was originally authored by [Camptocamp](http://www.camptocamp.com).
+The maintainer preferred that Vox Pupuli take ownership of the project for future improvement and maintenance.
+Existing pull requests and issues were transferred over, please fork and continue to contribute here instead of Camptocamp.
