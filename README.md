@@ -3,6 +3,7 @@ Puppet Catalog Diff Viewer
 
 [![License](https://img.shields.io/github/license/voxpupuli/puppet-catalog-diff-viewer.svg)](https://github.com/voxpupuli/puppet-catalog-diff-viewer/blob/master/LICENSE)
 [![CI](https://github.com/voxpupuli/puppet-catalog-diff-viewer/actions/workflows/ci.yaml/badge.svg)](https://github.com/voxpupuli/puppet-catalog-diff-viewer/actions/workflows/ci.yaml)
+[![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
 
 
 A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/voxpupuli/puppet-catalog-diff)
