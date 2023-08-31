@@ -16,7 +16,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: voxpupuli/gha-build-and-publish-a-container@e8eaaaa2b02fdd2bf0f47c5cb07f120353e5ecf4
+      - uses: voxpupuli/gha-build-and-publish-a-container@6cc48dfef0d27070922d8adbd661884de1dd45c8
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           build_arch: linux/amd64,linux/arm64
