@@ -1,8 +1,10 @@
-source ENV['GEM_SOURCE'] || "https://rubygems.org"
+# frozen_string_literal: true
 
-gem 'serverspec', :require => false
-gem 'docker-api', :require => false
+source ENV['GEM_SOURCE'] || 'https://rubygems.org'
+
+gem 'docker-api', require: false
+gem 'serverspec', require: false
 
 group :release do
-  gem 'github_changelog_generator', '>= 1.16.1', :require => false
+  gem 'github_changelog_generator', '>= 1.16.1', require: false
 end
