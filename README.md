@@ -1,29 +1,24 @@
-Puppet Catalog Diff Viewer
-===========================
+# Puppet Catalog Diff Viewer
 
 [![License](https://img.shields.io/github/license/voxpupuli/puppet-catalog-diff-viewer.svg)](https://github.com/voxpupuli/puppet-catalog-diff-viewer/blob/master/LICENSE)
 [![CI](https://github.com/voxpupuli/puppet-catalog-diff-viewer/actions/workflows/ci.yaml/badge.svg)](https://github.com/voxpupuli/puppet-catalog-diff-viewer/actions/workflows/ci.yaml)
 [![Donated by Camptocamp](https://img.shields.io/badge/donated%20by-camptocamp-fb7047.svg)](#transfer-notice)
 
-
 A viewer for json reports produced by [the puppet-catalog-diff tool](https://github.com/voxpupuli/puppet-catalog-diff)
 
-The interface can be tried online at http://voxpupuli.org/puppet-catalog-diff-viewer.
+The interface can be tried online at <http://voxpupuli.org/puppet-catalog-diff-viewer>.
 
-Acking diffs
-------------
+## Acking diffs
 
 This interface allows to ack differences in order to ease the report review. Differences are acked on all nodes that have the same resource with the same diff.
 
 A global acking button is available for sections which allows to ack all diffs in the section at once.
 
-Starring diffs
---------------
+## Starring diffs
 
 When using the global acking button, you might want to exclude some diffs from the global acking. Starring diffs does just that. Just as for acks, stars are cross-nodes.
 
-Using with Docker
------------------
+## Using with Docker
 
 ```shell
 $ docker run -it --rm -p 8080:80 ghcr.io/voxpupuli/puppet-catalog-diff-viewer:development
@@ -31,8 +26,7 @@ $ docker run -it --rm -p 8080:80 ghcr.io/voxpupuli/puppet-catalog-diff-viewer:de
 
 will let you access the catalog diff viewer at [http://localhost:8080](http://localhost:8080).
 
-Server Side storage
--------------------
+## Server Side storage
 
 The will automatically populate the drop-down list of available reports, if they can be read from `reportlist.json`.
 This file contains a record of the json files in `data`.
@@ -64,8 +58,7 @@ $ docker run -ti \
    ghcr.io/voxpupuli/puppet-catalog-diff-viewer
 ```
 
-S3 storage
-----------
+## S3 storage
 
 The viewer can automatically retrieve catalogs from an S3 bucket. In order to use this feature, create a `s3_credentials.js` file with the following variables:
 
@@ -141,8 +134,13 @@ Make sure the access key belongs to a user that can perform actions `s3:GetObjec
 }
 ```
 
-Transfer Notice
----------------
+## Contributing
+
+### Build a release
+
+see [RELEASE.md](RELEASE.md)
+
+## Transfer Notice
 
 This project was originally authored by [Camptocamp](http://www.camptocamp.com).
 The maintainer preferred that Vox Pupuli take ownership of the project for future improvement and maintenance.
