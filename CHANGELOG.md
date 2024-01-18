@@ -16,8 +16,6 @@ These should not affect the functionality of the module.
 
 - Also push to dockerhub [\#58](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/58) ([rwaffen](https://github.com/rwaffen))
 - dependabot: Check for gems, github-actions and docker updates [\#56](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/56) ([bastelfreak](https://github.com/bastelfreak))
-- Bump docker/build-push-action from 4 to 5 [\#55](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/55) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump actions/checkout from 3 to 4 [\#54](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/54) ([dependabot[bot]](https://github.com/apps/dependabot))
 - update to v1 instead of commit id [\#53](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/53) ([rwaffen](https://github.com/rwaffen))
 - update readme with migration notice [\#52](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/52) ([rwaffen](https://github.com/rwaffen))
 - update readme and test container build [\#51](https://github.com/voxpupuli/puppet-catalog-diff-viewer/pull/51) ([rwaffen](https://github.com/rwaffen))
