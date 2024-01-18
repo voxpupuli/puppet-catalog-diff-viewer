@@ -21,7 +21,9 @@ When using the global acking button, you might want to exclude some diffs from t
 ## Using with Docker
 
 ```shell
-$ docker run -it --rm -p 8080:80 ghcr.io/voxpupuli/puppet-catalog-diff-viewer:development
+$ docker run -it --rm \
+  -p 8080:80 \
+  ghcr.io/voxpupuli/puppet-catalog-diff-viewer:development
 ```
 
 will let you access the catalog diff viewer at [http://localhost:8080](http://localhost:8080).
