@@ -2,12 +2,13 @@ name: Build and publish a 🛢️ container
 
 on:
   push:
-    paths-ignore:
-      - '.github/**'
     branches:
       - 'master'
     tags:
       - '*'
+
+env:
+  TAG: ${{ github.ref_name == 'master' && 'development' || github.ref_name }}
 
 jobs:
   build-and-push-container:
@@ -16,7 +17,14 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: voxpupuli/gha-build-and-publish-a-container@v1
+      - uses: voxpupuli/gha-build-and-publish-a-container@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
           build_arch: linux/amd64,linux/arm64
+          docker_username: voxpupulibot
+          docker_password: ${{ secrets.DOCKERHUB_BOT_PASSWORD}}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ env.TAG }}
+            ghcr.io/${{ github.repository }}:latest
+            docker.io/${{ github.repository }}:${{ env.TAG }}
+            docker.io/${{ github.repository }}:latest
