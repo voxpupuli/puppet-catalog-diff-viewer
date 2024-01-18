@@ -5,7 +5,7 @@ begin
     config.exclude_labels = %w{duplicate question invalid wontfix wont-fix modulesync skip-changelog}
     config.user = 'voxpupuli'
     config.project = 'puppet-catalog-diff-viewer'
-    config.future_release = '0.7.0'
+    config.future_release = '0.8.0'
   end
 
   # Workaround for https://github.com/github-changelog-generator/github-changelog-generator/issues/715
