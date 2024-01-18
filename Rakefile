@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 begin
   require 'github_changelog_generator/task'
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
-    config.header = "# Changelog\n\nAll notable changes to this project will be documented in this file.\nEach new release typically also includes the latest modulesync defaults.\nThese should not affect the functionality of the module."
-    config.exclude_labels = %w{duplicate question invalid wontfix wont-fix modulesync skip-changelog}
+    config.header = "# Changelog\n\nAll notable changes to this project will be documented in this file.\nEach new release typically also includes the latest modulesync defaults.\nThese should not affect the functionality of the module." # rubocop:disable Layout/LineLength
+    config.exclude_labels = %w[duplicate question invalid wontfix wont-fix modulesync skip-changelog github_actions]
     config.user = 'voxpupuli'
     config.project = 'puppet-catalog-diff-viewer'
-    config.future_release = '0.7.0'
+    config.future_release = '0.8.0'
   end
 
   # Workaround for https://github.com/github-changelog-generator/github-changelog-generator/issues/715
@@ -15,10 +17,10 @@ begin
       puts 'Fixing line endings...'
       changelog_file = File.join(__dir__, 'CHANGELOG.md')
       changelog_txt = File.read(changelog_file)
-      new_contents = changelog_txt.gsub(%r{\r\n}, "\n")
-      File.open(changelog_file, "w") {|file| file.puts new_contents }
+      new_contents = changelog_txt.gsub(%r{/\r\n/}, "\n")
+      File.open(changelog_file, 'w') { |file| file.puts new_contents }
     end
   end
-
 rescue LoadError
+  # fix liniting
 end
