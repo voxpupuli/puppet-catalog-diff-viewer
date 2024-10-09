@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-LABEL org.opencontainers.image.authors="pmc@voxpupuli.org"
+LABEL org.opencontainers.image.authors="voxpupuli@groups.io"
 
 COPY entrypoint.sh /
 COPY . /usr/share/nginx/html/
