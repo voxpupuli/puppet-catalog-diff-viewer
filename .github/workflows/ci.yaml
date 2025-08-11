@@ -10,7 +10,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - name: Run ShellCheck
       uses: ludeeus/action-shellcheck@2.0.0
       with:
@@ -23,7 +23,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
