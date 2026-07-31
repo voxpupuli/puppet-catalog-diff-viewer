@@ -1,0 +1,60 @@
+---
+name: PR preview 🔍
+
+# Publishes the pull request's copy of the site to gh-pages, under
+# pr-preview/pr-<number>/, and comments the link.
+#
+# Opt in by label, because a preview serves the branch's JavaScript from the same
+# origin as the rest of the site.
+#
+# pull_request_target is what lets previews work for pull requests from forks, so
+# this job runs with write permissions and must never execute code from the branch.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, labeled, unlabeled, closed]
+
+concurrency: pr-preview-${{ github.event.pull_request.number }}
+
+jobs:
+  preview:
+    # Second clause catches the label being removed, so the preview comes down.
+    if: >-
+      contains(github.event.pull_request.labels.*.name, 'preview') ||
+      github.event.label.name == 'preview'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      UNLABELLED: >-
+        ${{ github.event.action == 'unlabeled' &&
+            github.event.label.name == 'preview' }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # pull_request_target checks out the base branch by default.
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: rossjrw/pr-preview-action@v1
+        id: preview
+        with:
+          source-dir: .
+          action: >-
+            ${{ (github.event.action == 'closed' || env.UNLABELLED == 'true')
+                && 'remove' || 'deploy' }}
+          # Its removal comment always says the pull request was closed.
+          comment: ${{ env.UNLABELLED != 'true' }}
+
+      - if: env.UNLABELLED == 'true'
+        run: echo "REMOVED_AT=$(date '+%Y-%m-%d %H:%M %Z')" >> "$GITHUB_ENV"
+
+      - if: env.UNLABELLED == 'true'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-preview
+          message: |
+            [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview.outputs['action-version'] }}
+            :---:
+            Preview removed because the preview label was removed.
+            ${{ env.REMOVED_AT }}
